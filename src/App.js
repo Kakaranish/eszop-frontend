@@ -4,12 +4,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import MainPage from './pages/MainPage';
 import ErrorPage from './pages/ErrorPage';
+import ProductsPage from './pages/ProductsPage';
 
 const App = () => <>
   <Router>
     <Switch>
-
       <Route exact path='/' component={MainPage} />
+      <Route exact path='/products' component={ProductsPage} />
 
       <Route path='/error/:code' component={ErrorPage} />
       <Redirect to='/error/404' />
