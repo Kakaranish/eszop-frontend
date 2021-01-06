@@ -8,16 +8,20 @@ import ProductsPage from './pages/ProductsPage';
 import CreateOfferPage from './pages/CreateOfferPage';
 
 const App = () => <>
-  <Router>
-    <Switch>
-      <Route exact path='/' component={MainPage} />
-      <Route exact path='/products' component={ProductsPage} />
-      <Route exact path='/create/offer' component={CreateOfferPage} />
 
-      <Route path='/error/:code' component={ErrorPage} />
-      <Redirect to='/error/404' />
-    </Switch>
-  </Router>
+  <div className="container py-3">
+
+    <Router>
+      <Switch>
+        <Route exact path='/' component={MainPage} />
+        <Route exact path='/products' component={ProductsPage} />
+        <Route exact path='/create/offer' component={CreateOfferPage} />
+
+        <Route path='/error/:code' component={ErrorPage} />
+        <Redirect to='/error/404' />
+      </Switch>
+    </Router>
+  </div>
 </>
 
 export default App;
