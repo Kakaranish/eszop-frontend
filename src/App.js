@@ -6,7 +6,7 @@ import MainPage from './pages/MainPage';
 import ErrorPage from './pages/ErrorPage';
 import OffersPage from './pages/OffersPage';
 import CreateOfferPage from './pages/CreateOfferPage';
-import LoginPage from './pages/LoginPage';
+import SignInPage from './pages/SignInPage';
 import MainLayout from './skeleton/MainLayout';
 import OfferPage from './pages/OfferPage';
 
@@ -22,7 +22,7 @@ const App = () => <>
           <Route exact path='/offers' component={OffersPage} />
           <Route exact path='/offers/create' component={CreateOfferPage} />
           <Route exact path='/offers/:id' component={OfferPage} />
-          <Route exact path='/auth/login' component={LoginPage} />
+          <Route exact path='/auth/login' component={SignInPage} />
 
           <Route path='/error/:code' component={ErrorPage} />
           <Redirect to='/error/404' />

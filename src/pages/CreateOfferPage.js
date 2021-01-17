@@ -4,9 +4,13 @@ import ImageUploader from '../common/ImageUploader';
 import ImagesPreviews from '../common/ImagesPreviews';
 import CreateOfferForm from './CreateOfferForm';
 import { getFormDataJsonFromEvent, requestHandler } from '../common/utils';
+import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 
 const CreateOfferPage = () => {
+
+    const history = useHistory();
+
     const [images, setImages] = useState([]);
 
     const [selected, setSelected] = useState();
@@ -39,15 +43,13 @@ const CreateOfferPage = () => {
 
         console.log(getFormDataJsonFromEvent(event));
 
-        try {
-            await axios.post("/offers-api/offers", formData, {
-                validateStatus: false,
-                baseURL: "https://localhost:10000",
-                withCredentials: true
-            });
-        } catch (error) {
-            console.log(error);
-        }
+        const action = async () => await axios.post("/offers-api/offers", formData);
+        await requestHandler(action, {
+            status: 200,
+            callback: async result => {
+                history.push(`/offers/${result.offerId}`);
+            }
+        });
     };
 
     return <>

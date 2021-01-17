@@ -30,8 +30,9 @@ const OfferPage = (props) => {
                 ? <></>
                 : state.offer.images.map((img, i) =>
                     <div className="col-6" key={`prev-${i}`}>
-                        <ImagePreview image={img} key={`prev-${i}`} />
-                    </div>)
+                        <ImagePreview uri={img.uri} key={`prev-${i}`} />
+                    </div>
+                )
         }
     </>
 };
