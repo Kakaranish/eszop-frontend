@@ -10,13 +10,9 @@ const OffersPage = () => {
     useEffect(() => {
         const fetch = async () => {
             const uri = '/offers-api/offers';
-            const action = async () => await axios.get(uri, {
-                baseURL: "https://localhost:10000",
-                validateStatus: false
-            });
+            const action = async () => await axios.get(uri);
 
             const offers = await requestHandler(action);
-            console.log(offers);
             setState({ loading: false, offers: offers });
         }
 

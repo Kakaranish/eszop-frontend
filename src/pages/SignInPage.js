@@ -6,7 +6,6 @@ import AwareComponentBuilder from '../common/AwareComponentBuilder';
 
 const SignInPage = (props) => {
 
-
     const history = useHistory();
 
     const onSubmit = async event => {
@@ -39,7 +38,7 @@ const SignInPage = (props) => {
             </div>
 
             <button type="submit" className="btn btn-primary">
-                Log In
+                Sign In
             </button>
         </form>
     </>

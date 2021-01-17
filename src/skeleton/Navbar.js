@@ -5,10 +5,6 @@ const Navbar = (props) => <>
         <a href='/' style={{ textDecoration: 'none' }}>
             <div className="navbar-brand d-flex align-items-center ml-2">
                 <div>
-                    {/* <img src={logoIcon} style={{ height: "30px" }} /> */}
-                    <>Logo placeholder </>
-                </div>
-                <div className="ml-2">
                     eSzop
                 </div>
             </div>

@@ -1,9 +1,9 @@
-import moment from 'moment';
 import React from 'react';
 import Navbar from './Navbar';
 import axios from 'axios';
 import { requestHandler } from '../common/utils';
 import AwareComponentBuilder from '../common/AwareComponentBuilder';
+import { Link } from 'react-router-dom';
 
 const MainLayout = (props) => {
 
@@ -18,40 +18,39 @@ const MainLayout = (props) => {
         });
     };
 
-    const getCookie = name => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    const accessTokenExp = getCookie("accessTokenExp");
-    let isLoggedIn = accessTokenExp === null
-        ? false
-        : moment.unix(accessTokenExp).isAfter(moment.utc());
-
-    console.log(isLoggedIn);
-
     return <>
+
         <Navbar />
+
         <div className="container mt-2">
-            <a className="btn btn-primary mr-2" href="/offers">Offers</a>
-            <a className="btn btn-primary mr-2" href="/auth/login">Sign In</a>
-            <a className="btn btn-primary mr-2" href="/offers/create">Create Offer</a>
+
+            <Link to="/offers" className="btn btn-primary mr-2">
+                Offers
+            </Link>
+
+            <Link to="/offers/create" className="btn btn-primary mr-2">
+                Create Offer
+            </Link>
 
             {
-                props.identity &&
+                !props.identity 
+                    ?
+                    <Link to="/auth/sign-in" className="btn btn-primary mr-2">
+                        Sign-In
+                    </Link>
+                    
+                    :
+                    <div className="d-inline-block border border-primary block">
 
-                <div className="d-inline-block border border-primary block">
+                        <div className="d-inline-block mr-2">
+                            Logged as {props.identity.email}
+                        </div>
 
-                    <div className="d-inline-block mr-2">
-                        Logged as {props.identity.email}
-                    </div>
-
-                    <button type="submit" className="btn btn-primary" onClick={onSignOut}>
-                        Log out
+                        <button type="submit" className="btn btn-primary" onClick={onSignOut}>
+                            Log out
                     </button>
 
-                </div>
+                    </div>
             }
 
             <div className="p-3">

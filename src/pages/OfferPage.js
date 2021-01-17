@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { requestHandler } from '../common/utils';
 import axios from 'axios';
-import ImagePreview from '../common/ImagePreview';
+import ImagePreview from '../common/components/ImagePreview';
 
 const OfferPage = (props) => {
 

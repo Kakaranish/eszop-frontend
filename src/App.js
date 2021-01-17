@@ -4,11 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import MainPage from './pages/MainPage';
 import ErrorPage from './pages/ErrorPage';
-import OffersPage from './pages/OffersPage';
-import CreateOfferPage from './pages/CreateOfferPage';
-import SignInPage from './pages/SignInPage';
 import MainLayout from './skeleton/MainLayout';
-import OfferPage from './pages/OfferPage';
+import AuthRoutes from './routeAggregators/AuthRoutes';
+import OfferRoutes from './routeAggregators/OfferRotues';
 
 const App = () => <>
 
@@ -19,10 +17,8 @@ const App = () => <>
         <Switch>
           <Route exact path='/' component={MainPage} />
 
-          <Route exact path='/offers' component={OffersPage} />
-          <Route exact path='/offers/create' component={CreateOfferPage} />
-          <Route exact path='/offers/:id' component={OfferPage} />
-          <Route exact path='/auth/login' component={SignInPage} />
+          <Route path='/auth' component={AuthRoutes} />
+          <Route path='/offers' component={OfferRoutes} />F
 
           <Route path='/error/:code' component={ErrorPage} />
           <Redirect to='/error/404' />
