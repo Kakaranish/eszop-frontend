@@ -22,16 +22,10 @@ const CreateOfferForm = ({ offer, onSubmitCb = () => { }, children }) => <>
         </div>
 
         <div className="form-group">
-            <label>Quantity</label>
-            <input name="quantity" type="number" className="form-control"
-                min={1} step={1} placeholder="Quantity..."
+            <label>Total stock</label>
+            <input name="totalStock" type="number" className="form-control"
+                min={1} step={1} placeholder="Total stock..."
                 defaultValue={offer?.diameter} required />
-        </div>
-
-        <div className="form-group">
-            <label>CategoryId</label>
-            <input name="categoryId" type="text" className="form-control"
-                placeholder="Category Id..." defaultValue={offer?.categoryId} required />
         </div>
 
         {children}

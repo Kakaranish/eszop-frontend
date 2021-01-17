@@ -1,5 +1,5 @@
 import React from 'react';
-import ImagePreview from './ImagePreview';
+import EditableImagePreview from './EditableImagePreview';
 
 const ImagesPreviews = ({ images, setImages }) => {
 
@@ -14,7 +14,7 @@ const ImagesPreviews = ({ images, setImages }) => {
 				{
 					images.map((image, i) =>
 						<div className="col-6" key={`prev-${i}`}>
-							<ImagePreview images={images} image={image} setImages={setImages} />
+							<EditableImagePreview images={images} image={image} setImages={setImages} />
 						</div>
 					)
 				}

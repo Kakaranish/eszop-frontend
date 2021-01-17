@@ -18,7 +18,7 @@ const ImageUploader = ({ images, setImages }) => {
 
         const imageObj = {
             id: uuid(),
-            url: URL.createObjectURL(file),
+            uri: URL.createObjectURL(file),
             file: file
         };
 

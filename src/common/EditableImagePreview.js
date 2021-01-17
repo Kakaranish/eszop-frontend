@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 
-const ImagePreview = ({ image, images, setImages }) => {
+const EditableImagePreview = ({ image, images, setImages }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -15,6 +15,11 @@ const ImagePreview = ({ image, images, setImages }) => {
             <img src={image.uri} className="card-img-top thumb-img img-fluid"
                 style={{ cursor: 'pointer' }}
                 onClick={() => setIsOpen(true)} />
+            <div className="card-body">
+                <button className="btn btn-danger btn-block" onClick={onDelete}>
+                    Delete
+                </button>
+            </div>
         </div>
 
         {
@@ -27,4 +32,4 @@ const ImagePreview = ({ image, images, setImages }) => {
     </>
 };
 
-export default ImagePreview;
+export default EditableImagePreview;
