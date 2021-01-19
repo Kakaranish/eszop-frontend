@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './redux/store';
+import './style.css';
 
 const { store, persistor } = configureStore();
 

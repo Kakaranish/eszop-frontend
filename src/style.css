@@ -1,0 +1,18 @@
+.square {
+    width: 100%;
+    padding-bottom: 100%;
+    background-size: cover;
+}
+
+.main-img-indicator {
+    opacity: 0.8;
+    background-color: gray;
+}
+
+.main-img-indicator-text {
+    color: white;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

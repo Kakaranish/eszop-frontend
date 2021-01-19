@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ImageUploader from '../common/ImageUploader';
-import ImagesPreviews from '../common/ImagesPreviews';
-import CreateOfferForm from './CreateOfferForm';
-import { getFormDataJsonFromEvent, requestHandler } from '../common/utils';
+import ImageUploader from './components/ImageUploader';
+import EditableImagesPreviews from './components/EditableImagesPreviews';
+import CreateOfferForm from './components/CreateOfferForm';
+import { getFormDataJsonFromEvent, requestHandler } from '../../common/utils';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 
@@ -65,7 +65,7 @@ const CreateOfferPage = () => {
                 />
             </div>
 
-            <ImagesPreviews images={images} setImages={setImages} />
+            <EditableImagesPreviews images={images} setImages={setImages} />
 
             <ImageUploader images={images} setImages={setImages} />
 

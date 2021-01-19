@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import * as IdentityActions from '../reducers/identityReducer/actions';
+import * as IdentityActions from '../redux/reducers/identityReducer/actions';
 
 class AwareComponentBuilder {
     constructor() {

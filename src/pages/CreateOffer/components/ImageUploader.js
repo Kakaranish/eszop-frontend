@@ -19,7 +19,8 @@ const ImageUploader = ({ images, setImages }) => {
         const imageObj = {
             id: uuid(),
             uri: URL.createObjectURL(file),
-            file: file
+            file: file,
+            isMain: images?.length ? false : true
         };
 
         setImages([...images, imageObj]);

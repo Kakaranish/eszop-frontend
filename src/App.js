@@ -7,6 +7,7 @@ import ErrorPage from './pages/ErrorPage';
 import MainLayout from './skeleton/MainLayout';
 import AuthRoutes from './routeAggregators/AuthRoutes';
 import OfferRoutes from './routeAggregators/OfferRotues';
+import MyOffersPage from './pages/User/MyOffersPage';
 
 const App = () => <>
 
@@ -16,6 +17,8 @@ const App = () => <>
       <MainLayout>
         <Switch>
           <Route exact path='/' component={MainPage} />
+
+          <Route path='/user/offers' component={MyOffersPage} />
 
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />F
