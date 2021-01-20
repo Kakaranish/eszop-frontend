@@ -1,17 +1,20 @@
 import React from 'react'
 import { Switch, BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
 import MainPage from './pages/MainPage';
 import ErrorPage from './pages/ErrorPage';
 import MainLayout from './skeleton/MainLayout';
 import AuthRoutes from './routeAggregators/AuthRoutes';
 import OfferRoutes from './routeAggregators/OfferRotues';
 import MyOffersPage from './pages/User/MyOffersPage';
+import NotificationHandler from './skeleton/NotificationHandler';
 
 const App = () => <>
 
+  <NotificationHandler />
+  
   <div className="container py-3">
+
 
     <Router>
       <MainLayout>

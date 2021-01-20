@@ -40,7 +40,7 @@ const MainLayout = (props) => {
                     </Link>
                     
                     :
-                    <div className="d-inline-block border border-primary block">
+                    <div className="d-inline-block border border-primary block mr-2">
 
                         <div className="d-inline-block mr-2">
                             Logged as {props.identity.email}
@@ -48,9 +48,16 @@ const MainLayout = (props) => {
 
                         <button type="submit" className="btn btn-primary" onClick={onSignOut}>
                             Log out
-                    </button>
+                        </button>
 
                     </div>
+            }
+
+            {
+                props.identity &&
+                <Link to="/user/offers" className="btn btn-primary mr-2">
+                    My Offers
+                </Link>
             }
 
             <div className="p-3">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 
 const maxSizeInMB = 2;
@@ -8,11 +9,17 @@ const ImageUploader = ({ images, setImages }) => {
     const onChange = event => {
         const file = event.target.files[0];
         if (!file || !isFileImageType(file)) {
-            // toast.error(`Selected file is not image`);
+            toast.error(`Selected file is not image`);
             return;
         }
         if (!hasValidSize(file)) {
-            // toast.error(`Max image size is ${maxSizeInMB}MB`);
+            toast.error(`Max image size is ${maxSizeInMB}MB`);
+            return;
+        }
+        
+        if(images.some(x => x.file.name === file.name && x.file.size === file.size))
+        {
+            toast.error(`You cannot upload the same image twice`);
             return;
         }
 
