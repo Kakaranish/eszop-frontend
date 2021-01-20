@@ -29,6 +29,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "prestart": "rm ./node_modules/webpack-dev-server/ssl/server.pem && cp -f ./ssl/server.pem ./node_modules/webpack-dev-server/ssl",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
