@@ -3,17 +3,18 @@ import axios from 'axios';
 import ImageUploader from './components/ImageUploader';
 import EditableImagesPreviews from './components/EditableImagesPreviews';
 import CreateOfferForm from './components/CreateOfferForm';
-import { getFormDataJsonFromEvent, requestHandler } from '../../common/utils';
+import { requestHandler } from '../../common/utils';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
+import RequiredSelect from './components/RequiredSelect';
+import { toast } from 'react-toastify';
 
 const CreateOfferPage = () => {
 
     const history = useHistory();
 
     const [images, setImages] = useState([]);
-
-    const [selected, setSelected] = useState();
+    const [selectedCategory, setSelectedCategory] = useState();
     const [categoryOptions, setCategoryOptions] = useState([]);
 
     useEffect(() => {
@@ -32,24 +33,40 @@ const CreateOfferPage = () => {
     }, []);
 
     const categoryOptionOnChange = selectedOption => {
-        setSelected(selectedOption);
+        setSelectedCategory(selectedOption);
     };
 
     const createOfferCb = async event => {
         event.preventDefault();
 
-        let formData = new FormData(event.target);
-        images.forEach(image => formData.append("images", image.file));
+        let mainImg = images.find(x => x.isMain);
+        if (!mainImg) {
+            console.log("Something went wrong. No main image...");
+            return;
+        }
 
-        console.log(getFormDataJsonFromEvent(event));
+        let formData = new FormData(event.target);
+        formData.append("mainImage", mainImg.file);
+
+        let otherImgs = images.filter(x => !x.isMain);
+        otherImgs.forEach(img => formData.append("images", img.file));
 
         const action = async () => await axios.post("/offers-api/offers", formData);
-        await requestHandler(action, {
-            status: 200,
-            callback: async result => {
-                history.push(`/offers/${result.offerId}`);
+        await requestHandler(action,
+            {
+                status: 200,
+                callback: async result => {
+                    history.push(`/offers/${result.offerId}`);
+                }
+            },
+            {
+                status: 400,
+                callback: async result => {
+                    toast.error("Your creation request has been rejected");
+                    console.log(result);
+                }
             }
-        });
+        );
     };
 
     return <>
@@ -57,12 +74,18 @@ const CreateOfferPage = () => {
 
             <div className="form-group">
                 <label>Category</label>
-                <input name="categoryId" value={selected?.value ?? ""} readOnly hidden />
-                <Select options={categoryOptions}
+
+                <RequiredSelect
+                    SelectComponent={Select}
                     onChange={categoryOptionOnChange}
                     isClearable={true}
-                    styles={{ menu: provided => ({ ...provided, zIndex: 9999 }) }}
+                    required={true}
+                    styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc" }}
+                    options={categoryOptions}
                 />
+
+                <input id={"name"} name="categoryId" autoComplete={"off"} hidden
+                    value={selectedCategory?.value ?? ""} />
             </div>
 
             <EditableImagesPreviews images={images} setImages={setImages} />
