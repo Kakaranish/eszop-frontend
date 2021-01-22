@@ -83,9 +83,6 @@ const CreateOfferPage = () => {
                     styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc" }}
                     options={categoryOptions}
                 />
-
-                <input id={"name"} name="categoryId" autoComplete={"off"} hidden
-                    value={selectedCategory?.value ?? ""} />
             </div>
 
             <EditableImagesPreviews images={images} setImages={setImages} />

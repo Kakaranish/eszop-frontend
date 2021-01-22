@@ -1,3 +1,43 @@
+import axios from 'axios';
+import cookies from 'js-cookie';
+import moment from 'moment';
+
+export const isAccessTokenExpCookiePresent = () => {
+    return !!cookies.get('accessTokenExp');
+};
+
+export const isAccessTokenExpired = () => {
+    const tokenExpiresEpoch = cookies.get('accessTokenExp');
+
+    if (!tokenExpiresEpoch) return true;
+    return moment.utc().isAfter(moment.unix(tokenExpiresEpoch));
+};
+
+export const ensureAccessTokenIsValid = async () => {
+    const tokenExpiresEpoch = cookies.get('accessTokenExp');
+    if (tokenExpiresEpoch && moment.utc().isBefore(moment.unix(tokenExpiresEpoch))) {
+        return true;
+    }
+
+    const uri = `/identity-api/token/refresh/access-token`;
+    const action = async () => await axios.post(uri, {})
+
+    return await requestHandler(action,
+        {
+            status: -1,
+            callback: () => false
+        },
+        {
+            status: 200,
+            callback: () => {
+                console.log("Refreshed access token");
+                return true;
+            }
+        }
+    );
+}
+
+
 export const getFormDataJsonFromEvent = event => {
     const formData = new FormData(event.target);
 
@@ -40,4 +80,22 @@ export const requestHandler = async (action, ...handlers) => {
     if (callback) return await callback(result.data);
 
     document.location = `/error/${result.status}`;
+};
+
+/**
+ * @async
+ * @param {function: any} action 
+ * @param  {Array.<{status: string, function: void}>} handlers 
+ * @returns {Promise.<any>} result
+ * @example 
+ * await authorizedRequestHandler(
+ *  async () => axios.post('/some/uri'/),
+ *  {status: 404, callback: async () => console.log('custom 404 error handling')},
+ *  {status: 500, callback: async () => {window.location = '/error/500'}},
+ * );
+ */
+export const authorizedRequestHandler = async (action, ...handlers) => {
+    ensureAccessTokenIsValid(); // TODO: Add action when not valid
+
+    return await requestHandler(action, handlers);
 };

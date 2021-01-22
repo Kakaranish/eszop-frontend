@@ -20,7 +20,7 @@ const OffersPage = () => {
     }, []);
 
     if (state.loading) return <h3>Loading...</h3>
-    else if(state.offers.length == 0) return <h3>No offers found</h3>
+    else if(state.offers.length === 0) return <h3>No offers found</h3>
     else return <>
         <div className="container">
             <h3>Offers</h3>

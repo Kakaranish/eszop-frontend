@@ -1,22 +1,11 @@
 import React from 'react';
 import Navbar from './Navbar';
-import axios from 'axios';
-import { requestHandler } from '../common/utils';
 import AwareComponentBuilder from '../common/AwareComponentBuilder';
 import { Link } from 'react-router-dom';
+import SignOutButton from './SignOutButton';
 
 const MainLayout = (props) => {
 
-    const onSignOut = async () => {
-        const uri = '/identity-api/auth/sign-out';
-        const action = async () => await axios.post(uri, {});
-        await requestHandler(action, {
-            status: 200,
-            callback: () => {
-                props.unsetIdentity();
-            }
-        });
-    };
 
     return <>
 
@@ -46,9 +35,7 @@ const MainLayout = (props) => {
                             Logged as {props.identity.email}
                         </div>
 
-                        <button type="submit" className="btn btn-primary" onClick={onSignOut}>
-                            Log out
-                        </button>
+                        <SignOutButton />
 
                     </div>
             }

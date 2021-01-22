@@ -4,7 +4,7 @@ import 'react-image-lightbox/style.css';
 
 const EditableImagePreview = ({ imageId, images, setImages }) => {
 
-    const image = images.find(x => x.id == imageId);
+    const image = images.find(x => x.id === imageId);
     const isMain = image.isMain;
 
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ const EditableImagePreview = ({ imageId, images, setImages }) => {
 
         let imagesCopy = [...images];
         imagesCopy.forEach(x => x.isMain = false);
-        imagesCopy.find(x => x.id == imageId).isMain = true;
+        imagesCopy.find(x => x.id === imageId).isMain = true;
         
         setImages(imagesCopy);
     }

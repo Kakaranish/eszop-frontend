@@ -5,12 +5,11 @@ import ImagePreview from '../common/components/ImagePreview';
 
 const OfferPage = (props) => {
 
-    const offerId = props.match.params.id;
-
     const [state, setState] = useState({ loading: true, offer: null });
 
     useEffect(() => {
         const fetch = async () => {
+            const offerId = props.match.params.id;
             const uri = `/offers-api/offers/${offerId}`;
             const action = async () => axios.get(uri);
             const offer = await requestHandler(action);
@@ -26,7 +25,7 @@ const OfferPage = (props) => {
     return <>
         <p>{state.offer.name}</p>
         {
-            state.offer.images.length == 0
+            state.offer.images.length === 0
                 ? <></>
                 : state.offer.images.map((img, i) =>
                     <div className="col-6" key={`prev-${i}`}>

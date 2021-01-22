@@ -8,20 +8,19 @@ import AuthRoutes from './routeAggregators/AuthRoutes';
 import OfferRoutes from './routeAggregators/OfferRotues';
 import MyOffersPage from './pages/User/MyOffersPage';
 import NotificationHandler from './skeleton/NotificationHandler';
+import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
 
 const App = () => <>
 
   <NotificationHandler />
-  
+
   <div className="container py-3">
-
-
     <Router>
       <MainLayout>
         <Switch>
           <Route exact path='/' component={MainPage} />
 
-          <Route path='/user/offers' component={MyOffersPage} />
+          <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
 
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />F
