@@ -4,6 +4,7 @@ import Select from "react-select";
 const RequiredSelect = (props) => {
 
     const { name, isClearable, styles, options, initValue = {} } = props;
+    
     const [selectedValue, setSelectedValue] = useState(initValue);
     const selectRef = useRef(null);
 

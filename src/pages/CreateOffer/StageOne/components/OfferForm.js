@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CreateOfferForm = ({ offer, onSubmitCb = () => { }, children }) => <>
+const OfferForm = ({ offer, onSubmitCb = () => { }, children }) => <>
     <form onSubmit={onSubmitCb}>
         <div className="form-group">
             <label>Name</label>
@@ -25,13 +25,12 @@ const CreateOfferForm = ({ offer, onSubmitCb = () => { }, children }) => <>
             <label>Total stock</label>
             <input name="totalStock" type="number" className="form-control"
                 min={1} step={1} placeholder="Total stock..."
-                defaultValue={offer?.diameter} required />
+                defaultValue={offer?.totalStock} required />
         </div>
 
         {children}
 
     </form>
-
 </>;
 
-export default CreateOfferForm;
+export default OfferForm;

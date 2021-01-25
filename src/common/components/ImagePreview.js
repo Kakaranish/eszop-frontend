@@ -8,9 +8,10 @@ const ImagePreview = ({ uri }) => {
 
     return <>
         <div className="card mb-2">
-            <img src={uri} className="card-img-top thumb-img img-fluid"
-                style={{ cursor: 'pointer' }}
-                onClick={() => setIsOpen(true)} />
+            <div className="square cursor-pointer"
+                style={{ cursor: 'pointer' }, { backgroundImage: `url(${uri})` }}
+                onClick={() => setIsOpen(true)}>
+            </div>
         </div>
 
         {
