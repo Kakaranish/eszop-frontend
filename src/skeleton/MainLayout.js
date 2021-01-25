@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
-import AwareComponentBuilder from '../common/AwareComponentBuilder';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { Link } from 'react-router-dom';
 import SignOutButton from './SignOutButton';
 

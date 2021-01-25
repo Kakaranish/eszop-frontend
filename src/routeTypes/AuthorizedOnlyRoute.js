@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AwareComponentBuilder from '../common/AwareComponentBuilder';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { useHistory, Route } from 'react-router-dom';
-import { ensureAccessTokenIsValid, isAccessTokenExpCookiePresent } from '../common/utils';
+import { ensureAccessTokenIsValid, isAccessTokenExpCookiePresent } from 'common/utils';
 
 const AuthorizedOnlyRoute = ({ component: Component, ...rest }) => {
 

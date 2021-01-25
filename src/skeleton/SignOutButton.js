@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import AwareComponentBuilder from '../common/AwareComponentBuilder';
-import { requestHandler } from '../common/utils';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import { requestHandler } from 'common/utils';
 
 const SignOutButton = (props) => {
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import SignInPage from '../pages/SignInPage';
-import NotAuthorizedRouteOnly from '../routeTypes/NotAuthorizedRouteOnly';
+import { Switch } from 'react-router-dom';
+import SignInPage from 'pages/SignInPage';
+import NotAuthorizedRouteOnly from 'routeTypes/NotAuthorizedRouteOnly';
 
 const AuthRoutes = () => <>
     <Switch>

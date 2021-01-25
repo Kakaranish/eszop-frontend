@@ -23,7 +23,7 @@ const App = () => <>
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
 
           <Route path='/auth' component={AuthRoutes} />
-          <Route path='/offers' component={OfferRoutes} />F
+          <Route path='/offers' component={OfferRoutes} />
 
           <Route path='/error/:code' component={ErrorPage} />
           <Redirect to='/error/404' />

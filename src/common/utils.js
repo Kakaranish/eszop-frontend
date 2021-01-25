@@ -24,19 +24,18 @@ export const ensureAccessTokenIsValid = async () => {
 
     return await requestHandler(action,
         {
-            status: -1,
-            callback: () => false
-        },
-        {
             status: 200,
             callback: () => {
                 console.log("Refreshed access token");
                 return true;
             }
+        },
+        {
+            status: -1,
+            callback: () => false
         }
     );
 }
-
 
 export const getFormDataJsonFromEvent = event => {
     const formData = new FormData(event.target);
@@ -65,7 +64,7 @@ export const requestHandler = async (action, ...handlers) => {
     handlers = handlers ?? [];
     let handlersDict = Object.assign({}, ...handlers.map
         (h => ({ [h.status]: h.callback })));
-
+    
     const result = await action();
     if (result.status === 200) {
         if (handlersDict[200]) return await handlersDict[200](result.data);
@@ -96,6 +95,5 @@ export const requestHandler = async (action, ...handlers) => {
  */
 export const authorizedRequestHandler = async (action, ...handlers) => {
     ensureAccessTokenIsValid(); // TODO: Add action when not valid
-
-    return await requestHandler(action, handlers);
+    return await requestHandler(action, ...handlers);
 };

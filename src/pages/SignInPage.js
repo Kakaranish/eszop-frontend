@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { getFormDataJsonFromEvent, requestHandler } from '../common/utils';
-import AwareComponentBuilder from '../common/AwareComponentBuilder';
+import { getFormDataJsonFromEvent, requestHandler } from 'common/utils';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
 const SignInPage = (props) => {
 
