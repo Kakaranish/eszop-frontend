@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { requestHandler } from "../common/utils";
+import { requestHandler } from "common/utils";
 import { Link } from "react-router-dom";
 
 const OffersPage = () => {
@@ -13,7 +13,7 @@ const OffersPage = () => {
             const action = async () => await axios.get(uri);
 
             const offers = await requestHandler(action);
-            setState({ loading: false, offers: offers });
+            setState({ loading: false, offers: offers.items });
         }
 
         fetch();

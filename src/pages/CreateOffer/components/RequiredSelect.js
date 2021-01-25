@@ -1,48 +1,40 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import Select from "react-select";
 
-class RequiredSelect extends React.Component {
-    state = { value: this.props.value || "" };
+const RequiredSelect = (props) => {
 
-    selectRef = null;
-    setSelectRef = ref => {
-        this.selectRef = ref;
-    };
+    const { name, isClearable, styles, options, initValue = {} } = props;
+    const [selectedValue, setSelectedValue] = useState(initValue);
+    const selectRef = useRef(null);
 
-    onChange = (value, actionMeta) => {
-        this.props.onChange(value, actionMeta);
-        this.setState({ value });
-    };
+    const onChange = newValue => setSelectedValue(newValue);
 
-    getValue = () => {
-        if (!this.props.value) return this.props.value;
-        return this.state.value || "";
-    };
+    return <div>
+        <Select
+            ref={selectRef}
+            styles={styles}
+            value={selectedValue}
+            isClearable={isClearable}
+            options={options}
+            onChange={onChange} />
 
-    render() {
-        const { SelectComponent, required, ...props } = this.props;
-
-        return (
-            <div>
-                <SelectComponent {...props} ref={this.setSelectRef} onChange={this.onChange} />
-
-                <input
-                    tabIndex={-1}
-                    autoComplete="off"
-                    style={{
-                        opacity: 0,
-                        width: "100%",
-                        height: 0,
-                        position: "absolute",
-                        borderColor: "#ccc asbolute"
-                    }}
-                    value={this.getValue()}
-                    onChange={() => { }}
-                    onFocus={() => this.selectRef.focus()}
-                    required={required}
-                />
-            </div>
-        );
-    }
-}
+        <input
+            name={name}
+            tabIndex={-1}
+            autoComplete="off"
+            style={{
+                opacity: 0,
+                width: "100%",
+                height: 0,
+                position: "absolute",
+                borderColor: "#ccc asbolute"
+            }}
+            value={selectedValue?.value ?? ""}
+            onChange={onChange}
+            onFocus={() => selectRef.focus()}
+            required={true}
+        />
+    </div>
+};
 
 export default RequiredSelect;
