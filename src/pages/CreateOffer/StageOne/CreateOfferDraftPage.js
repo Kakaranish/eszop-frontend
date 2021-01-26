@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import RequiredSelect from './components/RequiredSelect';
 import { toast } from 'react-toastify';
 import OfferForm from './components/OfferForm';
+import KeyValueTable from './components/KeyValueTable/KeyValueTable';
 
 const CreateOfferDraftPage = () => {
 
@@ -94,6 +95,11 @@ const CreateOfferDraftPage = () => {
                 images={images}
                 setImages={setImages}
             />
+
+            <div className="my-4">
+                <h3>Additional Information</h3>
+                <KeyValueTable />
+            </div>
 
             <button type="submit" className="btn btn-success btn-block mt-5">
                 Go to next step

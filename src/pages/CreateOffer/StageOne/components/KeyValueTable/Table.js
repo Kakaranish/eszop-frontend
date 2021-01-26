@@ -36,7 +36,7 @@ function Table({ columns, data, updateMyData, setData }) {
     return (
         <>
             <DndProvider backend={HTML5Backend}>
-                <table {...getTableProps()} style={{ border: '0px' }}>
+                <table {...getTableProps()} style={{ border: '0px' }} className="table table-hover">
                     <thead>
                         {
                             headerGroups.map(headerGroup => (
@@ -45,11 +45,11 @@ function Table({ columns, data, updateMyData, setData }) {
                                     {
                                         headerGroup.headers.map((column, columnIndex) => {
                                             if (columnIndex == headerGroup.headers.length - 1) {
-                                                return <th {...column.getHeaderProps()} style={{ borderRight: '0px' }}>
+                                                return <th {...column.getHeaderProps()} style={{ borderRight: '0px', borderTop: '0px' }}>
                                                     {column.render('Header')}
                                                 </th>
                                             }
-                                            return <th {...column.getHeaderProps()} style={{}}>
+                                            return <th {...column.getHeaderProps()} style={{borderTop: '0px'}}>
                                                 {column.render('Header')}
                                             </th>
                                         })

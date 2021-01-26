@@ -45,12 +45,12 @@ const Row = ({ row, index, moveRow, setData }) => {
     const removeOnClick = row => setData(prevData =>
         prevData.slice(0, row.index).concat(prevData.slice(row.index + 1)));
 
-    const [deleteBtnStyle, setDeleteBtnStyle] = useState({ width: '20px', display: 'block' });
+    const [deleteBtnStyle, setDeleteBtnStyle] = useState({ width: '20px', opacity: 0 });
 
     return (
         <tr ref={dropRef} style={{ opacity }}
-            onMouseEnter={() => setDeleteBtnStyle(prev => ({ ...prev, display: 'block' }))}
-            onMouseLeave={() => setDeleteBtnStyle(prev => ({ ...prev, display: 'none' }))}
+            onMouseEnter={() => setDeleteBtnStyle(prev => ({ ...prev, opacity: 1 }))}
+            onMouseLeave={() => setDeleteBtnStyle(prev => ({ ...prev, opacity: 0 }))}
         >
             <td style={{ border: "1px" }} ref={dragRef}>
                 <img src={dragIcon} />

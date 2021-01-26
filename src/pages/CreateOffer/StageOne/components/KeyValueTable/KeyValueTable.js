@@ -3,45 +3,15 @@ import styled from 'styled-components';
 import Table from './Table';
 
 const Styles = styled.div`
-  padding: 1rem;
-
   table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-
       input {
         font-size: 1rem;
         padding: 0;
         margin: 0;
         border: 0;
       }
-    }
-  }
+  }`
 
-  .pagination {
-    padding: 0.5rem;
-  }
-
-  `
 const KeyValueTable = () => {
     const columns = React.useMemo(() => [
         {
@@ -79,13 +49,16 @@ const KeyValueTable = () => {
         )
     }
 
-    const addNewCb = () => setData(prevData => [...prevData, { key: '', value: '' }]);
+    const addNewCb = event => {
+        event.preventDefault();
+
+        let lastItem = data.slice(-1)[0];
+        if(!lastItem.key || !lastItem.value) return;
+        
+        setData(prevData => [...prevData, { key: '', value: '' }]);
+    };
 
     return <>
-        <button onClick={addNewCb}>
-            Add new
-        </button>
-
         <Styles>
             <Table
                 columns={columns}
@@ -94,6 +67,10 @@ const KeyValueTable = () => {
                 updateMyData={updateMyData}
             />
         </Styles>
+
+        <button onClick={addNewCb} className="btn btn-block btn-outline-success">
+            Add new
+        </button>
     </>
 };
 
