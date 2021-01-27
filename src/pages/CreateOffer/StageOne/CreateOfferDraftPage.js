@@ -90,7 +90,7 @@ const CreateOfferDraftPage = () => {
     };
 
     return <>
-        <h2 className="mt-2 mb-3">Create Offer</h2>
+        <h2 className="mt-2 mb-3">Create Offer - Stage 1</h2>
 
         <OfferForm onSubmitCb={createOfferCb} offer={offerDefaultValues}>
 

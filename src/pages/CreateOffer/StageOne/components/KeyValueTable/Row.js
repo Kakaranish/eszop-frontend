@@ -4,8 +4,10 @@ import dragIcon from 'assets/img/drag-indicator.svg';
 import xSymbol from 'assets/img/close.svg';
 import { toast } from 'react-toastify';
 
-const Row = ({ row, index, moveRow, setData, rows }) => {
+const Row = (props) => {
 
+    const { row, index, moveRow, setData, rows } = props;
+    
     const DND_ITEM_TYPE = 'row'
 
     const dropRef = useRef(null)

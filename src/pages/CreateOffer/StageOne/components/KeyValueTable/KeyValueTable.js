@@ -16,19 +16,33 @@ const Styles = styled.div`
 
 const KeyValueTable = (props) => {
 
-    const {data, setData} = props;
+    const defaultColumnSettings = {
+        key: {
+            name: "Key",
+            inputSettings: {
+                type: "text"
+            }
+        },
+        value: {
+            name: "Value",
+            inputSettings: {
+                type: "text"
+            }
+        }
+    };
+
+    const { data, setData, columnSettings = defaultColumnSettings } = props;
 
     const columns = useMemo(() => [
         {
-            Header: 'Key',
+            Header: columnSettings.key.name,
             accessor: 'key',
         },
         {
-            Header: 'Value',
+            Header: columnSettings.value.name,
             accessor: 'value',
         },
     ], []);
-
 
     const updateMyData = (rowIndex, columnId, value) => {
         setData(old =>
@@ -51,6 +65,7 @@ const KeyValueTable = (props) => {
                 data={data}
                 setData={setData}
                 updateMyData={updateMyData}
+                columnSettings={columnSettings}
             />
         </Styles>
     </>

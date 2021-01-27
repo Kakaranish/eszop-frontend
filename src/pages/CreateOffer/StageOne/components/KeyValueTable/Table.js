@@ -1,12 +1,10 @@
 import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useTable } from 'react-table';
 import EditableCell from './EditableCell';
 import update from 'immutability-helper'
 import Row from './Row';
 
-function Table({ columns, data, updateMyData, setData }) {
+function Table({ columns, data, updateMyData, setData, columnSettings }) {
     const {
         getTableProps,
         getTableBodyProps,
@@ -18,6 +16,7 @@ function Table({ columns, data, updateMyData, setData }) {
         columns,
         defaultColumn: { Cell: EditableCell },
         updateMyData,
+        columnSettings
     });
 
     const moveRow = (dragIndex, hoverIndex) => {
@@ -35,49 +34,47 @@ function Table({ columns, data, updateMyData, setData }) {
 
     return (
         <>
-            <DndProvider backend={HTML5Backend}>
-                <table {...getTableProps()} style={{ border: '0px' }} className="table table-hover">
-                    <thead>
-                        {
-                            headerGroups.map(headerGroup => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
-                                    <th style={{ border: "0px" }}></th>
-                                    {
-                                        headerGroup.headers.map((column, columnIndex) => {
-                                            if (columnIndex == headerGroup.headers.length - 1) {
-                                                return <th {...column.getHeaderProps()} style={{ borderRight: '0px', borderTop: '0px' }}>
-                                                    {column.render('Header')}
-                                                </th>
-                                            }
-                                            return <th {...column.getHeaderProps()} style={{ borderTop: '0px' }}>
+            <table {...getTableProps()} style={{ border: '0px' }} className="table table-hover">
+                <thead>
+                    {
+                        headerGroups.map(headerGroup => (
+                            <tr {...headerGroup.getHeaderGroupProps()}>
+                                <th style={{ border: "0px" }}></th>
+                                {
+                                    headerGroup.headers.map((column, columnIndex) => {
+                                        if (columnIndex == headerGroup.headers.length - 1) {
+                                            return <th {...column.getHeaderProps()} style={{ borderRight: '0px', borderTop: '0px' }}>
                                                 {column.render('Header')}
                                             </th>
-                                        })
-                                    }
-                                    <th style={{ border: "0px" }}></th>
-                                </tr>
-                            ))
-                        }
-                    </thead>
+                                        }
+                                        return <th {...column.getHeaderProps()} style={{ borderTop: '0px' }}>
+                                            {column.render('Header')}
+                                        </th>
+                                    })
+                                }
+                                <th style={{ border: "0px" }}></th>
+                            </tr>
+                        ))
+                    }
+                </thead>
 
-                    <tbody {...getTableBodyProps()}>
-                        {
-                            rows.map((row, index) =>
-                                prepareRow(row) ||
-                                (
-                                    <Row index={index}
-                                        row={row}
-                                        rows={rows}
-                                        moveRow={moveRow}
-                                        setData={setData}
-                                        {...row.getRowProps()}
-                                    />
-                                )
+                <tbody {...getTableBodyProps()}>
+                    {
+                        rows.map((row, index) =>
+                            prepareRow(row) ||
+                            (
+                                <Row index={index}
+                                    row={row}
+                                    rows={rows}
+                                    moveRow={moveRow}
+                                    setData={setData}
+                                    {...row.getRowProps()}
+                                />
                             )
-                        }
-                    </tbody>
-                </table>
-            </DndProvider>
+                        )
+                    }
+                </tbody>
+            </table>
         </>
     )
 }

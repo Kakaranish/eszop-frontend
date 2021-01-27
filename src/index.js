@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './redux/store';
 import './style.css';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 const { store, persistor } = configureStore();
 
@@ -16,7 +18,9 @@ axios.defaults.validateStatus = false;
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <DndProvider backend={HTML5Backend}>
+        <App />
+      </DndProvider>
     </PersistGate>
   </Provider>,
   document.getElementById('root')

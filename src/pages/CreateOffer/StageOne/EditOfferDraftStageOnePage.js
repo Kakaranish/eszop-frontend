@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
 import KeyValueTable from './components/KeyValueTable/KeyValueTable';
+import ReactTooltip from 'react-tooltip';
 
 const EditOfferDraftStageOnePage = (props) => {
 
@@ -164,6 +165,8 @@ const EditOfferDraftStageOnePage = (props) => {
             <button type="submit" className="btn btn-success btn-block mt-5">
                 Go to next step
             </button>
+
+            <ReactTooltip />
         </OfferForm>
     </>
 }

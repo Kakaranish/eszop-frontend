@@ -7,7 +7,8 @@ const EditableCell = (props) => {
         row,
         column,
         updateMyData,
-        cell
+        cell,
+        columnSettings
     } = props;
 
     const [value, setValue] = useState(cell.value);
@@ -24,7 +25,9 @@ const EditableCell = (props) => {
     }, [initialValue]);
 
     return <>
-        <input value={value} onChange={onChange} />
+        <input value={value}
+            onChange={onChange}
+            {...columnSettings[column.id].inputSettings} />
     </>
 }
 
