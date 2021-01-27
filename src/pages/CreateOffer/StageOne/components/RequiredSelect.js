@@ -1,18 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 
 const RequiredSelect = (props) => {
 
     const { name, isClearable, styles, options, initValue = {} } = props;
-    
-    const [selectedValue, setSelectedValue] = useState(initValue);
-    const selectRef = useRef(null);
 
+    const [selectedValue, setSelectedValue] = useState(initValue);
     const onChange = newValue => setSelectedValue(newValue);
+
+    let selectRef = null;
+    const setSelectRef = ref => selectRef = ref;
 
     return <div>
         <Select
-            ref={selectRef}
+            ref={setSelectRef}
             styles={styles}
             value={selectedValue}
             isClearable={isClearable}

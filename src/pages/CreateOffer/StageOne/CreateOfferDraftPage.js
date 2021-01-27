@@ -6,14 +6,23 @@ import EditableImagesPreviews from './components/EditableImagesPreviews';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import { useHistory } from 'react-router-dom';
 import RequiredSelect from './components/RequiredSelect';
-import { toast } from 'react-toastify';
 import OfferForm from './components/OfferForm';
 import KeyValueTable from './components/KeyValueTable/KeyValueTable';
+import ReactTooltip from 'react-tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify';
 
 const CreateOfferDraftPage = () => {
 
     const history = useHistory();
 
+    const [keyValueData, setKeyValueData] = useState([
+        {
+            key: '',
+            value: ''
+        }
+    ]);
     const [images, setImages] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
 
@@ -43,7 +52,18 @@ const CreateOfferDraftPage = () => {
             isMain: img.isMain,
             sortId: index
         }));
+
+        if(imagesMetadata.length === 0) {
+            toast.warn("Your offer must have at least 1 image");
+            return;
+        }
+
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
+
+        let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
+        formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
+
+        console.log(preparedKeyValueData);
 
         images.forEach(img => formData.append("images", img.file));
 
@@ -96,15 +116,28 @@ const CreateOfferDraftPage = () => {
                 setImages={setImages}
             />
 
-            <div className="my-4">
-                <h3>Additional Information</h3>
-                <KeyValueTable />
+            <div className="mt-5">
+                <div>
+                    <h4 style={{ display: 'inline' }}>
+                        Additional Information
+                    </h4>
+
+                    <FontAwesomeIcon icon={faQuestionCircle}
+                        className="ml-2 align-baseline"
+                        style={{ color: 'lightgray', marginLeft: '2px' }}
+                        size={'1x'}
+                        data-tip="Click enter in last row to add new" />
+
+                    <KeyValueTable data={keyValueData} setData={setKeyValueData} />
+                </div>
             </div>
 
             <button type="submit" className="btn btn-success btn-block mt-5">
                 Go to next step
             </button>
         </OfferForm>
+
+        <ReactTooltip />
     </>
 }
 

@@ -49,7 +49,7 @@ function Table({ columns, data, updateMyData, setData }) {
                                                     {column.render('Header')}
                                                 </th>
                                             }
-                                            return <th {...column.getHeaderProps()} style={{borderTop: '0px'}}>
+                                            return <th {...column.getHeaderProps()} style={{ borderTop: '0px' }}>
                                                 {column.render('Header')}
                                             </th>
                                         })
@@ -67,6 +67,7 @@ function Table({ columns, data, updateMyData, setData }) {
                                 (
                                     <Row index={index}
                                         row={row}
+                                        rows={rows}
                                         moveRow={moveRow}
                                         setData={setData}
                                         {...row.getRowProps()}
