@@ -63,8 +63,6 @@ const CreateOfferDraftPage = () => {
         let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
         formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
 
-        console.log(preparedKeyValueData);
-
         images.forEach(img => formData.append("images", img.file));
 
         const action = async () => await axios.post("/offers-api/offers", formData);

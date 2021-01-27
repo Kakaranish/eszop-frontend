@@ -38,7 +38,7 @@ const ImageUploader = ({ images, setImages }) => {
             id: id,
             uri: URL.createObjectURL(renamedFile),
             file: renamedFile,
-            isMain: !!images?.length,
+            isMain: !images?.length,
             baseFilename: file.name
         };
 

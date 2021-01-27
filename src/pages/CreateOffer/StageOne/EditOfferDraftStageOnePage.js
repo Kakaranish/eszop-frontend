@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { authorizedRequestHandler } from 'common/utils';
+import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import { useHistory } from 'react-router-dom';
 import RequiredSelect from './components/RequiredSelect';
-import { toast } from 'react-toastify';
 import OfferForm from './components/OfferForm';
 import ImageUploader from './components/ImageUploader';
 import EditableImagesPreviews from './components/EditableImagesPreviews';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify';
+import KeyValueTable from './components/KeyValueTable/KeyValueTable';
 
 const EditOfferDraftStageOnePage = (props) => {
 
@@ -14,6 +17,7 @@ const EditOfferDraftStageOnePage = (props) => {
     const history = useHistory();
 
     const [images, setImages] = useState([]);
+    const [keyValueData, setKeyValueData] = useState();
 
     const [loadState, setLoadState] = useState({
         loadingOffers: true,
@@ -25,7 +29,7 @@ const EditOfferDraftStageOnePage = (props) => {
     useEffect(() => {
         const fetchCategories = async () => {
             const action = async () => await axios.get("/offers-api/categories");
-            const result = await authorizedRequestHandler(action);
+            const result = await requestHandler(action);
 
             const categoryOptions = result.map(x => ({
                 value: x.id,
@@ -44,8 +48,15 @@ const EditOfferDraftStageOnePage = (props) => {
                     status: 200,
                     callback: result => {
                         setOffer(result);
-                        setLoadState(prevState => ({ ...prevState, loadingOffers: false }));
                         setImages(result.images.map(x => ({ ...x, isRemote: true })));
+                        setKeyValueData([...result.keyValueInfos.map(kvp => ({
+                            key: kvp.key,
+                            value: kvp.value
+                        })), {
+                            key: "",
+                            value: ""
+                        }]);
+                        setLoadState(prevState => ({ ...prevState, loadingOffers: false }));
                     }
                 },
                 {
@@ -70,7 +81,7 @@ const EditOfferDraftStageOnePage = (props) => {
 
         let formData = new FormData(event.target);
         formData.append("offerId", offerId);
-        
+
         images.forEach(img => formData.append("images", img.file));
 
         const imagesMetadata = images.map((img, index) => ({
@@ -79,8 +90,11 @@ const EditOfferDraftStageOnePage = (props) => {
             isMain: img.isMain,
             sortId: index
         }));
-        
+
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
+
+        let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
+        formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
 
         const action = async () => await axios.put("/offers-api/offers", formData);
         await authorizedRequestHandler(action,
@@ -130,6 +144,22 @@ const EditOfferDraftStageOnePage = (props) => {
                 images={images}
                 setImages={setImages}
             />
+
+            <div className="mt-5">
+                <div>
+                    <h4 style={{ display: 'inline' }}>
+                        Additional Information
+                    </h4>
+
+                    <FontAwesomeIcon icon={faQuestionCircle}
+                        className="ml-2 align-baseline"
+                        style={{ color: 'lightgray', marginLeft: '2px' }}
+                        size={'1x'}
+                        data-tip="Click enter in last row to add new" />
+
+                    <KeyValueTable data={keyValueData} setData={setKeyValueData} />
+                </div>
+            </div>
 
             <button type="submit" className="btn btn-success btn-block mt-5">
                 Go to next step
