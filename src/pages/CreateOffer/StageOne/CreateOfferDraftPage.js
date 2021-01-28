@@ -13,6 +13,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
 
+
+const columnSettings = {
+    key: {
+        name: "Key",
+        inputSettings: {
+            type: "text",
+            placeholder: "Key..."
+        }
+    },
+    value: {
+        name: "Value",
+        inputSettings: {
+            type: "text",
+            placeholder: "Value..."
+        }
+    }
+};
+
 const CreateOfferDraftPage = () => {
 
     const history = useHistory();
@@ -53,7 +71,7 @@ const CreateOfferDraftPage = () => {
             sortId: index
         }));
 
-        if(imagesMetadata.length === 0) {
+        if (imagesMetadata.length === 0) {
             toast.warn("Your offer must have at least 1 image");
             return;
         }
@@ -90,7 +108,14 @@ const CreateOfferDraftPage = () => {
     };
 
     return <>
-        <h2 className="mt-2 mb-3">Create Offer - Stage 1</h2>
+        <div className="mt-2 mb-3 row">
+            <h2 style={{ display: 'inline' }}>
+                Create Offer
+            </h2>
+            <span className="ml-2 align-self-center text-secondary">
+                (Stage 1 of 2)
+            </span>
+        </div>
 
         <OfferForm onSubmitCb={createOfferCb} offer={offerDefaultValues}>
 
@@ -116,17 +141,28 @@ const CreateOfferDraftPage = () => {
 
             <div className="mt-5">
                 <div>
-                    <h4 style={{ display: 'inline' }}>
-                        Additional Information
-                    </h4>
+                    <div className="mb-3">
+                        <h4 className="d-inline">
+                            Additional Information
+                        </h4>
 
-                    <FontAwesomeIcon icon={faQuestionCircle}
-                        className="ml-2 align-baseline"
-                        style={{ color: 'lightgray', marginLeft: '2px' }}
-                        size={'1x'}
-                        data-tip="Click enter in last row to add new" />
+                        <FontAwesomeIcon icon={faQuestionCircle}
+                            className="ml-2 align-baseline"
+                            style={{ color: 'lightgray', marginLeft: '2px' }}
+                            size={'1x'}
+                            data-tip="Click enter in last row to add new"
+                        />
+                    </div>
 
-                    <KeyValueTable data={keyValueData} setData={setKeyValueData} />
+                    <KeyValueTable
+                        data={keyValueData}
+                        setData={setKeyValueData}
+                        columnSettings={columnSettings}
+                    />
+
+                    <div className="col-12 text-secondary">
+                        Entries with at least 1 empty value are ignored
+                    </div>
                 </div>
             </div>
 

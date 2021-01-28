@@ -12,6 +12,24 @@ import { toast } from 'react-toastify';
 import KeyValueTable from './components/KeyValueTable/KeyValueTable';
 import ReactTooltip from 'react-tooltip';
 
+
+const columnSettings = {
+    key: {
+        name: "Key",
+        inputSettings: {
+            type: "text",
+            placeholder: "Key..."
+        }
+    },
+    value: {
+        name: "Value",
+        inputSettings: {
+            type: "text",
+            placeholder: "Value..."
+        }
+    }
+};
+
 const EditOfferDraftStageOnePage = (props) => {
 
     const offerId = props.match.params.id;
@@ -121,7 +139,14 @@ const EditOfferDraftStageOnePage = (props) => {
     const initSelectedCategory = categoryOptions.find(x => x.value === offer.category.id);
 
     return <>
-        <h2 className="mt-2 mb-3">Create Offer</h2>
+        <div className="mt-2 mb-3 row">
+            <h2 style={{ display: 'inline' }}>
+                Create Offer
+            </h2>
+            <span className="ml-2 align-self-center text-secondary">
+                (Stage 1 of 2)
+            </span>
+        </div>
 
         <OfferForm onSubmitCb={updateCb} offer={offer}>
 
@@ -148,26 +173,37 @@ const EditOfferDraftStageOnePage = (props) => {
 
             <div className="mt-5">
                 <div>
-                    <h4 style={{ display: 'inline' }}>
-                        Additional Information
-                    </h4>
+                    <div className="mb-3">
+                        <h4 className="d-inline">
+                            Additional Information
+                        </h4>
 
-                    <FontAwesomeIcon icon={faQuestionCircle}
-                        className="ml-2 align-baseline"
-                        style={{ color: 'lightgray', marginLeft: '2px' }}
-                        size={'1x'}
-                        data-tip="Click enter in last row to add new" />
+                        <FontAwesomeIcon icon={faQuestionCircle}
+                            className="ml-2 align-baseline"
+                            style={{ color: 'lightgray', marginLeft: '2px' }}
+                            size={'1x'}
+                            data-tip="Click enter in last row to add new"
+                        />
+                    </div>
 
-                    <KeyValueTable data={keyValueData} setData={setKeyValueData} />
+                    <KeyValueTable
+                        data={keyValueData}
+                        setData={setKeyValueData}
+                        columnSettings={columnSettings}
+                    />
+
+                    <div className="col-12 text-secondary">
+                        Entries with at least 1 empty value are ignored
+                    </div>
                 </div>
             </div>
 
             <button type="submit" className="btn btn-success btn-block mt-5">
                 Go to next step
             </button>
-
-            <ReactTooltip />
         </OfferForm>
+
+        <ReactTooltip />
     </>
 }
 
