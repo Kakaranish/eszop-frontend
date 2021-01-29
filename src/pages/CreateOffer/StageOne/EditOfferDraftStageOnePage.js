@@ -115,7 +115,7 @@ const EditOfferDraftStageOnePage = (props) => {
         let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
         formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
 
-        const action = async () => await axios.put("/offers-api/offers", formData);
+        const action = async () => await axios.put("/offers-api/offers/draft/1", formData);
         await authorizedRequestHandler(action,
             {
                 status: 200,

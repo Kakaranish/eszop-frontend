@@ -31,17 +31,19 @@ const columnSettings = {
 const EditOfferDraftStageTwoPage = (props) => {
 
     const offerId = props.match.params.id;
+    
     const history = useHistory();
-    const [keyValueData, setKeyValueData] = useState([
+    const [deliveryMethods, setDeliveryMethods] = useState([
         {
             key: "",
             value: ""
         }
     ]);
 
-    const [accountNumber, setAccountNumber] = useState("");
+    const [accountNumber, setAccountNumber] = useState();
     const [defaultAccountNumber, setDefaultAccountNumber] = useState(null);
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
+    const [offer, setOffer] = useState({});
 
     useEffect(() => {
         const fetchBankAccount = async () => {
@@ -77,24 +79,37 @@ const EditOfferDraftStageTwoPage = (props) => {
                 });
         };
 
+        const fetchOffer = async () => {
+            const action = async () => await axios.get(`/offers-api/offers/${offerId}/my`);
+
+            await authorizedRequestHandler(action,
+                {
+                    status: 200,
+                    callback: result => {
+                        setOffer(result);
+                        setDeliveryMethods([...result.deliveryMethods.map(kvp => ({
+                            key: kvp.name,
+                            value: kvp.price.toFixed(2)
+                        })), {
+                            key: "",
+                            value: ""
+                        }]);
+                        setAccountNumber(result.bankAccountNumber);
+                    }
+                }, 
+                {
+                    status: 204,
+                    callback: () => setOffer({ loading: false, offer: null })
+                }
+            );
+        };
+
         fetchBankAccount();
         fetchDeliveryMethods();
+        fetchOffer();
     }, []);
 
-    const onSubmitCb = e => {
-
-        e.preventDefault();
-
-        let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
-        console.log(preparedKeyValueData)
-        if (preparedKeyValueData.length === 0) {
-            toast.warn("At least 1 delivery method required");
-            return;
-        }
-    }
-
-    // Check if offer to edit exists
-
+        
     const formOnKeyPress = e => {
         if (e.key === 'Enter') e.preventDefault();
     }
@@ -104,16 +119,15 @@ const EditOfferDraftStageTwoPage = (props) => {
     };
 
     const onSelectedPredefinedDeliveryMethodCb = e => {
-
         const [name, price] = e.value.split(';')
         const newItem = {
             key: name,
             value: (price || price == 0)  ? parseFloat(price).toFixed(2) : ""
         };
 
-        let keyValueCopy = [...keyValueData];
+        let keyValueCopy = [...deliveryMethods];
 
-        let lastItem = keyValueData.slice(-1)[0];
+        let lastItem = deliveryMethods.slice(-1)[0];
         if (!lastItem.key && !lastItem.value) {
             keyValueCopy.splice(keyValueCopy.length - 1, 0, newItem)
         }
@@ -121,7 +135,41 @@ const EditOfferDraftStageTwoPage = (props) => {
             keyValueCopy.push(newItem, { key: '', value: '' });
         }
 
-        setKeyValueData(keyValueCopy);
+        setDeliveryMethods(keyValueCopy);
+    }
+
+    const onSubmitCb = async event => {
+        event.preventDefault();
+
+        let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
+        if (preparedDeliveryMethods.length === 0) {
+            toast.warn("At least 1 delivery method required");
+            return;
+        }
+        preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
+            name: x.key,
+            price: x.value
+        }));
+
+        let formData = new FormData(event.target);
+        formData.append("offerId", offerId);
+
+        formData.append("deliveryMethods", JSON.stringify(preparedDeliveryMethods));
+
+        const action = async () => await axios.put("/offers-api/offers/draft/2", formData);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: async result => history.push(`/offers/${result.offerId}/my`)
+            },
+            {
+                status: 400,
+                callback: async result => {
+                    toast.error("Your creation request has been rejected");
+                    console.log(result);
+                }
+            }
+        );
     }
 
     return <>
@@ -138,8 +186,8 @@ const EditOfferDraftStageTwoPage = (props) => {
         <form onSubmit={onSubmitCb} onKeyPress={formOnKeyPress}>
             <div className="mt-4 mb-4 pb-0">
                 <KeyValueTable
-                    data={keyValueData}
-                    setData={setKeyValueData}
+                    data={deliveryMethods}
+                    setData={setDeliveryMethods}
                     columnSettings={columnSettings}
                 />
 
@@ -177,23 +225,26 @@ const EditOfferDraftStageTwoPage = (props) => {
                             (fill with value from your Seller Info)
                         </span>
                     }
-
                 </label>
 
-                <input name="accountNumber" type="text" className="form-control"
+                <input name="bankAccount" type="text" className="form-control"
                     pattern="\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|\d{26}"
                     placeholder="E.g.: 27 1140 2004 0000 3002 0135 5387"
                     value={accountNumber}
                     onChange={e => setAccountNumber(e.target.value)}
                     required
                 />
+
+                <div className="px-0 mt-2 col-12 col-md-6 col-lg-7 text-secondary">
+                    Your account number is not visible until placed order
+                </div>
             </div>
 
             <div className="row">
                 <div className="col-6">
                     <Link to={`/offers/create/draft/${offerId}/stage/1`}
                         className="btn btn-outline-primary btn-block">
-                        Go to stage 1
+                        Save & Go to stage 1
                     </Link>
                 </div>
 
