@@ -87,7 +87,9 @@ const CreateOfferDraftPage = () => {
         await authorizedRequestHandler(action,
             {
                 status: 200,
-                callback: async result => history.push(`/offers/${result.offerId}`)
+                callback: async result => {
+                    history.push(`/offers/create/draft/${result}/stage/2`);
+                }
             },
             {
                 status: 400,

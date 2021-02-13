@@ -40,6 +40,8 @@ const EditOfferDraftStageTwoPage = (props) => {
         }
     ]);
 
+    let formAction = null;
+
     const [accountNumber, setAccountNumber] = useState();
     const [defaultAccountNumber, setDefaultAccountNumber] = useState(null);
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
@@ -55,6 +57,10 @@ const EditOfferDraftStageTwoPage = (props) => {
                     callback: result => {
                         setDefaultAccountNumber(result.accountNumber);
                     }
+                },
+                {
+                    status: 204,
+                    callback: () => setDefaultAccountNumber(null)
                 })
         };
 
@@ -138,7 +144,7 @@ const EditOfferDraftStageTwoPage = (props) => {
         setDeliveryMethods(keyValueCopy);
     }
 
-    const onSubmitCb = async event => {
+    const updateOffer = async event => {
         event.preventDefault();
 
         let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
@@ -153,23 +159,40 @@ const EditOfferDraftStageTwoPage = (props) => {
 
         let formData = new FormData(event.target);
         formData.append("offerId", offerId);
-
         formData.append("deliveryMethods", JSON.stringify(preparedDeliveryMethods));
 
         const action = async () => await axios.put("/offers-api/offers/draft/2", formData);
-        await authorizedRequestHandler(action,
-            {
-                status: 200,
-                callback: async result => history.push(`/offers/${result.offerId}/my`)
-            },
-            {
-                status: 400,
-                callback: async result => {
-                    toast.error("Your creation request has been rejected");
-                    console.log(result);
-                }
-            }
-        );
+        return await authorizedRequestHandler(action);
+    }
+
+    const onSaveOnGoBackCb = async event => {
+        event.preventDefault();
+        
+        await updateOffer(event);
+
+        history.push(`/offers/create/draft/${offerId}/stage/1`)
+    }
+
+    const onPublishCb = async event => {
+        event.preventDefault();
+        
+        // Placeholder
+        console.log("publish");
+    }
+
+    const onSubmitCb = async event => {
+        event.preventDefault();
+        
+        switch (formAction) {
+            case "SaveAndGoBack":
+                onSaveOnGoBackCb(event)
+                break;
+            case "Publish":
+                onPublishCb(event)
+                break;
+            default:
+                break;
+        }
     }
 
     return <>
@@ -183,7 +206,7 @@ const EditOfferDraftStageTwoPage = (props) => {
             </span>
         </div>
 
-        <form onSubmit={onSubmitCb} onKeyPress={formOnKeyPress}>
+        <form onKeyPress={formOnKeyPress} onSubmit={onSubmitCb}>
             <div className="mt-4 mb-4 pb-0">
                 <KeyValueTable
                     data={deliveryMethods}
@@ -196,15 +219,18 @@ const EditOfferDraftStageTwoPage = (props) => {
                         Entries with at least 1 empty value are ignored
                     </div>
 
-                    <Select
-                        className="col-12 col-md-6 col-lg-5"
-                        styles={{ control: (base, state) => ({ ...base, background: '#fbfffa' }) }}
-                        filterOption={createFilter()}
-                        placeholder={"Add predefined delivery method"}
-                        options={predefinedDeliveryMethods}
-                        value={null}
-                        onChange={onSelectedPredefinedDeliveryMethodCb}
-                    />
+                    {
+                        predefinedDeliveryMethods?.length > 0 &&
+                        <Select
+                            className="col-12 col-md-6 col-lg-5"
+                            styles={{ control: (base, state) => ({ ...base, background: '#fbfffa' }) }}
+                            filterOption={createFilter()}
+                            placeholder={"Add predefined delivery method"}
+                            options={predefinedDeliveryMethods}
+                            value={null}
+                            onChange={onSelectedPredefinedDeliveryMethodCb}
+                        />
+                    }
                 </div>
             </div>
 
@@ -242,14 +268,15 @@ const EditOfferDraftStageTwoPage = (props) => {
 
             <div className="row">
                 <div className="col-6">
-                    <Link to={`/offers/create/draft/${offerId}/stage/1`}
+                    <button type="submit" onClick={() => formAction = "SaveAndGoBack"}
                         className="btn btn-outline-primary btn-block">
                         Save & Go to stage 1
-                    </Link>
+                    </button>
                 </div>
 
                 <div className="col-6">
-                    <button className="btn btn-success btn-block" type="submit">
+                    <button type="submit" onClick={() => formAction = "Publish"}
+                        className="btn btn-success btn-block" type="submit">
                         Publish offer
                     </button>
                 </div>
