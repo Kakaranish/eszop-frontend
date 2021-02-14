@@ -199,7 +199,7 @@ const EditOfferDraftStageOnePage = (props) => {
             </div>
 
             <button type="submit" className="btn btn-success btn-block mt-5">
-                Go to next step
+                Go to stage 2
             </button>
         </OfferForm>
 

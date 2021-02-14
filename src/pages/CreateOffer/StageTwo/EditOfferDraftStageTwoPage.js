@@ -176,8 +176,16 @@ const EditOfferDraftStageTwoPage = (props) => {
     const onPublishCb = async event => {
         event.preventDefault();
         
-        // Placeholder
-        console.log("publish");
+        await updateOffer(event);
+
+        const data = {offerId: offerId};
+        const action = async () => await axios.post('/offers-api/offers/publish', data)
+        await authorizedRequestHandler(action, {
+            status: 200,
+            callback: () => {
+                history.push(`/offers-api/offers/${offerId}`);
+            }
+        })
     }
 
     const onSubmitCb = async event => {
@@ -196,7 +204,6 @@ const EditOfferDraftStageTwoPage = (props) => {
     }
 
     return <>
-
         <div className="mt-2 mb-3 row">
             <h2 style={{ display: 'inline' }}>
                 Create Offer
