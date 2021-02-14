@@ -35,7 +35,7 @@ const OfferPage = (props) => {
     return <>
         <HeaderSection offer={state.offer} />
 
-        <ParametersSection keyValueInfos={state.offer.keyValueInfos} />
+        <ParametersSection offer={state.offer} />
 
         <DescriptionSection offer={state.offer}/>
 
