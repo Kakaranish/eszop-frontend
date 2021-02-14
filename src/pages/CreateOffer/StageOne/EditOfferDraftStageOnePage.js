@@ -175,7 +175,7 @@ const EditOfferDraftStageOnePage = (props) => {
                 <div>
                     <div className="mb-3">
                         <h4 className="d-inline">
-                            Additional Information
+                            Parameters
                         </h4>
 
                         <FontAwesomeIcon icon={faQuestionCircle}

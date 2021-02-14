@@ -6,7 +6,7 @@ import ErrorPage from './pages/ErrorPage';
 import MainLayout from './skeleton/MainLayout';
 import AuthRoutes from './routeAggregators/AuthRoutes';
 import OfferRoutes from './routeAggregators/OfferRotues';
-import MyOffersPage from './pages/User/MyOffersPage';
+import MyOffersPage from './pages/User/MyOffersPage/MyOffersPage';
 import NotificationHandler from './skeleton/NotificationHandler';
 import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
 
