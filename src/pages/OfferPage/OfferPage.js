@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { requestHandler } from 'common/utils';
 import axios from 'axios';
-import ImagePreview from 'common/components/ImagePreview';
+import ParametersSection from './ParametersSection';
+import HeaderSection from './HeaderSection';
+import DescriptionSection from './DescriptionSection';
+import DeliverySection from './DeliverySection';
 
 const OfferPage = (props) => {
 
@@ -24,26 +27,19 @@ const OfferPage = (props) => {
         };
 
         fetch();
-
     }, []);
 
     if (state.loading) return <></>;
     else if (!state?.offer) return <h3>No such offer</h3>;
+
     return <>
-        <h4 className="mb-3">{state.offer.name}</h4>
-        {
-            state.offer.images.length === 0
-                ? <></>
-                : <div className="row">
-                    {
-                        state.offer.images.map((img, i) =>
-                            <div className="col-2" key={`prev-${i}`}>
-                                <ImagePreview uri={img.uri} key={`prev-${i}`} />
-                            </div>
-                        )
-                    }
-                </div>
-        }
+        <HeaderSection offer={state.offer} />
+
+        <ParametersSection keyValueInfos={state.offer.keyValueInfos} />
+
+        <DescriptionSection offer={state.offer}/>
+
+        <DeliverySection offer={state.offer} />
     </>
 };
 

@@ -47,7 +47,7 @@ const MainLayout = (props) => {
                 </Link>
             }
 
-            <div className="p-3">
+            <div className="p-3 mt-3">
                 {props.children}
             </div>
         </div>

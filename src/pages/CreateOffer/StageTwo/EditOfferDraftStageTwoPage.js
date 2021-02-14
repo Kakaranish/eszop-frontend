@@ -283,7 +283,7 @@ const EditOfferDraftStageTwoPage = (props) => {
 
                 <div className="col-6">
                     <button type="submit" onClick={() => formAction = "Publish"}
-                        className="btn btn-success btn-block" type="submit">
+                        className="btn btn-success btn-block">
                         Publish offer
                     </button>
                 </div>

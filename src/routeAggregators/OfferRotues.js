@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import OfferPage from 'pages/OfferPage';
+import OfferPage from 'pages/OfferPage/OfferPage';
 import OffersPage from 'pages/OffersPage/OffersPage';
 import AuthorizedOnlyRoute from 'routeTypes/AuthorizedOnlyRoute';
 import CreateOfferDraftPage from 'pages/CreateOffer/StageOne/CreateOfferDraftPage';
