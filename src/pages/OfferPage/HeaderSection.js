@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import ImagePreview from 'common/components/ImagePreview';
 import QuantityInput from 'common/QuantityInput';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { authorizedRequestHandler } from 'common/utils';
+import { useHistory } from 'react-router-dom';
 
 const Styles = styled.div`
     .quantity-input {
@@ -15,7 +19,8 @@ const Styles = styled.div`
   }`
 
 const HeaderSection = ({ offer }) => {
-    
+
+    const history = useHistory();
     const [quantity, setQuantity] = useState(1);
 
     if (!offer) return <></>
@@ -24,6 +29,29 @@ const HeaderSection = ({ offer }) => {
     const price = {
         beforeDot: priceStr.split('.')[0],
         afterDot: priceStr.split('.')[1]
+    };
+
+    const onAddToCart = async event => {
+        event.preventDefault();
+
+        if (quantity > offer.availableStock) {
+            toast.warning(`Max quantity for this offer is ${offer.availableStock}`)
+            return;
+        }
+
+        const data = {
+            offerId: offer.id,
+            quantity: quantity
+        };
+        const uri = `/carts-api/cart/item`;
+        const action = async () => await axios.post(uri, data);
+        await authorizedRequestHandler(action, {
+            status: 200,
+            callback: () => {
+                toast.success("Offer has been added to cart");
+                history.push('/refresh');
+            }
+        });
     };
 
     return <>
@@ -75,7 +103,9 @@ const HeaderSection = ({ offer }) => {
                             value={quantity}
                             setValue={setQuantity}
                             minValue={0}
-                            maxValue={offer.availableStock} />
+                            maxValue={offer.availableStock}
+                        />
+
                         <span className="d-inline-flex quantity-label">
                             of {offer.availableStock} available items
                         </span>
@@ -83,8 +113,7 @@ const HeaderSection = ({ offer }) => {
 
                     <div className="row mt-4">
                         <div className="col-6">
-                            <button type="submit"
-                                className="btn btn-success btn-block">
+                            <button type="submit" className="btn btn-success btn-block" onClick={onAddToCart}>
                                 Add to cart
                             </button>
                         </div>

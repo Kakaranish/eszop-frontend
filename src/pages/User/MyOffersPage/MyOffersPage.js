@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { requestHandler } from 'common/utils';
 import ListItem from './ListItem';
+import { Link } from 'react-router-dom';
 
 const MyOffersPage = () => {
 
@@ -26,10 +27,12 @@ const MyOffersPage = () => {
     }, []);
 
     if (state.loading) return <></>
-
-    if (state.offers === null || state.offers.length === 0) return <div>
-        <h3>My offers</h3>
-        <p>You have no offer already</p>
+    
+    if (!state.offers?.length) return <div>
+        <h3>You have no offer already</h3>
+        <Link to='/offers/create' className="btn btn-outline-success">
+            Create Offer
+        </Link>
     </div>
 
     return <>

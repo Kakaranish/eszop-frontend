@@ -1,6 +1,7 @@
 import axios from 'axios';
 import cookies from 'js-cookie';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 export const isAccessTokenExpCookiePresent = () => {
     return !!cookies.get('accessTokenExp');
@@ -78,7 +79,7 @@ export const requestHandler = async (action, ...handlers) => {
     const callback = handlersDict[result.status];
     if (callback) return await callback(result.data);
 
-    document.location = `/error/${result.status}`;
+    toast.error(`Error ${result.status}`);
 };
 
 /**
