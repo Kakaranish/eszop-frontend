@@ -9,6 +9,7 @@ import OfferRoutes from './routeAggregators/OfferRotues';
 import MyOffersPage from './pages/User/MyOffersPage/MyOffersPage';
 import NotificationHandler from './skeleton/NotificationHandler';
 import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
+import CartPage from 'pages/CartPage/CartPage';
 import RefreshPage from 'pages/RefreshPage';
 
 const App = () => <>
@@ -25,6 +26,7 @@ const App = () => <>
 
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />
+          <AuthorizedOnlyRoute path="/cart" component={CartPage} />
 
           <Route path='/error/:code' component={ErrorPage} />
           <Route path='/refresh' component={RefreshPage} />

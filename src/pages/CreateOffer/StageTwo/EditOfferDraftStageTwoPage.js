@@ -203,8 +203,8 @@ const EditOfferDraftStageTwoPage = (props) => {
         }
     }
 
-    return <>
-        <div className="mt-2 mb-3 row">
+    return <div className="bg-white container pt-2 pb-4">
+        <div className="mt-2 mb-3">
             <h2 style={{ display: 'inline' }}>
                 Create Offer
             </h2>
@@ -291,7 +291,7 @@ const EditOfferDraftStageTwoPage = (props) => {
         </form>
 
         <ReactTooltip />
-    </>
+    </div>
 };
 
 export default EditOfferDraftStageTwoPage;

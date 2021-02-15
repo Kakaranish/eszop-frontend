@@ -22,12 +22,12 @@ const MainLayout = (props) => {
             </Link>
 
             {
-                !props.identity 
+                !props.identity
                     ?
                     <Link to="/auth/sign-in" className="btn btn-primary mr-2">
                         Sign-In
                     </Link>
-                    
+
                     :
                     <div className="d-inline-block border border-primary block mr-2">
 
@@ -44,6 +44,13 @@ const MainLayout = (props) => {
                 props.identity &&
                 <Link to="/user/offers" className="btn btn-primary mr-2">
                     My Offers
+                </Link>
+            }
+
+            {
+                props.identity &&
+                <Link to="/cart" className="btn btn-primary mr-2">
+                    Cart
                 </Link>
             }
 

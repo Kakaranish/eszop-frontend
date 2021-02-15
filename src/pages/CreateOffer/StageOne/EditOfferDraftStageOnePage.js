@@ -138,8 +138,8 @@ const EditOfferDraftStageOnePage = (props) => {
 
     const initSelectedCategory = categoryOptions.find(x => x.value === offer.category.id);
 
-    return <>
-        <div className="mt-2 mb-3 row">
+    return <div className="bg-white container pt-2 pb-4">
+        <div className="mt-2 mb-3">
             <h2 style={{ display: 'inline' }}>
                 Create Offer
             </h2>
@@ -204,8 +204,7 @@ const EditOfferDraftStageOnePage = (props) => {
         </OfferForm>
 
         <ReactTooltip />
-    </>
+    </div>
 }
-
 
 export default EditOfferDraftStageOnePage;

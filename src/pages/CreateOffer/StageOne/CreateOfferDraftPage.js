@@ -109,8 +109,8 @@ const CreateOfferDraftPage = () => {
         totalStock: Math.floor(Math.random() * (40 - 1 + 1)) + 1
     };
 
-    return <>
-        <div className="mt-2 mb-3 row">
+    return <div className="bg-white container pt-2 pb-4">
+        <div className="mt-2 mb-3">
             <h2 style={{ display: 'inline' }}>
                 Create Offer
             </h2>
@@ -120,7 +120,6 @@ const CreateOfferDraftPage = () => {
         </div>
 
         <OfferForm onSubmitCb={createOfferCb} offer={offerDefaultValues}>
-
             <div className="form-group">
                 <label>Category</label>
 
@@ -174,7 +173,7 @@ const CreateOfferDraftPage = () => {
         </OfferForm>
 
         <ReactTooltip />
-    </>
+    </div>
 }
 
 export default CreateOfferDraftPage;
