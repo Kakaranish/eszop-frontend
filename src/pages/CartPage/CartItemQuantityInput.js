@@ -5,12 +5,14 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import { useHistory } from 'react-router-dom';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
-const CartItemQuantityInput = ({ cartItemId, value, setValue, maxValue = Infinity }) => {
+const CartItemQuantityInput = (props) => {
 
+    const { cartItemId, value, setValue, maxValue = Infinity } = props;
     const minValue = 0;
     const delayMs = 1500;
-    
+
     const history = useHistory();
     const [timer, setTimer] = useState();
 
@@ -25,7 +27,9 @@ const CartItemQuantityInput = ({ cartItemId, value, setValue, maxValue = Infinit
         await authorizedRequestHandler(action, {
             status: 200,
             callback: () => {
-                toast.success("Quantity updated");
+                let cartItemCopy = Object.assign({}, props.cart[cartItemId]);
+                cartItemCopy.quantity = newValue;
+                props.addOrUpdateCartItem(cartItemCopy);
             }
         }, {
             status: -1,
@@ -113,4 +117,6 @@ const CartItemQuantityInput = ({ cartItemId, value, setValue, maxValue = Infinit
     </>
 };
 
-export default CartItemQuantityInput;
+export default new AwareComponentBuilder()
+    .withCartAwareness()
+    .build(CartItemQuantityInput);

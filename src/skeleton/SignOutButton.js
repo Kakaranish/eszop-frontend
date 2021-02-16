@@ -15,6 +15,7 @@ const SignOutButton = (props) => {
             status: 200,
             callback: () => {
                 props.unsetIdentity();
+                props.clearCart();
                 history.push('/');
             }
         });
@@ -29,4 +30,5 @@ const SignOutButton = (props) => {
 
 export default new AwareComponentBuilder()
     .withIdentityAwareness()
+    .withCartAwareness()
     .build(SignOutButton);

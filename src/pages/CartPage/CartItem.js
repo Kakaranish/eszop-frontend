@@ -7,6 +7,7 @@ import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import { toast } from 'react-toastify';
 import CartItemQuantityInput from './CartItemQuantityInput';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
 const Styles = styled.div`
     .img-thumbnail {
@@ -17,8 +18,9 @@ const Styles = styled.div`
     }
   }`
 
+const CartItem = (props) => {
 
-const CartItem = ({ cartItem }) => {
+    const { cartItem } = props;
 
     const history = useHistory();
     const [quantity, setQuantity] = useState(cartItem.quantity);
@@ -30,6 +32,7 @@ const CartItem = ({ cartItem }) => {
             status: 200,
             callback: () => {
                 toast.success("Deleted from cart");
+                props.removeCartItem(cartItem.id);
                 history.push('/refresh');
             }
         });
@@ -85,6 +88,7 @@ const CartItem = ({ cartItem }) => {
                                 className="align-self-center ml-3"
                                 style={{ width: '25px', height: '25px', cursor: 'pointer' }}
                                 onClick={onDelete}
+                                alt="trash-img"
                             />
                         </div>
                     </div>
@@ -99,4 +103,6 @@ function getPreviewImageUri(cartItem) {
     return cartItem.imageUri;
 }
 
-export default CartItem;
+export default new AwareComponentBuilder()
+    .withCartAwareness()
+    .build(CartItem);

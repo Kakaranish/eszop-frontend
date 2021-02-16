@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import { useHistory } from 'react-router-dom';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
 const Styles = styled.div`
     .quantity-input {
@@ -18,9 +19,11 @@ const Styles = styled.div`
     }
   }`
 
-const HeaderSection = ({ offer }) => {
+const HeaderSection = (props) => {
 
+    const { offer } = props;
     const history = useHistory();
+
     const [quantity, setQuantity] = useState(1);
 
     if (!offer) return <></>
@@ -47,8 +50,9 @@ const HeaderSection = ({ offer }) => {
         const action = async () => await axios.post(uri, data);
         await authorizedRequestHandler(action, {
             status: 200,
-            callback: () => {
+            callback: result => {
                 toast.success("Offer has been added to cart");
+                props.addOrUpdateCartItem(result)
                 history.push('/refresh');
             }
         });
@@ -131,4 +135,6 @@ const HeaderSection = ({ offer }) => {
     </>
 };
 
-export default HeaderSection;
+export default new AwareComponentBuilder()
+    .withCartAwareness()
+    .build(HeaderSection);
