@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import * as IdentityActions from 'redux/reducers/identityReducer/actions';
+import * as CartActions from 'redux/reducers/cartReducer/actions';
 
 class AwareComponentBuilder {
     constructor() {
@@ -16,6 +17,22 @@ class AwareComponentBuilder {
 
         const partialMapState = state => ({
             identity: state.identity
+        });
+        this.partialMapStateToPropsList.push(partialMapState);
+
+        return this;
+    }
+
+    withCartAwareness() {
+        const partialMapDispatch = dispatch => ({
+            addOrUpdateCartItem: cartItem => dispatch(CartActions.addOrUpdateCartItem(cartItem)),
+            removeCartItem: cartItemId => dispatch(CartActions.removeItemFromCart(cartItemId)),
+            clearCart: () => dispatch(CartActions.clearCart())
+        });
+        this.partialDispatchToPropsList.push(partialMapDispatch);
+
+        const partialMapState = state => ({
+            cart: state.cart
         });
         this.partialMapStateToPropsList.push(partialMapState);
 

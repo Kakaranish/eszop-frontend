@@ -5,7 +5,7 @@ export const addOrUpdateCartItem = (cartItem) => ({
 });
 
 export const removeItemFromCart = (cartItemId) => ({
-    type: types.CART_UPDATE_ITEM, cartItemId
+    type: types.CART_REMOVE_ITEM, cartItemId
 });
 
 export const clearCart = () => ({

@@ -13,7 +13,7 @@ import rootReducer from './reducers/rootReducer';
 const persistSecret = 'vsGGSDdYgHuCm6hPtZuW6bdBc7TxSHGuRkruJVB7zkh4DpZe8pFhnAm4dZJc5Nny';
 
 const encryptor = encryptTransform({ secretKey: persistSecret });
-const persistConfig = { key: 'root', storage, debug: true, transforms: [encryptor] };
+const persistConfig = { key: 'root', storage, transforms: [encryptor] };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
