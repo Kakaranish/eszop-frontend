@@ -38,8 +38,8 @@ const MyOffersPage = () => {
     return <>
         <h3>My offers</h3>
         {
-            state.offers.map(offer =>
-                <ListItem offer={offer} />
+            state.offers.map((offer, i) =>
+                <ListItem key={`li=${i}`} offer={offer} />
             )
         }
     </>

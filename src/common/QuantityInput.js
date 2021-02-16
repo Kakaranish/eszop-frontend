@@ -54,7 +54,7 @@ const QuantityInput = ({ value, setValue, minValue = -Infinity,
             <input name="quantityInput" type="number" className="form-control"
                 style={{ WebkitAppearance: 'none'}}
                 onChange={onInputChange} required
-                min={1} max={maxValue} step={1} defaultValue={value} value={value}
+                min={1} max={maxValue} step={1} value={value}
             />
 
             <div className="align-self-center">

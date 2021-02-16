@@ -37,7 +37,7 @@ const OfferPage = (props) => {
 
         <ParametersSection offer={state.offer} />
 
-        <DescriptionSection offer={state.offer}/>
+        <DescriptionSection offer={state.offer} />
 
         <DeliverySection offer={state.offer} />
     </>

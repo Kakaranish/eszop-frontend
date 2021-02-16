@@ -53,8 +53,8 @@ const CartPage = (props) => {
     return <>
         <h3>Your cart</h3>
         {
-            state.cart.cartItems.map(cartItem =>
-                <CartItem cartItem={cartItem} />
+            state.cart.cartItems.map((cartItem, i) =>
+                <CartItem key={`ci-${i}`} cartItem={cartItem} />
             )
         }
 

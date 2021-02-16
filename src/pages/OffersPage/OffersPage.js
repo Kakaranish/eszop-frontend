@@ -26,8 +26,8 @@ const OffersPage = () => {
         <div className="container">
             <h3>Offers</h3>
             {
-                state.offers.map(offer =>
-                    <ListItem offer={offer} />
+                state.offers.map((offer, i) =>
+                    <ListItem key={`li-${i}`} offer={offer} />
                 )
             }
         </div>

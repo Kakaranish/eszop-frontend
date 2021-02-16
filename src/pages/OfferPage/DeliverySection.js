@@ -7,15 +7,15 @@ const DeliverySection = ({ offer }) => {
         <div className="row bg-white mt-3 py-2">
             <div className="col-12 mt-3">
                 <h4>Delivery methods</h4>
-                <table class="table table-hover">
+                <table className="table table-hover">
                     <tbody>
                         {
-                            offer.deliveryMethods.map(deliveryMethod => <>
-                                <tr>
+                            offer.deliveryMethods.map((deliveryMethod, i) =>
+                                <tr key={`dlv-mthd-${i}`}>
                                     <td>{deliveryMethod.name}</td>
                                     <td>{deliveryMethod.price.toFixed(2)} PLN</td>
                                 </tr>
-                            </>)
+                            )
                         }
                     </tbody>
                 </table>

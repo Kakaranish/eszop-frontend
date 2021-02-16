@@ -95,6 +95,6 @@ export const requestHandler = async (action, ...handlers) => {
  * );
  */
 export const authorizedRequestHandler = async (action, ...handlers) => {
-    ensureAccessTokenIsValid(); // TODO: Add action when not valid
+    await ensureAccessTokenIsValid();
     return await requestHandler(action, ...handlers);
 };

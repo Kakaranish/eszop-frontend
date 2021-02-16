@@ -6,15 +6,15 @@ const ParametersSection = ({ offer }) => {
     return <div className="row bg-white mt-3 py-2">
         <div className="col-12 mt-3">
             <h4 className="mb-3">Parameters</h4>
-            <table class="table table-hover">
+            <table className="table table-hover">
                 <tbody>
                     {
-                        offer.keyValueInfos.map(keyValueInfo => <>
-                            <tr>
+                        offer.keyValueInfos.map((keyValueInfo, i) =>
+                            <tr key={`param-tr-${i}`}>
                                 <td>{keyValueInfo.key}</td>
                                 <td>{keyValueInfo.value}</td>
                             </tr>
-                        </>)
+                        )
                     }
                 </tbody>
             </table>

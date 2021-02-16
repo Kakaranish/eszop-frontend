@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Select, { createFilter } from 'react-select';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
@@ -43,9 +43,8 @@ const EditOfferDraftStageTwoPage = (props) => {
     let formAction = null;
 
     const [accountNumber, setAccountNumber] = useState();
-    const [defaultAccountNumber, setDefaultAccountNumber] = useState(null);
+    const [defaultAccountNumber, setDefaultAccountNumber] = useState("");
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
-    const [offer, setOffer] = useState({});
 
     useEffect(() => {
         const fetchBankAccount = async () => {
@@ -92,7 +91,6 @@ const EditOfferDraftStageTwoPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
-                        setOffer(result);
                         setDeliveryMethods([...result.deliveryMethods.map(kvp => ({
                             key: kvp.name,
                             value: kvp.price.toFixed(2)
@@ -102,10 +100,6 @@ const EditOfferDraftStageTwoPage = (props) => {
                         }]);
                         setAccountNumber(result.bankAccountNumber);
                     }
-                }, 
-                {
-                    status: 204,
-                    callback: () => setOffer({ loading: false, offer: null })
                 }
             );
         };
@@ -163,15 +157,15 @@ const EditOfferDraftStageTwoPage = (props) => {
 
         const action = async () => await axios.put("/offers-api/offers/draft/2", formData);
         return await authorizedRequestHandler(action);
-    }
+    };
 
     const onSaveOnGoBackCb = async event => {
         event.preventDefault();
         
         await updateOffer(event);
 
-        history.push(`/offers/create/draft/${offerId}/stage/1`)
-    }
+        history.push(`/offers/create/draft/${offerId}/stage/1`);
+    };
 
     const onPublishCb = async event => {
         event.preventDefault();
@@ -185,8 +179,8 @@ const EditOfferDraftStageTwoPage = (props) => {
             callback: () => {
                 history.push(`/offers-api/offers/${offerId}`);
             }
-        })
-    }
+        });
+    };
 
     const onSubmitCb = async event => {
         event.preventDefault();
@@ -201,7 +195,7 @@ const EditOfferDraftStageTwoPage = (props) => {
             default:
                 break;
         }
-    }
+    };
 
     return <div className="bg-white container pt-2 pb-4">
         <div className="mt-2 mb-3">

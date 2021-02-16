@@ -92,43 +92,58 @@ const HeaderSection = (props) => {
                         Ends on: {moment(offer.endsAt).format("YYYY-MM-DD HH:mm:ss")}
                     </p>
 
-                    <p className="mt-3 mb-4">
+                    <div className="mt-3 mb-4">
                         <h2 className="d-inline">
                             {price.beforeDot}
                         </h2>
                         <h4 className="d-inline">
                             ,{price.afterDot} PLN
                         </h4>
-                    </p>
-
-                    <Styles>
-                        <QuantityInput
-                            classes="quantity-input"
-                            value={quantity}
-                            setValue={setQuantity}
-                            minValue={0}
-                            maxValue={offer.availableStock}
-                        />
-
-                        <span className="d-inline-flex quantity-label">
-                            of {offer.availableStock} available items
-                        </span>
-                    </Styles>
-
-                    <div className="row mt-4">
-                        <div className="col-6">
-                            <button type="submit" className="btn btn-success btn-block" onClick={onAddToCart}>
-                                Add to cart
-                            </button>
-                        </div>
-
-                        <div className="col-6">
-                            <button type="submit"
-                                className="btn btn-success btn-block">
-                                Buy now
-                            </button>
-                        </div>
                     </div>
+
+                    {
+                        !Object.values(props.cart).some(x => x.offerId === offer.id)
+                            ? <>
+                                <Styles>
+                                    <QuantityInput
+                                        classes="quantity-input"
+                                        value={quantity}
+                                        setValue={setQuantity}
+                                        minValue={0}
+                                        maxValue={offer.availableStock}
+                                    />
+
+                                    <span className="d-inline-flex quantity-label">
+                                        of {offer.availableStock} available items
+                                    </span>
+                                </Styles>
+
+                                <div className="row mt-4">
+                                    <div className="col-6">
+                                        <button type="submit" className="btn btn-success btn-block" onClick={onAddToCart}>
+                                            Add to cart
+                                        </button>
+                                    </div>
+
+                                    <div className="col-6">
+                                        <button type="submit" className="btn btn-secondary btn-block"
+                                            style={{ cursor: 'not-allowed' }} disabled>
+                                            Buy now
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
+
+                            : <>
+                                <div className="mb-3">
+                                    Available stock: <b>{offer.availableStock}</b> of <b>{offer.totalStock}</b>
+                                </div>
+
+                                <button type="submit" className="btn btn-secondary btn-block" disabled style={{ cursor: 'not-allowed' }}>
+                                    Add to cart (Already in cart)
+                                </button>
+                            </>
+                    }
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { getFormDataJsonFromEvent, requestHandler } from 'common/utils';
+import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
 const SignInPage = (props) => {
@@ -23,6 +23,16 @@ const SignInPage = (props) => {
             status: 200,
             callback: async getMeResult => {
                 props.setIdentity(getMeResult);
+            }
+        });
+
+        const getCartUri = `/carts-api/cart`;
+        const getCartAction = async () => await axios.get(getCartUri);
+
+        authorizedRequestHandler(getCartAction, {
+            status: 200,
+            callback: result => {
+                result.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
                 history.push('/');
             }
         });
@@ -46,4 +56,5 @@ const SignInPage = (props) => {
 
 export default new AwareComponentBuilder()
     .withIdentityAwareness()
+    .withCartAwareness()
     .build(SignInPage);

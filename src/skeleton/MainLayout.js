@@ -47,13 +47,6 @@ const MainLayout = (props) => <>
 
         {
             props.identity &&
-            <Link to="/cart" className="btn btn-primary mr-2">
-                Cart
-            </Link>
-        }
-
-        {
-            props.identity &&
             <CartIndicator />
         }
 

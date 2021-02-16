@@ -7,6 +7,10 @@ const ListItem = (props) => {
 
     const { offer } = props;
 
+    const offerUri = !offer.publishedAt
+        ? `/offers/create/draft/${offer.id}/stage/1`
+        : `/offers/${offer.id}`;
+
     return <>
         <div className="card mb-3" key={offer.id}>
             <div className="row no-gutters">
@@ -24,7 +28,7 @@ const ListItem = (props) => {
 
                 <div className="card-body">
                     <p className="mb-2">
-                        <Link to={`/offers/${offer.id}`}>
+                        <Link to={offerUri}>
                             {offer.name}
                         </Link>
                         {!offer.publishedAt && <span className="text-muted"> | Draft</span>}
@@ -37,12 +41,6 @@ const ListItem = (props) => {
                         </div>
                     }
                     <div>Price: {offer.price.toFixed(2)} PLN</div>
-                    {
-                        !offer.publishedAt &&
-                        <Link to={`/offers/create/draft/${offer.id}/stage/1`} className="btn btn-outline-success px-4 py-0 mt-3">
-                            Edit
-                        </Link>
-                    }
                 </div>
             </div>
         </div>
