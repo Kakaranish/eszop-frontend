@@ -56,7 +56,7 @@ const SignInPage = (props) => {
                 status: 200,
                 callback: result => {
                     result.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
-                    history.push('/');
+                    history.push('/offers');
                 }
             },
             {

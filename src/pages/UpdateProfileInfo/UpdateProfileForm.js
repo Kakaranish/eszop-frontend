@@ -60,7 +60,7 @@ const UpdateProfileForm = (props) => {
                 <h3 className="mb-3">Update profile</h3>
 
                 <div className="form-group">
-                    <label for="firstName">First Name</label>
+                    <label htmlFor="firstName">First Name</label>
                     <ValidableInput
                         name="firstName"
                         placeholder="First name..."
@@ -72,7 +72,7 @@ const UpdateProfileForm = (props) => {
                 </div>
 
                 <div className="form-group">
-                    <label for="lastName">Last Name</label>
+                    <label htmlFor="lastName">Last Name</label>
                     <ValidableInput
                         name="lastName"
                         placeholder="Last name..."
@@ -84,7 +84,7 @@ const UpdateProfileForm = (props) => {
                 </div>
 
                 <div className="form-group">
-                    <label for="Phone number">Phone Number</label>
+                    <label htmlFor="Phone number">Phone Number</label>
                     <ValidableInput
                         name="phoneNumber"
                         placeholder="Phone number"
@@ -97,7 +97,7 @@ const UpdateProfileForm = (props) => {
                 </div>
 
                 <div className="form-group">
-                    <label for="Phone number">Date of Birth</label>
+                    <label htmlFor="Phone number">Date of Birth</label>
                     <Styles>
                         <DatePicker
                             selected={dateOfBirth}

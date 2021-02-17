@@ -20,7 +20,7 @@ const AuthorizedOnlyRoute = ({ component: Component, ...rest }) => {
             const hasAllowedRole = allowedRoles.length === 0 || allowedRoles.includes(rest.identity.role);
             if (!hasAllowedRole) {
                 alert(`Set of allowed roles is [${allowedRoles.join(',')}]. Your is ${rest.identity.role ?? "undefined"}`);
-                history.push('/');
+                history.push('/offers');
                 return;
             }
 

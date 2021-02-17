@@ -12,7 +12,7 @@ const NotAuthorizedRouteOnly = ({ component: Component, ...rest }) => {
         const verify = async () => {
             if (rest.identity || !isAccessTokenExpired()) {
                 alert('This page requires not to be logged in. Redirecting to main page...');
-                history.push('/');
+                history.push('/offers');
                 return;
             }
 

@@ -17,7 +17,7 @@ const App = () => <>
 
   <NotificationHandler />
 
-  <div className="container py-3">
+  <div className="container pb-3">
     <Router>
       <MainLayout>
         <Switch>
