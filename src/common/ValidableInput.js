@@ -9,6 +9,7 @@ const ValidableInput = (
         name = "",
         placeholder = "",
         type = "text",
+        defaultValue = "",
         classes,
         regex=".*",
         isHtmlErrorMsg = false,
@@ -19,7 +20,7 @@ const ValidableInput = (
 
     const regExp = new RegExp(regex);
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(defaultValue);
     const [isValid, setIsValid] = useState(true);
 
     const onChange = event => {

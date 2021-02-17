@@ -47,6 +47,13 @@ const MainLayout = (props) => <>
 
         {
             props.identity &&
+            <Link to="/user/profile" className="btn btn-primary mr-2">
+                Profile
+            </Link>
+        }
+
+        {
+            props.identity &&
             <CartIndicator />
         }
 

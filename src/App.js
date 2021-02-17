@@ -11,6 +11,7 @@ import NotificationHandler from './skeleton/NotificationHandler';
 import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
 import CartPage from 'pages/CartPage/CartPage';
 import RefreshPage from 'pages/RefreshPage';
+import UpdateProfilePage from 'pages/UpdateProfileInfo/UpdateProfilePage';
 
 const App = () => <>
 
@@ -23,6 +24,7 @@ const App = () => <>
           <Route exact path='/' component={MainPage} />
 
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
+          <AuthorizedOnlyRoute path='/user/profile' component={UpdateProfilePage} />
 
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />
