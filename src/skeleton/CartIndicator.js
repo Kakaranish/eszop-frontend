@@ -5,12 +5,13 @@ import { useHistory } from 'react-router-dom';
 
 const CartIndicator = (props) => {
 
+    const { classes } = props;
     const history = useHistory();
 
     const cartItemsNum = Object.keys(props.cart ?? {}).length;
 
     return <>
-        <div className="d-inline">
+        <div className={`d-inline ${classes}`}>
             <img src={cartIcon}
                 style={{ width: '30px', cursor: 'pointer' }}
                 onClick={() => history.push('/cart')}

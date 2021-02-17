@@ -16,15 +16,16 @@ const SignOutButton = (props) => {
             callback: () => {
                 props.unsetIdentity();
                 props.clearCart();
-                history.push('/');
+                history.push('/offers');
             }
         });
     };
 
     return <>
-        <button type="submit" className="btn btn-primary" onClick={onSignOut}>
-            Log out
-        </button>
+        <div className="px-3 py-2 text-center" onClick={onSignOut}
+            style={{ backgroundColor: 'darkgray', cursor: 'pointer' }}>
+            <b>LOG OUT</b>
+        </div>
     </>
 };
 
