@@ -1,30 +1,12 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import moment from 'moment';
 import ImagePreview from 'common/components/ImagePreview';
-import QuantityInput from 'common/QuantityInput';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { authorizedRequestHandler } from 'common/utils';
-import { useHistory } from 'react-router-dom';
+import AddToCartSection from './AddToCartSection';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
-
-const Styles = styled.div`
-    .quantity-input {
-        width: 100px;
-    }
-
-    .quantity-label {
-        margin-left: 60px;
-    }
-  }`
 
 const HeaderSection = (props) => {
 
     const { offer } = props;
-    const history = useHistory();
-
-    const [quantity, setQuantity] = useState(1);
 
     if (!offer) return <></>
 
@@ -32,30 +14,6 @@ const HeaderSection = (props) => {
     const price = {
         beforeDot: priceStr.split('.')[0],
         afterDot: priceStr.split('.')[1]
-    };
-
-    const onAddToCart = async event => {
-        event.preventDefault();
-
-        if (quantity > offer.availableStock) {
-            toast.warning(`Max quantity for this offer is ${offer.availableStock}`)
-            return;
-        }
-
-        const data = {
-            offerId: offer.id,
-            quantity: quantity
-        };
-        const uri = `/carts-api/cart/item`;
-        const action = async () => await axios.post(uri, data);
-        await authorizedRequestHandler(action, {
-            status: 200,
-            callback: result => {
-                toast.success("Offer has been added to cart");
-                props.addOrUpdateCartItem(result)
-                history.push('/refresh');
-            }
-        });
     };
 
     return <>
@@ -101,49 +59,8 @@ const HeaderSection = (props) => {
                         </h4>
                     </div>
 
-                    {
-                        !Object.values(props.cart).some(x => x.offerId === offer.id)
-                            ? <>
-                                <Styles>
-                                    <QuantityInput
-                                        classes="quantity-input"
-                                        value={quantity}
-                                        setValue={setQuantity}
-                                        minValue={0}
-                                        maxValue={offer.availableStock}
-                                    />
+                    <AddToCartSection offer={offer}/>
 
-                                    <span className="d-inline-flex quantity-label">
-                                        of {offer.availableStock} available items
-                                    </span>
-                                </Styles>
-
-                                <div className="row mt-4">
-                                    <div className="col-6">
-                                        <button type="submit" className="btn btn-success btn-block" onClick={onAddToCart}>
-                                            Add to cart
-                                        </button>
-                                    </div>
-
-                                    <div className="col-6">
-                                        <button type="submit" className="btn btn-secondary btn-block"
-                                            style={{ cursor: 'not-allowed' }} disabled>
-                                            Buy now
-                                        </button>
-                                    </div>
-                                </div>
-                            </>
-
-                            : <>
-                                <div className="mb-3">
-                                    Available stock: <b>{offer.availableStock}</b> of <b>{offer.totalStock}</b>
-                                </div>
-
-                                <button type="submit" className="btn btn-secondary btn-block" disabled style={{ cursor: 'not-allowed' }}>
-                                    Add to cart (Already in cart)
-                                </button>
-                            </>
-                    }
                 </div>
             </div>
         </div>
