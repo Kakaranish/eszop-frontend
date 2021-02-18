@@ -42,7 +42,7 @@ const AddToCartSection = (props) => {
             status: 200,
             callback: result => {
                 toast.success("Offer has been added to cart");
-                props.addOrUpdateCartItem(result)
+                props.addOrUpdateCartItem(result.data)
                 history.push('/refresh');
             }
         });

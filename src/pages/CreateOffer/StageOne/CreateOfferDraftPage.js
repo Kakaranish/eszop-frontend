@@ -47,11 +47,11 @@ const CreateOfferDraftPage = () => {
     useEffect(() => {
         const fetch = async () => {
             const action = async () => await axios.get("/offers-api/categories");
-            const result = await requestHandler(action);
+            const categoriesResult = await requestHandler(action);
 
-            const categoryOptions = result.map(x => ({
-                value: x.id,
-                label: x.name
+            const categoryOptions = categoriesResult.map(cat => ({
+                value: cat.id,
+                label: cat.name
             }));
             setCategoryOptions(categoryOptions);
         };
@@ -87,15 +87,14 @@ const CreateOfferDraftPage = () => {
         await authorizedRequestHandler(action,
             {
                 status: 200,
-                callback: async result => {
-                    history.push(`/offers/create/draft/${result}/stage/2`);
+                callback: result => {
+                    history.push(`/offers/create/draft/${result.data}/stage/2`);
                 }
             },
             {
                 status: 400,
-                callback: async result => {
+                callback: () => {
                     toast.error("Your creation request has been rejected");
-                    console.log(result);
                 }
             }
         );

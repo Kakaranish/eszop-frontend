@@ -1,5 +1,5 @@
 import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import ValidableInput from 'common/ValidableInput';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import AwareComponentBuilder from 'common/AwareComponentBuilder';
 const SignUpPage = (props) => {
 
     const history = useHistory();
+
+    const [errorMsg, setErrorMsg] = useState();
 
     const onSubmit = async event => {
         event.preventDefault();
@@ -20,24 +22,32 @@ const SignUpPage = (props) => {
         }
 
         const signUpUri = "/identity-api/auth/sign-up";
-        const signUpResult = await axios.post(signUpUri, formDataJson);
-
-        switch (signUpResult.status) {
-            case 200:
-                break;
-            case 400:
-                toast.warn("Validation error");
-                // TODO: Handle in the future
-                return;
-            default:
-                toast.warn(`Error ${signUpResult.status}`);
-                history.push('/refresh');
-                break;
-        }
+        const signUpAction = async () => await axios.post(signUpUri, formDataJson);
+        const signUpResult = await requestHandler(signUpAction,
+            {
+                status: 200,
+                callback: result => result
+            },
+            {
+                status: 400,
+                callback: result => {
+                    setErrorMsg(result.data.Message);
+                    return result;
+                }
+            },
+            {
+                status: -1,
+                callback: result => {
+                    toast.warn(`Error ${signUpResult.status}`);
+                    return result;
+                }
+            }
+        );
+        if (signUpResult.status !== 200) return;
 
         const getMeUri = "/identity-api/user/me";
         const getMeAction = async () => await axios.get(getMeUri);
-        await requestHandler(getMeAction,
+        await authorizedRequestHandler(getMeAction,
             {
                 status: 200,
                 callback: async getMeResult => {
@@ -109,12 +119,19 @@ const SignUpPage = (props) => {
                     />
                 </div>
 
-                <div className="text-secondary mb-3">
+                <div className={`text-secondary ${!errorMsg && 'mb-3'}`}>
                     Have your already account? Let's&nbsp;
                     <Link to='/auth/sign-in'>
                         sign in
                     </Link>
                 </div>
+
+                {
+                    errorMsg &&
+                    <div className="text-danger mb-2">
+                        {errorMsg}
+                    </div>
+                }
 
                 <button type="submit" className="btn btn-block btn-outline-success">
                     Sign Up

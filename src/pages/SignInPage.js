@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
@@ -9,6 +9,8 @@ const SignInPage = (props) => {
 
     const history = useHistory();
 
+    const [errorMsg, setErrorMsg] = useState();
+
     const onSubmit = async event => {
         event.preventDefault();
 
@@ -16,27 +18,43 @@ const SignInPage = (props) => {
 
         const signInUri = "/identity-api/auth/sign-in";
         const signInAction = async () => await axios.post(signInUri, formDataJson);
-        await requestHandler(signInAction,
+        const signInResult = await requestHandler(signInAction,
             {
                 status: 200,
-                callback: () => { }
+                callback: result => result
+            },
+            {
+                status: 401,
+                callback: result => {
+                    setErrorMsg("Invalid email or password");
+                    return result;
+                }
+            },
+            {
+                status: 403,
+                callback: result => {
+                    setErrorMsg("Account locked");
+                    return result;
+                }
             },
             {
                 status: -1,
                 callback: result => {
                     toast.warn(`Error ${result.status}`);
                     history.push('/refresh');
+                    return result;
                 }
             }
         );
+        if (signInResult?.status !== 200) return;
 
         const getMeUri = "/identity-api/user/me";
         const getMeAction = async () => await axios.get(getMeUri);
-        await requestHandler(getMeAction,
+        await authorizedRequestHandler(getMeAction,
             {
                 status: 200,
-                callback: async getMeResult => {
-                    props.setIdentity(getMeResult);
+                callback: result => {
+                    props.setIdentity(result.data);
                 }
             },
             {
@@ -50,12 +68,11 @@ const SignInPage = (props) => {
 
         const getCartUri = `/carts-api/cart`;
         const getCartAction = async () => await axios.get(getCartUri);
-
         authorizedRequestHandler(getCartAction,
             {
                 status: 200,
                 callback: result => {
-                    result.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
+                    result.data.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
                     history.push('/offers');
                 }
             },
@@ -85,12 +102,19 @@ const SignInPage = (props) => {
                     />
                 </div>
 
-                <div className="text-secondary mb-3">
+                <div className={`text-secondary ${!errorMsg && 'mb-3'}`}>
                     You have no account? No problem!&nbsp;
                     <Link to='/auth/sign-up'>
                         Create it
                     </Link>
                 </div>
+
+                {
+                    errorMsg &&
+                    <div className="text-danger mb-2">
+                        {errorMsg}
+                    </div>
+                }
 
                 <button type="submit" className="btn btn-block btn-outline-success">
                     Sign In

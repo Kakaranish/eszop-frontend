@@ -3,7 +3,6 @@ import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import CartItem from './CartItem';
 
 const CartPage = (props) => {
@@ -25,12 +24,12 @@ const CartPage = (props) => {
                     callback: result => {
                         setState({
                             loading: false,
-                            cart: result
+                            cart: result.data
                         })
                     }
-                });
+                }
+            );
         };
-
         fetch();
     }, []);
 

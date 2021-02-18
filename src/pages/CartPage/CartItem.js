@@ -40,7 +40,7 @@ const CartItem = (props) => {
 
     return <>
         <Styles>
-            <div className="card mt-2 mb-5">
+            <div className="card mt-2 mb-4">
                 <div className="row no-gutters">
                     <img
                         src={getPreviewImageUri(cartItem)}

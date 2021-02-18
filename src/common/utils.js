@@ -68,18 +68,20 @@ export const requestHandler = async (action, ...handlers) => {
     
     const result = await action();
     if (result.status === 200) {
-        if (handlersDict[200]) return await handlersDict[200](result.data);
+        if (handlersDict[200]) return await handlersDict[200](result);
         else return result.data;
     }
+    
+    const callback = handlersDict[result.status];
+    if (callback) return await callback(result);
 
     const anyStatus = -1;
     const callbackForAnyStatus = handlersDict[anyStatus];
-    if (callbackForAnyStatus) return callbackForAnyStatus(result.data);
-
-    const callback = handlersDict[result.status];
-    if (callback) return await callback(result.data);
+    if (callbackForAnyStatus) return callbackForAnyStatus(result);
 
     toast.error(`Error ${result.status}`);
+
+    return result;
 };
 
 /**

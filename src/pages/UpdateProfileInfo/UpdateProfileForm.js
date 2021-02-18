@@ -34,7 +34,6 @@ const UpdateProfileForm = (props) => {
         formDataJson.dateOfBirth = momentDateOfBirth.format('YYYY-MM-DD');
 
         const uri = `/identity-api/profile-info`
-        console.log(formDataJson);
         const action = async () => await axios.put(uri, formDataJson);
 
         await authorizedRequestHandler(action,

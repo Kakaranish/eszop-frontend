@@ -48,11 +48,11 @@ const EditOfferDraftStageOnePage = (props) => {
     useEffect(() => {
         const fetchCategories = async () => {
             const action = async () => await axios.get("/offers-api/categories");
-            const result = await requestHandler(action);
+            const categoriesResult = await requestHandler(action);
 
-            const categoryOptions = result.map(x => ({
-                value: x.id,
-                label: x.name
+            const categoryOptions = categoriesResult.map(cat => ({
+                value: cat.id,
+                label: cat.name
             }));
 
             setCategoryOptions(categoryOptions);
@@ -61,14 +61,13 @@ const EditOfferDraftStageOnePage = (props) => {
 
         const fetchOffer = async () => {
             const action = async () => await axios.get(`/offers-api/offers/${offerId}/my`);
-
             await authorizedRequestHandler(action,
                 {
                     status: 200,
                     callback: result => {
-                        setOffer(result);
-                        setImages(result.images.map(x => ({ ...x, isRemote: true })));
-                        setKeyValueData([...result.keyValueInfos.map(kvp => ({
+                        setOffer(result.data);
+                        setImages(result.data.images.map(x => ({ ...x, isRemote: true })));
+                        setKeyValueData([...result.data.keyValueInfos.map(kvp => ({
                             key: kvp.key,
                             value: kvp.value
                         })), {
@@ -127,7 +126,6 @@ const EditOfferDraftStageOnePage = (props) => {
                 status: 400,
                 callback: async result => {
                     toast.error("Your creation request has been rejected");
-                    console.log(result);
                 }
             }
         );
@@ -198,9 +196,19 @@ const EditOfferDraftStageOnePage = (props) => {
                 </div>
             </div>
 
-            <button type="submit" className="btn btn-success btn-block mt-5">
-                Go to stage 2
-            </button>
+            <div className="row mt-5">
+                <div className="col-6">
+                    <button type="submit" className="btn btn-outline-success btn-block">
+                        Save & Refresh
+                    </button>
+                </div>
+
+                <div className="col-6">
+                    <button type="submit" className="btn btn-success btn-block">
+                        Go to stage 2
+                    </button>
+                </div>
+            </div>
         </OfferForm>
 
         <ReactTooltip />

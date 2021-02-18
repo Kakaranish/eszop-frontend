@@ -15,19 +15,25 @@ const MyOffersPage = () => {
         const fetch = async () => {
             const uri = "/offers-api/offers/my";
             const action = async () => await axios.get(uri);
-            const result = await requestHandler(action);
 
-            setState({
-                loading: false,
-                offers: result.items
-            });
+            await requestHandler(action,
+                {
+                    status: 200,
+                    callback: result => {
+                        setState({
+                            loading: false,
+                            offers: result.data.items
+                        });
+                    }
+                }
+            );
         };
 
         fetch();
     }, []);
 
     if (state.loading) return <></>
-    
+
     if (!state.offers?.length) return <div>
         <h3>You have no offer already</h3>
         <Link to='/offers/create' className="btn btn-outline-success">

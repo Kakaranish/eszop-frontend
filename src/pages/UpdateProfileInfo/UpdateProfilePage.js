@@ -20,7 +20,7 @@ const UpdateProfilePage = () => {
                     callback: result => {
                         setState({
                             loading: false,
-                            profile: result
+                            profile: result.data
                         });
                     }
                 },

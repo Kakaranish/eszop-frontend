@@ -8,21 +8,21 @@ import DeliverySection from './DeliverySection';
 
 const OfferPage = (props) => {
 
+    const offerId = props.match.params.id;
     const [state, setState] = useState({ loading: true, offer: null });
 
     useEffect(() => {
         const fetch = async () => {
-            const offerId = props.match.params.id;
             const uri = `/offers-api/offers/${offerId}`;
             const action = async () => axios.get(uri);
             await requestHandler(action,
                 {
                     status: 200,
-                    callback: offer => setState({ loading: false, offer: offer })
+                    callback: result => setState({ loading: false, offer: result.data })
                 },
                 {
                     status: 204,
-                    callback: offer => setState({ loading: false, offer: offer })
+                    callback: result => setState({ loading: false, offer: result.data })
                 });
         };
 

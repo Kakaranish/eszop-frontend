@@ -54,7 +54,7 @@ const EditOfferDraftStageTwoPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
-                        setDefaultAccountNumber(result.accountNumber);
+                        setDefaultAccountNumber(result.data.accountNumber);
                     }
                 },
                 {
@@ -70,7 +70,7 @@ const EditOfferDraftStageTwoPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
-                        setPredefinedDeliveryMethods(result.map(x => {
+                        setPredefinedDeliveryMethods(result.data.map(x => {
                             const labelPricePart = (x.price || x.price === 0)
                                 ? ` - ${x.price.toFixed(2)} PLN`
                                 : '';
@@ -91,14 +91,14 @@ const EditOfferDraftStageTwoPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
-                        setDeliveryMethods([...result.deliveryMethods.map(kvp => ({
+                        setDeliveryMethods([...result.data.deliveryMethods.map(kvp => ({
                             key: kvp.name,
                             value: kvp.price.toFixed(2)
                         })), {
                             key: "",
                             value: ""
                         }]);
-                        setAccountNumber(result.bankAccountNumber);
+                        setAccountNumber(result.data.bankAccountNumber);
                     }
                 }
             );

@@ -24,20 +24,23 @@ const CartItemQuantityInput = (props) => {
         };
         const action = async () => await axios.put(uri, data);
 
-        await authorizedRequestHandler(action, {
-            status: 200,
-            callback: () => {
-                let cartItemCopy = Object.assign({}, props.cart[cartItemId]);
-                cartItemCopy.quantity = newValue;
-                props.addOrUpdateCartItem(cartItemCopy);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    let cartItemCopy = Object.assign({}, props.cart[cartItemId]);
+                    cartItemCopy.quantity = newValue;
+                    props.addOrUpdateCartItem(cartItemCopy);
+                }
+            },
+            {
+                status: -1,
+                callback: () => {
+                    toast.error("Unknown error");
+                    history.push('/refresh');
+                }
             }
-        }, {
-            status: -1,
-            callback: () => {
-                toast.error("Unknown error");
-                history.push('/refresh');
-            }
-        });
+        );
     };
 
     const triggerUpdate = async newValue => {
