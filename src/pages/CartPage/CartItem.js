@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import noImgPlaceholder from 'assets/img/no-image.svg';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,10 +20,12 @@ const Styles = styled.div`
 
 const CartItem = (props) => {
 
-    const { cartItem } = props;
+    const { cartItemId, cartItems, setCartItems } = props;
+
+    const cartItem = cartItems.find(x => x.id === cartItemId);
+    const quantity = cartItem.quantity;
 
     const history = useHistory();
-    const [quantity, setQuantity] = useState(cartItem.quantity);
 
     const onDelete = async () => {
         const uri = `/carts-api/cart/item/${cartItem.id}`;
@@ -59,9 +61,8 @@ const CartItem = (props) => {
                             <div className="d-inline-block align-self-center">
                                 <CartItemQuantityInput
                                     cartItemId={cartItem.id}
-                                    value={quantity}
-                                    setValue={setQuantity}
-                                    maxValue={cartItem.availableStock}
+                                    cartItems={cartItems}
+                                    setCartItems={setCartItems}
                                 />
                             </div>
 
@@ -75,15 +76,15 @@ const CartItem = (props) => {
                                         <>
                                             <div className="mb-n2">
                                                 {(quantity * cartItem.pricePerItem).toFixed(2)} PLN
-                                                </div>
+                                            </div>
 
                                             <div className="text-muted">
                                                 Per item: {cartItem.pricePerItem.toFixed(2)} PLN
-                                                </div>
+                                            </div>
                                         </>
                                 }
-
                             </div>
+
                             <img src={trash}
                                 className="align-self-center ml-3"
                                 style={{ width: '25px', height: '25px', cursor: 'pointer' }}

@@ -9,10 +9,8 @@ const CartPage = (props) => {
 
     const history = useHistory();
 
-    const [state, setState] = useState({
-        loading: true,
-        cart: null
-    });
+    const [cartItems, setCartItems] = useState([]);
+    const [state, setState] = useState({ loading: true });
 
     useEffect(() => {
         const fetch = async () => {
@@ -22,10 +20,8 @@ const CartPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
-                        setState({
-                            loading: false,
-                            cart: result.data
-                        })
+                        setState({ loading: false })
+                        setCartItems(result.data.cartItems);
                     }
                 }
             );
@@ -47,18 +43,25 @@ const CartPage = (props) => {
     };
 
     if (state.loading) return <></>
-    else if (!state.cart.cartItems?.length) return <h3>Your cart is empty</h3>
+    else if (!cartItems?.length) return <h3>Your cart is empty</h3>
+
+    const offersTotalPrices = cartItems.map(cartItem => parseFloat(cartItem.quantity) * parseFloat(cartItem.pricePerItem));
+    const totalPrice = offersTotalPrices.reduce((a, b) => a + b, 0);
 
     return <>
         <h3>Your cart</h3>
         {
-            state.cart.cartItems.map((cartItem, i) =>
-                <CartItem key={`ci-${i}`} cartItem={cartItem} />
+            cartItems.map((cartItem, i) =>
+                <CartItem key={`ci-${i}`} cartItemId={cartItem.id} cartItems={cartItems} setCartItems={setCartItems} />
             )
         }
 
+        <div className="col-12 mb-4 text-right">
+            <h3>Total price: {totalPrice.toFixed(2)} PLN </h3>
+        </div>
+
         {
-            state.cart.cartItems.length > 0 &&
+            cartItems.length > 0 &&
             <div className="row">
                 <div className="col-6">
                     <button className="btn btn-success btn-block">

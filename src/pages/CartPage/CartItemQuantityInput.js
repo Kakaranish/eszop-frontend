@@ -9,8 +9,14 @@ import AwareComponentBuilder from 'common/AwareComponentBuilder';
 
 const CartItemQuantityInput = (props) => {
 
-    const { cartItemId, value, setValue, maxValue = Infinity } = props;
-    const minValue = 0;
+    const { cartItemId, cartItems, setCartItems } = props;
+
+    const cartItem = cartItems.find(x => x.id === cartItemId);
+    const quantity = cartItem.quantity;
+
+    const minValue = 1;
+    const maxValue = cartItem.availableStock;
+
     const delayMs = 1500;
 
     const history = useHistory();
@@ -53,44 +59,70 @@ const CartItemQuantityInput = (props) => {
     };
 
     const plusOnClick = () => {
-        let parsedValue = parseInt(value);
+        let parsedValue = parseInt(quantity);
         if (parsedValue + 1 <= maxValue) {
-            setValue(val => parseInt(val) + 1);
             triggerUpdate(parsedValue + 1);
+            setCartItems(items => {
+                const clone = items.slice(0);
+                const index = clone.findIndex(x => x.id === cartItemId)
+                clone[index].quantity = parsedValue + 1;
+
+                return clone;
+            });
         }
-        else toast.warn(`Max quantity is ${maxValue}`)
+        else {
+            toast.warn(`Maximum quantity of this offer is ${maxValue}`);
+        }
     };
 
     const minusOnClick = () => {
-        let parsedValue = parseInt(value);
+        let parsedValue = parseInt(quantity);
         if (parsedValue - 1 >= minValue) {
-            setValue(val => parseInt(val) - 1);
             triggerUpdate(parsedValue - 1);
+            setCartItems(items => {
+                const clone = items.slice(0);
+                const index = clone.findIndex(x => x.id === cartItemId)
+                clone[index].quantity = parsedValue - 1;
+
+                return clone;
+            });
+        }
+        else {
+            toast.warn(`Minimum quantity is ${minValue}`);
         }
     };
 
     const onInputChange = event => {
-        if (event.target.value.trim() === '') {
-            setValue('');
+        let newValue = parseInt(event.target.value.trim());
+        if (isNaN(newValue)) {
+            setCartItems(items => {
+                const clone = items.slice(0);
+                const index = clone.findIndex(x => x.id === cartItemId)
+                clone[index].quantity = 1;
+
+                return clone;
+            });
             return;
         }
 
-        let newValue = parseInt(event.target.value.trim());
-        if (!newValue && newValue !== 0) return;
-
         if (newValue > maxValue) {
-            toast.warn(`Max quantity is ${maxValue}`)
+            toast.warn(`Maximum quantity of this offer is ${maxValue}`);
             return;
         }
 
         if (newValue < minValue) {
-            toast.warn(`Min quantity is ${minValue}`)
+            toast.warn(`Minimum quantity is ${minValue}`);
             return;
         }
 
-        setValue(newValue);
         triggerUpdate(newValue);
-        updateAction();
+        setCartItems(items => {
+            const clone = items.slice(0);
+            const index = clone.findIndex(x => x.id === cartItemId)
+            clone[index].quantity = newValue;
+
+            return clone;
+        });
     };
 
     return <>
@@ -106,7 +138,7 @@ const CartItemQuantityInput = (props) => {
             <input name="quantityInput" type="number" className="form-control"
                 style={{ WebkitAppearance: 'none', width: '100px' }}
                 onChange={onInputChange} required
-                min={1} max={maxValue} step={1} value={value}
+                min={1} max={maxValue} step={1} value={quantity}
             />
 
             <div className="align-self-center">
