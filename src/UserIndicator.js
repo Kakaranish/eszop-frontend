@@ -3,6 +3,7 @@ import userIcon from 'assets/img/user.svg';
 import profileIcon from 'assets/img/profile.svg';
 import bagIcon from 'assets/img/bag.svg';
 import plusIcon from 'assets/img/plus.svg';
+import invoiceIcon from 'assets/img/invoice.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -102,6 +103,23 @@ const UserIndicator = (props) => {
 
                             <div className="d-inline-block">
                                 My Offers
+                            </div>
+                        </div>
+                    </Link>
+
+                    <Divider width="1.5px" />
+
+                    <Link to="/user/orders" className="text-reset">
+                        <div className="px-3 py-2 hoverDiv d-flex">
+                            <div className="d-inline-flex imgHolder">
+                                <img src={invoiceIcon}
+                                    style={{ width: '19px' }}
+                                    alt="my-offers-img"
+                                />
+                            </div>
+
+                            <div className="d-inline-block">
+                                My Orders
                             </div>
                         </div>
                     </Link>

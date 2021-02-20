@@ -12,7 +12,7 @@ import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
 import CartPage from 'pages/CartPage/CartPage';
 import RefreshPage from 'pages/RefreshPage';
 import UpdateProfilePage from 'pages/UpdateProfileInfo/UpdateProfilePage';
-import MyOrdersPage from 'pages/MyOrdersPage/MyOrdersPage';
+import OrderRoutes from 'routeAggregators/OrderRoutes';
 
 const App = () => <>
 
@@ -26,10 +26,11 @@ const App = () => <>
 
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
           <AuthorizedOnlyRoute path='/user/profile' component={UpdateProfilePage} />
-          <AuthorizedOnlyRoute path='/user/orders' component={MyOrdersPage} />
 
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />
+          <Route path='/user/orders' component={OrderRoutes} />
+
           <AuthorizedOnlyRoute path="/cart" component={CartPage} />
 
           <Route path='/error/:code' component={ErrorPage} />

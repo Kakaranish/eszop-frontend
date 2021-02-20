@@ -45,15 +45,16 @@ const MyOrdersPage = () => {
 
         <Styles>
             {
-                state.orders.map(order => <div className="bg-white col-12 mb-4 py-2">
+                state.orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
                     <div className="mt-2 mb-3">
-                        Order Id: <i>{order.id}</i>
+                        Order Id: <i>{order.id}</i> <br />
+                        State: <i>{order.orderState}</i>
                     </div>
 
                     <div>
                         {
-                            order.orderItems.map(orderItem => <>
-                                <div className="card mt-2 mb-4">
+                            order.orderItems.map((orderItem, j) =>
+                                <div className="card mt-2 mb-4" key={`order-item-${j}`}>
                                     <div className="row no-gutters">
                                         <img
                                             src={getPreviewImageUri(orderItem)}
@@ -106,7 +107,7 @@ const MyOrdersPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </>)
+                            )
                         }
                     </div>
 
