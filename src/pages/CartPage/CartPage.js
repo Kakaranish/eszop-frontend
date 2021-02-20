@@ -3,6 +3,7 @@ import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import CartItem from './CartItem';
 
 const CartPage = (props) => {
@@ -42,6 +43,22 @@ const CartPage = (props) => {
         });
     };
 
+    const onMakeOrder = async event => {
+        const uri = '/carts-api/cart/finalize';
+        const action = async () => await axios.post(uri);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: result => {
+                    const orderId = result.data.orderId;
+                    toast.success('Made Order');
+                    props.clearCart();
+                    history.push(`/user/orders/${orderId}`);
+                }
+            }
+        );
+    };
+
     if (state.loading) return <></>
     else if (!cartItems?.length) return <h3>Your cart is empty</h3>
 
@@ -64,7 +81,7 @@ const CartPage = (props) => {
             cartItems.length > 0 &&
             <div className="row">
                 <div className="col-6">
-                    <button className="btn btn-success btn-block">
+                    <button className="btn btn-success btn-block" onClick={onMakeOrder}>
                         Make Order
                     </button>
                 </div>

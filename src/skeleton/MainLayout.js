@@ -10,15 +10,22 @@ const MainLayout = (props) => <>
     <Navbar />
 
     <nav class="navbar navbar-light bg-light">
-        <Link to="/offers" className="btn btn-primary mr-2">
-            Offers
-        </Link>
+        <div>
+            <Link to="/offers" className="btn btn-primary mr-2">
+                Offers
+            </Link>
+
+            <Link to="/user/orders" className="btn btn-primary mr-2">
+                My Orders
+            </Link>
+        </div>
+
         <div class="my-2 my-sm-0" type="submit">
             {
                 !props.identity &&
                 <Link to="/auth/sign-in" className="btn btn-primary mr-2">
                     Sign-In
-            </Link>
+                </Link>
             }
 
             {
