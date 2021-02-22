@@ -11,7 +11,7 @@ import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
 import KeyValueTable from './components/KeyValueTable/KeyValueTable';
 import ReactTooltip from 'react-tooltip';
-
+import trashIcon from 'assets/img/delete.svg';
 
 const columnSettings = {
     key: {
@@ -131,6 +131,23 @@ const EditOfferDraftStageOnePage = (props) => {
         );
     };
 
+    const onDelete = async () => {
+        const uri = `/offers-api/offers/draft`;
+        const data = {
+            offerId: offerId
+        };
+        const action = async () => await axios.delete(uri, {data: data});
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    toast.success('Offer deleted');
+                    history.push('/user/offers');
+                }
+            }
+        );
+    };
+
     if (loadState.loadingOffers || loadState.loadingCategories) return <></>
     if (!offer) return <h3>There is no such offer</h3>
 
@@ -144,6 +161,16 @@ const EditOfferDraftStageOnePage = (props) => {
             <span className="ml-2 align-self-center text-secondary">
                 (Stage 1 of 2)
             </span>
+
+            <div className="pull-right">
+                <img src={trashIcon}
+                    className="align-self-center ml-3"
+                    style={{ width: '25px', height: '25px', cursor: 'pointer' }}
+                    onClick={onDelete}
+                    alt="trash-img"
+                    data-tip="Delete offer?"
+                />
+            </div>
         </div>
 
         <OfferForm onSubmitCb={updateCb} offer={offer}>

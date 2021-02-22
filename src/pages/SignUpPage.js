@@ -50,8 +50,8 @@ const SignUpPage = (props) => {
         await authorizedRequestHandler(getMeAction,
             {
                 status: 200,
-                callback: async getMeResult => {
-                    props.setIdentity(getMeResult);
+                callback: async result => {
+                    props.setIdentity(result.data);
                 }
             },
             {
@@ -69,7 +69,7 @@ const SignUpPage = (props) => {
             {
                 status: 200,
                 callback: result => {
-                    result.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
+                    result.data.cartItems.forEach(cartItem => props.addOrUpdateCartItem(cartItem));
                     history.push('/offers');
                 }
             },

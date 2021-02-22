@@ -88,7 +88,7 @@ const CreateOfferDraftPage = () => {
             {
                 status: 200,
                 callback: result => {
-                    history.push(`/offers/create/draft/${result.data}/stage/2`);
+                    history.push(`/offers/create/draft/${result.data.offerId}/stage/2`);
                 }
             },
             {

@@ -64,7 +64,7 @@ const AddToCartSection = (props) => {
                 classes="quantity-input"
                 value={quantity}
                 setValue={setQuantity}
-                minValue={0}
+                minValue={1}
                 maxValue={offer.availableStock}
             />
 

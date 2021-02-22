@@ -8,6 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import KeyValueTable from '../StageOne/components/KeyValueTable/KeyValueTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import trashIcon from 'assets/img/delete.svg';
 
 const columnSettings = {
     key: {
@@ -182,6 +183,23 @@ const EditOfferDraftStageTwoPage = (props) => {
         });
     };
 
+    const onDelete = async () => {
+        const uri = `/offers-api/offers/draft`;
+        const data = {
+            offerId: offerId
+        };
+        const action = async () => await axios.delete(uri, {data: data});
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    toast.success('Offer deleted');
+                    history.push('/user/offers');
+                }
+            }
+        );
+    };
+
     const onSubmitCb = async event => {
         event.preventDefault();
         
@@ -205,6 +223,16 @@ const EditOfferDraftStageTwoPage = (props) => {
             <span className="ml-2 align-self-center text-secondary">
                 (Stage 2 of 2)
             </span>
+
+            <div className="pull-right">
+                <img src={trashIcon}
+                    className="align-self-center ml-3"
+                    style={{ width: '25px', height: '25px', cursor: 'pointer' }}
+                    onClick={onDelete}
+                    alt="trash-img"
+                    data-tip="Delete offer?"
+                />
+            </div>
         </div>
 
         <form onKeyPress={formOnKeyPress} onSubmit={onSubmitCb}>
