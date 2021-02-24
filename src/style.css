@@ -20,3 +20,7 @@ body {
 .cursor-pointer{
     cursor: pointer;
 }
+
+.z-999 {
+    z-index: 999;
+}
