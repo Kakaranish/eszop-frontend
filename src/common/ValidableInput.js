@@ -3,6 +3,7 @@ import parse from 'html-react-parser';
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import XRegExp from 'xregexp';
 
 const ValidableInput = (
     {
@@ -11,21 +12,20 @@ const ValidableInput = (
         type = "text",
         defaultValue = "",
         classes,
-        regex=".*",
+        regex = ".*",
         isHtmlErrorMsg = false,
         errorMsg = "",
-        tipMsg
+        tipMsg,
+        inputAttributes = {}
     }
 ) => {
-
-    const regExp = new RegExp(regex);
 
     const [value, setValue] = useState(defaultValue);
     const [isValid, setIsValid] = useState(true);
 
     const onChange = event => {
         setValue(event.target.value);
-        setIsValid(regExp.test(event.target.value));
+        setIsValid(XRegExp(regex).test(event.target.value));
     };
 
     if (!tipMsg) return <>
@@ -39,6 +39,7 @@ const ValidableInput = (
             pattern={regex}
             onInvalid={() => setIsValid(false)}
             required
+            {...inputAttributes}
         />
 
         {
@@ -65,6 +66,7 @@ const ValidableInput = (
                 pattern={regex}
                 onInvalid={() => setIsValid(false)}
                 required
+                {...inputAttributes}
             />
 
             <div className="input-group-prepend">
