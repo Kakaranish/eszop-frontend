@@ -14,6 +14,10 @@ const MainLayout = (props) => <>
             <Link to="/offers" className="btn btn-primary mr-2">
                 Offers
             </Link>
+
+            <Link to="/user/addresses" className="btn btn-primary mr-2">
+                Delivery Addresses
+            </Link>
         </div>
 
         <div className="my-2 my-sm-0" type="submit">

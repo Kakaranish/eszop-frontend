@@ -162,7 +162,7 @@ const EditOfferDraftStageTwoPage = (props) => {
 
     const onSaveOnGoBackCb = async event => {
         event.preventDefault();
-        
+       
         await updateOffer(event);
 
         history.push(`/offers/create/draft/${offerId}/stage/1`);

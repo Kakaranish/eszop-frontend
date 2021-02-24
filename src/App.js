@@ -13,6 +13,7 @@ import CartPage from 'pages/CartPage/CartPage';
 import RefreshPage from 'pages/RefreshPage';
 import UpdateProfilePage from 'pages/UpdateProfileInfo/UpdateProfilePage';
 import OrderRoutes from 'routeAggregators/OrderRoutes';
+import DeliveryAddressesPage from 'pages/DeliveryAddressesPage/DeliveryAddressesPage';
 
 const App = () => <>
 
@@ -30,6 +31,7 @@ const App = () => <>
           <Route path='/auth' component={AuthRoutes} />
           <Route path='/offers' component={OfferRoutes} />
           <Route path='/user/orders' component={OrderRoutes} />
+          <Route path='/user/addresses' component={DeliveryAddressesPage} />
 
           <AuthorizedOnlyRoute path="/cart" component={CartPage} />
 
