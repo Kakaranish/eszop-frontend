@@ -3,6 +3,12 @@ import moment from 'moment';
 import ImagePreview from 'common/components/ImagePreview';
 import AddToCartSection from './AddToCartSection';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import styled from 'styled-components';
+import starIcon from 'assets/img/star.svg';
+
+const Styles = styled.div`
+.starIcon {width: 20px;}
+}`
 
 const HeaderSection = (props) => {
 
@@ -39,6 +45,22 @@ const HeaderSection = (props) => {
 
             <div className="col-7">
                 <div className="col-12 mb-3">
+
+                    {
+                        (props.identity && props.identity.id == offer.ownerId) &&
+                        <>
+                            <Styles>
+                                <div className="d-flex mb-3">
+                                    <img src={starIcon}
+                                        className="starIcon mr-2"
+                                        alt="star-icon"
+                                    />
+                                    This is your offer
+                                </div>
+                            </Styles>
+                        </>
+                    }
+
                     <h4 className="mb-3">
                         {offer.name}
                     </h4>
@@ -59,7 +81,10 @@ const HeaderSection = (props) => {
                         </h4>
                     </div>
 
-                    <AddToCartSection offer={offer}/>
+                    {
+                        !(props.identity && props.identity.id == offer.ownerId) &&
+                        <AddToCartSection offer={offer} />
+                    }
 
                 </div>
             </div>
@@ -69,4 +94,5 @@ const HeaderSection = (props) => {
 
 export default new AwareComponentBuilder()
     .withCartAwareness()
+    .withIdentityAwareness()
     .build(HeaderSection);

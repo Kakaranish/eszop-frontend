@@ -4,6 +4,7 @@ const identityReducer = (state = null, action) => {
     switch (action.type) {
         case types.IDENTITY_SET:
             return {
+                id: action.identity.id,
                 email: action.identity.email,
                 role: action.identity.role
             };
