@@ -5,6 +5,7 @@ import AddToCartSection from './AddToCartSection';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import styled from 'styled-components';
 import starIcon from 'assets/img/star.svg';
+import { Link } from 'react-router-dom';
 
 const Styles = styled.div`
 .starIcon {width: 20px;}
@@ -45,7 +46,6 @@ const HeaderSection = (props) => {
 
             <div className="col-7">
                 <div className="col-12 mb-3">
-
                     {
                         (props.identity && props.identity.id == offer.ownerId) &&
                         <>
@@ -61,9 +61,13 @@ const HeaderSection = (props) => {
                         </>
                     }
 
-                    <h4 className="mb-3">
+                    <div className="h4 mb-0">
                         {offer.name}
-                    </h4>
+                    </div>
+
+                    <div className="text-muted mb-3" style={{fontSize: '0.8rem'}}>
+                        Offer Id: {offer.id}
+                    </div>
 
                     <p className="mb-0 py-0">
                         Published at: {moment(offer.publishedAt).format("YYYY-MM-DD HH:mm:ss")}
@@ -83,9 +87,14 @@ const HeaderSection = (props) => {
 
                     {
                         !(props.identity && props.identity.id == offer.ownerId) &&
-                        <AddToCartSection offer={offer} />
+                        <>
+                            <AddToCartSection offer={offer} />
+                            
+                            <Link to="/to/do" className="mt-4 pull-right">
+                                Go to seller
+                            </Link>
+                        </>
                     }
-
                 </div>
             </div>
         </div>
