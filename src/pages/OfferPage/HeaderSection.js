@@ -65,7 +65,7 @@ const HeaderSection = (props) => {
                         {offer.name}
                     </div>
 
-                    <div className="text-muted mb-3" style={{fontSize: '0.8rem'}}>
+                    <div className="text-muted mb-3" style={{ fontSize: '0.8rem' }}>
                         Offer Id: {offer.id}
                     </div>
 
@@ -89,8 +89,8 @@ const HeaderSection = (props) => {
                         !(props.identity && props.identity.id == offer.ownerId) &&
                         <>
                             <AddToCartSection offer={offer} />
-                            
-                            <Link to="/to/do" className="mt-4 pull-right">
+
+                            <Link to={`/seller/${offer.ownerId}`} className="mt-4 pull-right">
                                 Go to seller
                             </Link>
                         </>

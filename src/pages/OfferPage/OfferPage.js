@@ -23,7 +23,8 @@ const OfferPage = (props) => {
                 {
                     status: 204,
                     callback: result => setState({ loading: false, offer: result.data })
-                });
+                }
+            );
         };
 
         fetch();

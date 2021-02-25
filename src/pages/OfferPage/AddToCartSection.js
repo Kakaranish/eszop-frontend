@@ -58,6 +58,17 @@ const AddToCartSection = (props) => {
         </button>
     </>
 
+    if (props.cart && Object.values(props.cart).some(x => x.sellerId !== offer.ownerId)) return <>
+        <div className="mb-3">
+            Available stock: <b>{offer.availableStock}</b> of <b>{offer.totalStock}</b>
+        </div>
+
+        <button className="btn btn-secondary btn-block" disabled style={{ cursor: 'not-allowed' }}>
+            You have in cart item from other seller! <br/>
+            Remove it to add this offer to cart.
+        </button>
+    </>
+
     if (!Object.values(props.cart).some(x => x.offerId === offer.id)) return <>
         <Styles>
             <QuantityInput
