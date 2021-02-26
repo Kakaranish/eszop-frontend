@@ -7,7 +7,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
         ? {}
         : { disabled: true };
 
-    return <>
+    if (editable) return <>
         <form onSubmit={onSubmit}>
             <input name="deliveryAddressId" defaultValue={deliveryAddress.id ?? ""} hidden />
 
@@ -113,6 +113,86 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
 
             {children}
         </form>
+    </>
+
+    return <>
+        <input name="deliveryAddressId" defaultValue={deliveryAddress.id ?? ""} hidden />
+
+        <div className="form-row">
+            <div className="form-group col-md-6">
+                <label htmlFor="firstName">First Name</label>
+
+                <ValidableInput
+                    name="firstName"
+                    placeholder="First Name..."
+                    defaultValue={deliveryAddress.firstName ?? ""}
+                />
+            </div>
+
+            <div className="form-group col-md-6">
+                <label htmlFor="lastName">Last Name</label>
+
+                <ValidableInput
+                    name="lastName"
+                    placeholder="Last Name..."
+                    defaultValue={deliveryAddress.lastName ?? ""}
+                />
+            </div>
+        </div>
+
+        <div className="form-group">
+            <label htmlFor="Phone number">Phone number</label>
+
+            <ValidableInput
+                name="phoneNumber"
+                placeholder="Phone Number..."
+                defaultValue={deliveryAddress.phoneNumber ?? ""}
+            />
+        </div>
+
+        <div className="form-row">
+            <div className="form-group col-md-8">
+                <label htmlFor="country">Country</label>
+
+                <ValidableInput
+                    name="country"
+                    placeholder="Country..."
+                    defaultValue={deliveryAddress.country ?? ""}
+                />
+            </div>
+
+            <div className="form-group col-md-4">
+                <label htmlFor="zipCode">Zip Code</label>
+
+                <ValidableInput
+                    name="zipCode"
+                    placeholder="Zip Code..."
+                    defaultValue={deliveryAddress.zipCode ?? ""}
+                />
+            </div>
+        </div>
+
+        <div className="form-group">
+            <label htmlFor="city">City</label>
+
+            <ValidableInput
+                name="city"
+                placeholder="City..."
+                defaultValue={deliveryAddress.city ?? ""}
+            />
+        </div>
+
+        <div className="form-group">
+            <label htmlFor="Street">Street</label>
+
+            <ValidableInput
+                name="street"
+                placeholder="Street..."
+                defaultValue={deliveryAddress.street ?? ""}
+            />
+        </div>
+
+        {children}
     </>
 };
 

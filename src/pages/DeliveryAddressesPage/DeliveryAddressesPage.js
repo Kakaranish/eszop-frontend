@@ -47,6 +47,8 @@ const DeliveryAddressesPage = () => {
     if (state.loading) return <></>
     if (!state.deliveryAddresses.length) return <>
         <h3>You have no delivery addresses</h3>
+
+        <AddDeliveryAddressModal />
     </>
 
     return <>
