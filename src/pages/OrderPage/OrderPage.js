@@ -29,7 +29,7 @@ const OrderPage = (props) => {
 
     useEffect(() => {
         const fetch = async () => {
-            const uri = `/orders-api/orders/${orderId}/delivery-methods`;
+            const uri = `/orders-api/orders/${orderId}/available-delivery-methods`;
             const action = async () => await axios.get(uri);
             await authorizedRequestHandler(action,
                 {
