@@ -99,7 +99,7 @@ const DeliveryAddressesModal = (props) => {
 
                             <button type="button" className="btn btn-success btn-block mt-3 mb-3"
                                 onClick={() => onFillWith(deliveryAddress)}>
-                                Fill with
+                                Fill with this address
                             </button>
                         </div>
                     )

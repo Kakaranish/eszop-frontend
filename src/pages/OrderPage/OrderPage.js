@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import DeliveryAddressesModal from './DeliveryAddressesModal';
 import DeliveryMethodsSection from './DeliveryMethodsSection';
 import OrderDeliveryAddressForm from './OrderDeliveryAddressForm';
@@ -8,6 +9,8 @@ import OrderDeliveryAddressForm from './OrderDeliveryAddressForm';
 const OrderPage = (props) => {
 
     const orderId = props.match.params.id;
+
+    const history = useHistory();
 
     const [state, setState] = useState({
         loading: true,
@@ -46,10 +49,19 @@ const OrderPage = (props) => {
 
     const onSubmit = async event => {
         event.preventDefault();
+
         const dataJson = getFormDataJsonFromEvent(event);
-        
-        // TODO:
-        console.log(dataJson);
+        const uri = `/orders-api/orders/${orderId}/delivery-info`;
+        const action = async () => await axios.put(uri, dataJson);
+
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    history.push('/user/orders'); // TODO: Temp
+                }
+            }
+        );
     };
 
     if (state.loading) return <></>

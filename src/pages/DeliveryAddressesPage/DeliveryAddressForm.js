@@ -126,6 +126,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                     name="firstName"
                     placeholder="First Name..."
                     defaultValue={deliveryAddress.firstName ?? ""}
+                    inputAttributes={inputAttributes}
                 />
             </div>
 
@@ -136,6 +137,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                     name="lastName"
                     placeholder="Last Name..."
                     defaultValue={deliveryAddress.lastName ?? ""}
+                    inputAttributes={inputAttributes}
                 />
             </div>
         </div>
@@ -147,6 +149,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                 name="phoneNumber"
                 placeholder="Phone Number..."
                 defaultValue={deliveryAddress.phoneNumber ?? ""}
+                inputAttributes={inputAttributes}
             />
         </div>
 
@@ -158,6 +161,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                     name="country"
                     placeholder="Country..."
                     defaultValue={deliveryAddress.country ?? ""}
+                    inputAttributes={inputAttributes}
                 />
             </div>
 
@@ -168,6 +172,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                     name="zipCode"
                     placeholder="Zip Code..."
                     defaultValue={deliveryAddress.zipCode ?? ""}
+                    inputAttributes={inputAttributes}
                 />
             </div>
         </div>
@@ -179,6 +184,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                 name="city"
                 placeholder="City..."
                 defaultValue={deliveryAddress.city ?? ""}
+                inputAttributes={inputAttributes}
             />
         </div>
 
@@ -189,6 +195,7 @@ const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => 
                 name="street"
                 placeholder="Street..."
                 defaultValue={deliveryAddress.street ?? ""}
+                inputAttributes={inputAttributes}
             />
         </div>
 
