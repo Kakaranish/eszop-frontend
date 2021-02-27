@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
-import DeliveryAddressForm from 'pages/User/Other/DeliveryAddressesPage/DeliveryAddressForm';
+import DeliveryAddressForm from 'common/components/DeliveryAddressForm';
 import React, { useState } from 'react';
 import HyperModal from 'react-hyper-modal';
 

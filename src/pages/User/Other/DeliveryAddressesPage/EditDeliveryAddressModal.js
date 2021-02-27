@@ -1,7 +1,7 @@
 import React from 'react';
 import HyperModal from 'react-hyper-modal';
 import axios from 'axios';
-import DeliveryAddressForm from './DeliveryAddressForm';
+import DeliveryAddressForm from 'common/components/DeliveryAddressForm';
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';

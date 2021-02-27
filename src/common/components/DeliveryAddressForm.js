@@ -1,5 +1,5 @@
 import React from 'react';
-import ValidableInput from 'common/ValidableInput';
+import ValidableInput from 'common/components/ValidableInput';
 
 const DeliveryAddressForm = ({ deliveryAddress = {}, children, onSubmit = () => { }, editable = true }) => {
 

@@ -1,15 +1,27 @@
 import React from 'react';
 import noImgPlaceholder from 'assets/img/no-image.svg';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Styles = styled.div`
+    .img-thumbnail {
+        object-fit: cover;
+        overflow: hidden;
+        height: 90px;
+        width: 90px;
+    }
+  }`
 
 const OrderItem = ({ orderItem }) => <>
     <div className="card mt-2 mb-4">
         <div className="row no-gutters">
-            <img
-                src={getPreviewImageUri(orderItem)}
-                className="img-fluid img-thumbnail"
-                alt={`${orderItem.id}-img-placeholder`}
-            />
+            <Styles>
+                <img
+                    src={getPreviewImageUri(orderItem)}
+                    className="img-fluid img-thumbnail"
+                    alt={`${orderItem.id}-img-placeholder`}
+                />
+            </Styles>
 
             <div className="card-body row">
                 <div className="col-6 align-self-center">

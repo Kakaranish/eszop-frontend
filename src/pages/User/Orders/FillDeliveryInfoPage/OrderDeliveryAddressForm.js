@@ -1,5 +1,5 @@
 import React from 'react';
-import StatefulValidableInput from 'common/StatefulValidableInput';
+import StatefulValidableInput from 'common/components/StatefulValidableInput';
 
 const OrderDeliveryAddressForm = ({ deliveryAddress, setDeliveryAddress, children, onSubmit = () => { } }) => {
 

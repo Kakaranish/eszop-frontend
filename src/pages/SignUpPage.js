@@ -1,7 +1,7 @@
 import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import ValidableInput from 'common/ValidableInput';
+import ValidableInput from 'common/components/ValidableInput';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';

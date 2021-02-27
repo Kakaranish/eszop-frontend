@@ -17,35 +17,36 @@ const FillDeliveryInfoPage = (props) => {
         deliveryMethods: null
     });
 
-    const [deliveryAddress, setDeliveryAddress] = useState({
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        country: "",
-        zipCode: "",
-        city: "",
-        street: ""
-    });
+    const [deliveryAddress, setDeliveryAddress] = useState();
 
     useEffect(() => {
         const fetch = async () => {
-            const uri = `/orders-api/orders/${orderId}/available-delivery-methods`;
-            const action = async () => await axios.get(uri);
-            await authorizedRequestHandler(action,
-                {
-                    status: 200,
-                    callback: result => {
-                        setState({
-                            loading: false,
-                            deliveryMethods: result.data
-                        });
-                    }
-                }
-            );
+            const deliveryMethodsUri = `/orders-api/orders/${orderId}/available-delivery-methods`;
+            const deliveryMethodsAction = async () => await axios.get(deliveryMethodsUri);
+            const deliveryMethods =  await authorizedRequestHandler(deliveryMethodsAction);
+            
+            const deliveryInfoUri = `/orders-api/orders/${orderId}/delivery-info`;
+            const deliveryInfoAction = async () => await axios.get(deliveryInfoUri);
+            const deliveryInfo = await authorizedRequestHandler(deliveryInfoAction);
+
+            setDeliveryAddress({
+                firstName: deliveryInfo.deliveryAddress.firstName ?? "",
+                lastName: deliveryInfo.deliveryAddress.lastName ?? "",
+                phoneNumber: deliveryInfo.deliveryAddress.phoneNumber ?? "",
+                country: deliveryInfo.deliveryAddress.country ?? "",
+                zipCode: deliveryInfo.deliveryAddress.zipCode ?? "",
+                city: deliveryInfo.deliveryAddress.city ?? "",
+                street: deliveryInfo.deliveryAddress.street ?? ""
+            });
+
+            setState({
+                loading: false,
+                deliveryMethods: deliveryMethods,
+                deliveryInfo: deliveryInfo
+            });
         };
         fetch();
     }, []);
-
 
     const onSubmit = async event => {
         event.preventDefault();
@@ -84,11 +85,11 @@ const FillDeliveryInfoPage = (props) => {
 
             <DeliveryMethodsSection
                 deliveryMethods={state.deliveryMethods}
-                defaultSelected={state.deliveryMethods[0].name}
+                defaultSelected={state.deliveryInfo.deliveryMethod.name}
             />
 
             <button className="btn btn-success btn-block mt-4">
-                Finalize order
+                Go to order summary
             </button>
         </OrderDeliveryAddressForm>
     </>

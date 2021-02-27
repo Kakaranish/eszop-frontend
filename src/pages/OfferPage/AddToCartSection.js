@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
-import QuantityInput from 'common/QuantityInput';
+import QuantityInput from 'common/components/QuantityInput';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';

@@ -2,17 +2,7 @@ import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import OrderItem from './OrderItem';
-
-const Styles = styled.div`
-    .img-thumbnail {
-        object-fit: cover;
-        overflow: hidden;
-        height: 90px;
-        width: 90px;
-    }
-  }`
 
 const OrdersPage = () => {
 
@@ -43,44 +33,41 @@ const OrdersPage = () => {
             My Orders
         </h3>
 
-        <Styles>
-            {
-                state.orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
-                    <div className="mt-2 mb-3">
-                        Order Id: <i>{order.id}</i> <br />
-                        State: <i>{order.orderState}</i>
-                    </div>
+        {
+            state.orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
+                <div className="mt-2 mb-3">
+                    Order Id: <i>{order.id}</i> <br />
+                    State: <i>{order.orderState}</i>
+                </div>
 
-                    <div>
-                        {
-                            order.orderItems.map((orderItem, j) =>
-                                <OrderItem orderItem={orderItem} key={`oi-${j}`} />
-                            )
-                        }
-                    </div>
-
+                <div>
                     {
-                        order.orderState !== 'started'
-                            ?
-                            <div className="col-12 mb-3 text-right">
-                                <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                                <Link to={`/user/orders/${order.id}`}>
-                                    Go to details
-                                </Link>
-                            </div>
-
-                            :
-                            <div className="col-12 mb-3 text-right">
-                                <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                                <Link to={`/user/orders/${order.id}/fill/delivery-info`}>
-                                    Continue order
-                                </Link>
-                            </div>
+                        order.orderItems.map((orderItem, j) =>
+                            <OrderItem orderItem={orderItem} key={`oi-${j}`} />
+                        )
                     }
+                </div>
 
-                </div>)
-            }
-        </Styles>
+                {
+                    order.orderState !== 'started'
+                        ?
+                        <div className="col-12 mb-3 text-right">
+                            <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
+                            <Link to={`/user/orders/${order.id}`}>
+                                Go to details
+                            </Link>
+                        </div>
+
+                        :
+                        <div className="col-12 mb-3 text-right">
+                            <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
+                            <Link to={`/user/orders/${order.id}/fill/delivery-info`}>
+                                Continue order
+                            </Link>
+                        </div>
+                }
+            </div>)
+        }
     </>
 };
 

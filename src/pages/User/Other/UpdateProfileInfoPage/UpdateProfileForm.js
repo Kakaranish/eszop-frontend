@@ -1,5 +1,5 @@
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
-import ValidableInput from 'common/ValidableInput';
+import ValidableInput from 'common/components/ValidableInput';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";

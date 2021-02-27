@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import AddDeliveryAddressModal from './AddDeliveryAddressModal';
-import DeliveryAddressForm from './DeliveryAddressForm';
+import DeliveryAddressForm from 'common/components/DeliveryAddressForm';
 import EditDeliveryAddressModal from './EditDeliveryAddressModal';
 
 const DeliveryAddressesPage = () => {
