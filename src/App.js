@@ -1,19 +1,18 @@
-import React from 'react'
-import { Switch, BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MainPage from './pages/MainPage';
-import ErrorPage from './pages/ErrorPage';
-import MainLayout from './skeleton/MainLayout';
-import AuthRoutes from './routeAggregators/AuthRoutes';
-import OfferRoutes from './routeAggregators/OfferRotues';
-import MyOffersPage from './pages/User/MyOffersPage/MyOffersPage';
-import NotificationHandler from './skeleton/NotificationHandler';
-import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
-import CartPage from 'pages/CartPage/CartPage';
+import CartPage from 'pages/User/Other/CartPage/CartPage';
+import DeliveryAddressesPage from 'pages/User/Other/DeliveryAddressesPage/DeliveryAddressesPage';
 import RefreshPage from 'pages/RefreshPage';
-import UpdateProfilePage from 'pages/UpdateProfileInfo/UpdateProfilePage';
+import UpdateProfilePage from 'pages/User/Other/UpdateProfileInfoPage/UpdateProfilePage';
+import React from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import OrderRoutes from 'routeAggregators/OrderRoutes';
-import DeliveryAddressesPage from 'pages/DeliveryAddressesPage/DeliveryAddressesPage';
+import ErrorPage from './pages/ErrorPage';
+import MyOffersPage from './pages/User/Offers/MyOffersPage/MyOffersPage';
+import AuthRoutes from './routeAggregators/AuthRoutes';
+import OfferRoutes from './routeAggregators/OfferRoutes';
+import AuthorizedOnlyRoute from './routeTypes/AuthorizedOnlyRoute';
+import MainLayout from './skeleton/MainLayout';
+import NotificationHandler from './skeleton/NotificationHandler';
 
 const App = () => <>
 
@@ -23,13 +22,14 @@ const App = () => <>
     <Router>
       <MainLayout>
         <Switch>
-          <Route exact path='/' component={MainPage} />
+          <Redirect exact path='/' to='/offers' />
 
+          <Route path='/offers' component={OfferRoutes} />
+          
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
           <AuthorizedOnlyRoute path='/user/profile' component={UpdateProfilePage} />
 
           <Route path='/auth' component={AuthRoutes} />
-          <Route path='/offers' component={OfferRoutes} />
           <Route path='/user/orders' component={OrderRoutes} />
           <Route path='/user/addresses' component={DeliveryAddressesPage} />
 

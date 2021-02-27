@@ -59,12 +59,25 @@ const OrdersPage = () => {
                         }
                     </div>
 
-                    <div className="col-12 mb-3 text-right">
-                        <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                        <Link to={`/user/orders/${order.id}`}>
-                            Go to details
-                        </Link>
-                    </div>
+                    {
+                        order.orderState !== 'started'
+                            ?
+                            <div className="col-12 mb-3 text-right">
+                                <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
+                                <Link to={`/user/orders/${order.id}`}>
+                                    Go to details
+                                </Link>
+                            </div>
+
+                            :
+                            <div className="col-12 mb-3 text-right">
+                                <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
+                                <Link to={`/user/orders/${order.id}/fill/delivery-info`}>
+                                    Continue order
+                                </Link>
+                            </div>
+                    }
+
                 </div>)
             }
         </Styles>

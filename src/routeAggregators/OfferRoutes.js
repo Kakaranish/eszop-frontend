@@ -1,11 +1,11 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
 import OfferPage from 'pages/OfferPage/OfferPage';
 import OffersPage from 'pages/OffersPage/OffersPage';
+import EditOfferDraftStageOnePage from 'pages/User/Offers/CreateOfferPage/StageOne/EditOfferDraftStageOnePage';
+import EditOfferDraftStageTwoPage from 'pages/User/Offers/CreateOfferPage/StageTwo/EditOfferDraftStageTwoPage';
+import CreateOfferDraftPage from 'pages/User/Offers/CreateOfferPage/StageOne/CreateOfferDraftPage';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import AuthorizedOnlyRoute from 'routeTypes/AuthorizedOnlyRoute';
-import CreateOfferDraftPage from 'pages/CreateOffer/StageOne/CreateOfferDraftPage';
-import EditOfferDraftStageOnePage from 'pages/CreateOffer/StageOne/EditOfferDraftStageOnePage';
-import EditOfferDraftStageTwoPage from 'pages/CreateOffer/StageTwo/EditOfferDraftStageTwoPage';
 
 const OfferRoutes = () => <>
     <Switch>
