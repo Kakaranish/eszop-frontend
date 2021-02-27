@@ -1,3 +1,5 @@
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
@@ -5,10 +7,8 @@ import { useHistory } from 'react-router-dom';
 import Select, { createFilter } from 'react-select';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
+import DeleteOfferTrash from '../DeleteOfferTrash';
 import KeyValueTable from '../StageOne/components/KeyValueTable/KeyValueTable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-import trashIcon from 'assets/img/delete.svg';
 
 const columnSettings = {
     key: {
@@ -183,23 +183,6 @@ const EditOfferDraftStageTwoPage = (props) => {
         });
     };
 
-    const onDelete = async () => {
-        const uri = `/offers-api/offers/draft`;
-        const data = {
-            offerId: offerId
-        };
-        const action = async () => await axios.delete(uri, {data: data});
-        await authorizedRequestHandler(action,
-            {
-                status: 200,
-                callback: () => {
-                    toast.success('Offer deleted');
-                    history.push('/user/offers');
-                }
-            }
-        );
-    };
-
     const onSubmitCb = async event => {
         event.preventDefault();
         
@@ -225,13 +208,7 @@ const EditOfferDraftStageTwoPage = (props) => {
             </span>
 
             <div className="pull-right">
-                <img src={trashIcon}
-                    className="align-self-center ml-3"
-                    style={{ width: '25px', height: '25px', cursor: 'pointer' }}
-                    onClick={onDelete}
-                    alt="trash-img"
-                    data-tip="Delete offer?"
-                />
+                <DeleteOfferTrash offerId={offerId} />
             </div>
         </div>
 

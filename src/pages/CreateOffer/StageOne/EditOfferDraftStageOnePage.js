@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import RequiredSelect from './components/RequiredSelect';
-import OfferForm from './components/OfferForm';
-import ImageUploader from './components/ImageUploader';
-import EditableImagesPreviews from './components/EditableImagesPreviews';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
-import KeyValueTable from './components/KeyValueTable/KeyValueTable';
 import ReactTooltip from 'react-tooltip';
-import trashIcon from 'assets/img/delete.svg';
+import DeleteOfferTrash from '../DeleteOfferTrash';
+import EditableImagesPreviews from './components/EditableImagesPreviews';
+import ImageUploader from './components/ImageUploader';
+import KeyValueTable from './components/KeyValueTable/KeyValueTable';
+import OfferForm from './components/OfferForm';
+import RequiredSelect from './components/RequiredSelect';
 
 const columnSettings = {
     key: {
@@ -124,25 +124,8 @@ const EditOfferDraftStageOnePage = (props) => {
             },
             {
                 status: 400,
-                callback: async result => {
+                callback: async () => {
                     toast.error("Your creation request has been rejected");
-                }
-            }
-        );
-    };
-
-    const onDelete = async () => {
-        const uri = `/offers-api/offers/draft`;
-        const data = {
-            offerId: offerId
-        };
-        const action = async () => await axios.delete(uri, {data: data});
-        await authorizedRequestHandler(action,
-            {
-                status: 200,
-                callback: () => {
-                    toast.success('Offer deleted');
-                    history.push('/user/offers');
                 }
             }
         );
@@ -163,13 +146,7 @@ const EditOfferDraftStageOnePage = (props) => {
             </span>
 
             <div className="pull-right">
-                <img src={trashIcon}
-                    className="align-self-center ml-3"
-                    style={{ width: '25px', height: '25px', cursor: 'pointer' }}
-                    onClick={onDelete}
-                    alt="trash-img"
-                    data-tip="Delete offer?"
-                />
+                <DeleteOfferTrash offerId={offerId} />
             </div>
         </div>
 
