@@ -185,6 +185,12 @@ const EditOfferDraftStageTwoPage = (props) => {
 
     const onSubmitCb = async event => {
         event.preventDefault();
+
+        let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
+        if (preparedDeliveryMethods.length === 0) {
+            toast.warn("At least 1 delivery method required");
+            return;
+        }
         
         switch (formAction) {
             case "SaveAndGoBack":
