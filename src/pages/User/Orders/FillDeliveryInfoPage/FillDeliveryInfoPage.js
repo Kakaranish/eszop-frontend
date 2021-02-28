@@ -59,7 +59,7 @@ const FillDeliveryInfoPage = (props) => {
             {
                 status: 200,
                 callback: () => {
-                    history.push(`/user/orders/${orderId}/summary`);
+                    history.push(`/user/orders/${orderId}/fill/summary`);
                 }
             }
         );
