@@ -49,7 +49,7 @@ const OrdersPage = () => {
                 </div>
 
                 {
-                    order.orderState !== 'started'
+                    order.orderState !== 'STARTED'
                         ?
                         <div className="col-12 mb-3 text-right">
                             <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
@@ -66,7 +66,8 @@ const OrdersPage = () => {
                             </Link>
                         </div>
                 }
-            </div>)
+            </div>
+            )
         }
     </>
 };

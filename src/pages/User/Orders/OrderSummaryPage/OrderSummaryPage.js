@@ -5,6 +5,8 @@ import DeliveryAddressForm from 'common/components/DeliveryAddressForm';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import OrderItem from '../OrdersPage/OrderItem';
+import ConfirmOrderButton from './ConfirmOrderButton';
+import CancelOrderButton from './CancelOrderButton';
 
 const OrderSummaryPage = (props) => {
 
@@ -98,11 +100,9 @@ const OrderSummaryPage = (props) => {
                 />
             </div>
 
-            <div className="row mt-4">
+            <div className="row mt-5">
                 <div className="col-md-4">
-                    <button className="btn btn-block btn-outline-danger" onClick={cancelOrder}>
-                        Cancel Order
-                    </button>
+                    <CancelOrderButton orderId={orderId} />
                 </div>
 
                 <div className="col-md-4">
@@ -115,9 +115,7 @@ const OrderSummaryPage = (props) => {
                 </div>
 
                 <div className="col-md-4">
-                    <button className="btn btn-block btn-success" onClick={confirmOrder}>
-                        Confirm Order
-                    </button>
+                    <ConfirmOrderButton />
                 </div>
             </div>
         </div>

@@ -4,7 +4,10 @@ const DeliveryMethodsSection = (props) => {
 
     const { deliveryMethods, defaultSelected } = props;
 
-    const [selectedMethod, setSelectedMethod] = useState(defaultSelected);
+    const defaultMethod = defaultSelected
+        ? defaultSelected
+        : deliveryMethods[0].name;
+    const [selectedMethod, setSelectedMethod] = useState(defaultMethod);
 
     const onSelectionChange = event => setSelectedMethod(event.target.value);
 

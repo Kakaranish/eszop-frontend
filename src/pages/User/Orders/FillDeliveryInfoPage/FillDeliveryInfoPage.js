@@ -30,13 +30,13 @@ const FillDeliveryInfoPage = (props) => {
             const deliveryInfo = await authorizedRequestHandler(deliveryInfoAction);
 
             setDeliveryAddress({
-                firstName: deliveryInfo.deliveryAddress.firstName ?? "",
-                lastName: deliveryInfo.deliveryAddress.lastName ?? "",
-                phoneNumber: deliveryInfo.deliveryAddress.phoneNumber ?? "",
-                country: deliveryInfo.deliveryAddress.country ?? "",
-                zipCode: deliveryInfo.deliveryAddress.zipCode ?? "",
-                city: deliveryInfo.deliveryAddress.city ?? "",
-                street: deliveryInfo.deliveryAddress.street ?? ""
+                firstName: deliveryInfo?.deliveryAddress?.firstName ?? "",
+                lastName: deliveryInfo?.deliveryAddress?.lastName ?? "",
+                phoneNumber: deliveryInfo?.deliveryAddress?.phoneNumber ?? "",
+                country: deliveryInfo?.deliveryAddress?.country ?? "",
+                zipCode: deliveryInfo?.deliveryAddress?.zipCode ?? "",
+                city: deliveryInfo?.deliveryAddress?.city ?? "",
+                street: deliveryInfo?.deliveryAddress?.street ?? ""
             });
 
             setState({
@@ -85,7 +85,7 @@ const FillDeliveryInfoPage = (props) => {
 
             <DeliveryMethodsSection
                 deliveryMethods={state.deliveryMethods}
-                defaultSelected={state.deliveryInfo.deliveryMethod.name}
+                defaultSelected={state.deliveryInfo?.deliveryMethod?.name}
             />
 
             <button className="btn btn-success btn-block mt-4">
