@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mapOrderState } from 'common/orderUtils';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -37,7 +38,7 @@ const OrdersPage = () => {
             state.orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
                 <div className="mt-2 mb-3">
                     Order Id: <i>{order.id}</i> <br />
-                    State: <i>{order.orderState}</i>
+                    State: {mapOrderState(order.orderState)}
                 </div>
 
                 <div>
