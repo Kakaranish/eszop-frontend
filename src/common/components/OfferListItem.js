@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import noImgPlaceholder from 'assets/img/no-image.svg';
 
-const ListItem = (props) => {
+const OfferListItem = (props) => {
 
     const { offer } = props;
 
@@ -52,4 +52,4 @@ function getPreviewImageUri(offer) {
     return offer.mainImage.uri;
 }
 
-export default ListItem;
+export default OfferListItem;

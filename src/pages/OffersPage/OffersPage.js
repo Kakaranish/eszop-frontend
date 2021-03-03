@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { requestHandler } from "common/utils";
-import ListItem from './ListItem';
+import ListItem from 'common/components/OfferListItem';
 
 const OffersPage = () => {
 

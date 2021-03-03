@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { requestHandler } from 'common/utils';
-import ListItem from './ListItem';
+import OfferListItem from 'common/components/OfferListItem';
 import { Link } from 'react-router-dom';
 
 const MyOffersPage = () => {
@@ -45,7 +45,7 @@ const MyOffersPage = () => {
         <h3>My offers</h3>
         {
             state.offers.map((offer, i) =>
-                <ListItem key={`li=${i}`} offer={offer} />
+                <OfferListItem key={`li=${i}`} offer={offer} />
             )
         }
     </>

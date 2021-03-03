@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { requestHandler } from 'common/utils';
-import ListItem from 'pages/User/Offers/MyOffersPage/ListItem';
+import OfferListItem from 'common/components/OfferListItem';
 import React, { useEffect, useState } from 'react';
 
 const SellerPage = (props) => {
@@ -85,7 +85,7 @@ const SellerPage = (props) => {
                         <h3 className="mb-2">Offers</h3>
                         {
                             state.offers.map((offer, i) =>
-                                <ListItem key={`li-${i}`} offer={offer} />
+                                <OfferListItem key={`li-${i}`} offer={offer} />
                             )
                         }
                     </>
