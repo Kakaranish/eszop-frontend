@@ -1,128 +1,121 @@
-import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import queryString from 'query-string';
 import React from 'react';
-import ItemsPerPage from './ItemsPerPage';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
-const Pagination = ({ currentPage, totalPages }) => {
+const Styles = styled.div`
+.pointer {
+    cursor: pointer;
+}
+`
+
+const Pagination = (props) => {
+
+    const { currentPage, totalPages, queryParamName, location } = props;
+
+    const history = useHistory();
+
+    const goToPage = pageIndex => {
+        history.push(createUri(location, queryParamName, pageIndex));
+        history.push('/refresh');
+    }
 
     const maxAdjNum = 3;
-
-    const maxLeftAdj = currentPage - maxAdjNum <= 1 ? maxAdjNum : maxAdjNum - 1;
-    for (let i = maxLeftAdj; i > 0; i--) {
-        let index = currentPage - i;
-        if (index < 1) continue;
-        console.log(index);
-    }
-    console.log(`Current: ${currentPage}`);
-
-    const maxRightAdj = currentPage + maxAdjNum >= totalPages ? maxAdjNum : maxAdjNum - 1;
-
-    for (let i = 1; i <= maxRightAdj; i++) {
-        let index = currentPage + i;
-        if (index > totalPages) continue;
-        console.log(index);
-    }
-
-    const leftBreakRequired = currentPage - maxAdjNum - 1 > 0;
-    const rightBreakRequired = currentPage + maxAdjNum < totalPages;
+    const buttons = [];
 
     const requiresPreviousButton = currentPage !== 1;
-    const requiresNextButton = currentPage !== totalPages;
+    if (requiresPreviousButton) buttons.push(
+        <li className="page-item page-link pointer"
+            onClick={() => goToPage(currentPage - 1)}>
+            Previous
+        </li>
+    );
 
-    console.log(`Left break required: ${leftBreakRequired}`);
-    console.log(`Right break required ${rightBreakRequired}`);
+    const leftBreakRequired = currentPage - maxAdjNum - 1 > 0;
+    if (leftBreakRequired) buttons.push(
+        <>
+            <li className="page-item page-link pointer" onClick={() => goToPage(1)}>
+                1
+            </li>
 
-    console.log("---")
+            <div className="px-2">
+                ...
+            </div>
+        </>
+    );
 
-    const renderButtons = () => {
-        const buttons = [];
-
-        if (leftBreakRequired) buttons.push(
-            <>
-                <li className="page-item">
-                    <a className="page-link" href="#">
-                        1
-                    </a>
-                </li>
-
-                <div className="px-2">
-                    ...
-                </div>
-            </>
-        )
-
-        for (let i = currentPage - maxLeftAdj; i < currentPage; i++) {
-            if (i < 1) continue;
-            buttons.push(
-                <li className="page-item">
-                    <a className="page-link" href="#">
-                        {i}
-                    </a>
-                </li>
-            )
-        }
-
+    const maxLeftAdj = currentPage - maxAdjNum <= 1 ? maxAdjNum : maxAdjNum - 1;
+    for (let i = currentPage - maxLeftAdj; i < currentPage; i++) {
+        if (i < 1) continue;
+        
         buttons.push(
-            <li className="page-item active">
-                <a className="page-link" href="#">
-                    {currentPage}
-                </a>
+            <li className="page-item page-link pointer" onClick={() => goToPage(i)}>
+                {i}
             </li>
         );
-
-        for (let i = currentPage + 1; i <= currentPage + maxRightAdj; i++) {
-            if (i > totalPages) continue;
-            buttons.push(
-                <li className="page-item">
-                    <a className="page-link" href="#">
-                        {i}
-                    </a>
-                </li>
-            )
-        }
-
-        if (rightBreakRequired) buttons.push(
-            <>
-                <div className="px-2">
-                    ...
-                </div>
-
-                <li className="page-item">
-                    <a className="page-link" href="#">
-                        {totalPages}
-                    </a>
-                </li>
-            </>
-        )
-
-        return buttons;
     }
 
+    buttons.push(
+        <li className="page-item active pointer"
+            onClick={() => goToPage(currentPage)}>
+            <span className="page-link">
+                {currentPage}
+            </span>
+        </li>
+    );
+
+    const maxRightAdj = currentPage + maxAdjNum >= totalPages ? maxAdjNum : maxAdjNum - 1;
+    for (let i = currentPage + 1; i <= currentPage + maxRightAdj; i++) {
+        if (i > totalPages) continue;
+        
+        buttons.push(
+            <li className="page-item page-link pointer" onClick={() => goToPage(i)} >
+                {i}
+            </li>
+        );
+    }
+
+    const rightBreakRequired = currentPage + maxAdjNum < totalPages;
+    if (rightBreakRequired) buttons.push(
+        <>
+            <div className="px-2">
+                ...
+            </div>
+
+            <li className="page-item page-link pointer" onClick={() => goToPage(totalPages)}>
+                {totalPages}
+            </li>
+        </>
+    );
+
+    const requiresNextButton = currentPage !== totalPages;
+    if (requiresNextButton) buttons.push(
+        <li className="page-item page-link pointer" onClick={() => goToPage(currentPage + 1)}>
+            Next
+        </li>
+    );
+
     return <>
-        <nav>
-            <ul className="pagination">
-                {
-                    requiresPreviousButton &&
-                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                }
-
-                {
-                    renderButtons()
-                }
-
-                {/* <li className="page-item"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item px-3">...</li>
-                <li className="page-item"><a className="page-link" href="#">10</a></li> */}
-
-
-                {
-                    requiresNextButton &&
-                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                }
-            </ul>
-        </nav>
+        <Styles>
+            <nav>
+                <ul className="pagination">
+                    {
+                        buttons
+                    }
+                </ul>
+            </nav>
+        </Styles>
     </>
 };
+
+function createUri(location, queryParamName, pageIndex) {
+    const queryParams = queryString.parse(location.search);
+    const pathName = location.pathname;
+
+    let linkQueryParams = Object.assign({}, queryParams);
+    linkQueryParams[queryParamName] = pageIndex;
+
+    return `${pathName}?${queryString.stringify(linkQueryParams)}`;
+}
 
 export default Pagination;
