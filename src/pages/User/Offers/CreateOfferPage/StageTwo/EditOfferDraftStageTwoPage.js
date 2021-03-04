@@ -173,8 +173,7 @@ const EditOfferDraftStageTwoPage = (props) => {
         
         await updateOffer(event);
 
-        const data = {offerId: offerId};
-        const action = async () => await axios.post('/offers-api/offers/publish', data)
+        const action = async () => await axios.post(`/offers-api/offers/${offerId}/publish`)
         await authorizedRequestHandler(action, {
             status: 200,
             callback: () => {

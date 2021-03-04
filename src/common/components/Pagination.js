@@ -25,7 +25,7 @@ const Pagination = (props) => {
 
     const requiresPreviousButton = currentPage !== 1;
     if (requiresPreviousButton) buttons.push(
-        <li className="page-item page-link pointer"
+        <li key="prev" className="page-item page-link pointer"
             onClick={() => goToPage(currentPage - 1)}>
             Previous
         </li>
@@ -34,7 +34,7 @@ const Pagination = (props) => {
     const leftBreakRequired = currentPage - maxAdjNum - 1 > 0;
     if (leftBreakRequired) buttons.push(
         <>
-            <li className="page-item page-link pointer" onClick={() => goToPage(1)}>
+            <li key="1" className="page-item page-link pointer" onClick={() => goToPage(1)}>
                 1
             </li>
 
@@ -47,17 +47,16 @@ const Pagination = (props) => {
     const maxLeftAdj = currentPage - maxAdjNum <= 1 ? maxAdjNum : maxAdjNum - 1;
     for (let i = currentPage - maxLeftAdj; i < currentPage; i++) {
         if (i < 1) continue;
-        
+
         buttons.push(
-            <li className="page-item page-link pointer" onClick={() => goToPage(i)}>
+            <li key={i} className="page-item page-link pointer" onClick={() => goToPage(i)}>
                 {i}
             </li>
         );
     }
 
     buttons.push(
-        <li className="page-item active pointer"
-            onClick={() => goToPage(currentPage)}>
+        <li key={currentPage} className="page-item active pointer" onClick={() => goToPage(currentPage)}>
             <span className="page-link">
                 {currentPage}
             </span>
@@ -67,9 +66,9 @@ const Pagination = (props) => {
     const maxRightAdj = currentPage + maxAdjNum >= totalPages ? maxAdjNum : maxAdjNum - 1;
     for (let i = currentPage + 1; i <= currentPage + maxRightAdj; i++) {
         if (i > totalPages) continue;
-        
+
         buttons.push(
-            <li className="page-item page-link pointer" onClick={() => goToPage(i)} >
+            <li key={i} className="page-item page-link pointer" onClick={() => goToPage(i)} >
                 {i}
             </li>
         );
@@ -82,7 +81,7 @@ const Pagination = (props) => {
                 ...
             </div>
 
-            <li className="page-item page-link pointer" onClick={() => goToPage(totalPages)}>
+            <li key={totalPages} className="page-item page-link pointer" onClick={() => goToPage(totalPages)}>
                 {totalPages}
             </li>
         </>
