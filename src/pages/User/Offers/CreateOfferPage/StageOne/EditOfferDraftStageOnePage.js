@@ -65,6 +65,10 @@ const EditOfferDraftStageOnePage = (props) => {
                 {
                     status: 200,
                     callback: result => {
+                        if (result.data.publishedAt) {
+                            toast.warn("Offer is already published");
+                            history.push(`/offers/${offerId}`);
+                        }
                         setOffer(result.data);
                         setImages(result.data.images.map(x => ({ ...x, isRemote: true })));
                         setKeyValueData([...result.data.keyValueInfos.map(kvp => ({
@@ -78,8 +82,10 @@ const EditOfferDraftStageOnePage = (props) => {
                     }
                 },
                 {
-                    status: 204,
-                    callback: () => setOffer({ loading: false, offer: null })
+                    status: 400,
+                    callback: () => {
+                        setLoadState(prevState => ({ ...prevState, loadingOffers: false }));
+                    }
                 }
             );
         };
@@ -114,7 +120,8 @@ const EditOfferDraftStageOnePage = (props) => {
         let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
         formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
 
-        const action = async () => await axios.put("/offers-api/offers/draft/1", formData);
+        const uri = `/offers-api/draft/${offerId}/stage/1`;
+        const action = async () => await axios.put(uri, formData);
         await authorizedRequestHandler(action,
             {
                 status: 200,

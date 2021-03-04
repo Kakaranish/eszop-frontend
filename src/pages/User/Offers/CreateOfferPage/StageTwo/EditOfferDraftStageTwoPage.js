@@ -1,7 +1,7 @@
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import { authorizedRequestHandler } from 'common/utils';
+import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Select, { createFilter } from 'react-select';
@@ -92,6 +92,11 @@ const EditOfferDraftStageTwoPage = (props) => {
                 {
                     status: 200,
                     callback: result => {
+                        if (result.data.publishedAt) {
+                            toast.warn("Offer is already published");
+                            history.push(`/offers/${offerId}`);
+                        }
+                        
                         setDeliveryMethods([...result.data.deliveryMethods.map(kvp => ({
                             key: kvp.name,
                             value: kvp.price.toFixed(2)
@@ -147,25 +152,32 @@ const EditOfferDraftStageTwoPage = (props) => {
             toast.warn("At least 1 delivery method required");
             return;
         }
+        
+        if(new Set(preparedDeliveryMethods.map(x => x.key)).size !== preparedDeliveryMethods.length) {
+            toast.warn("Delivery methods must be unique");
+            return;
+        }
+
         preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
             name: x.key,
             price: x.value
         }));
 
-        let formData = new FormData(event.target);
-        formData.append("offerId", offerId);
-        formData.append("deliveryMethods", JSON.stringify(preparedDeliveryMethods));
+        let data = getFormDataJsonFromEvent(event);
+        data.deliveryMethods = JSON.stringify(preparedDeliveryMethods);
 
-        const action = async () => await axios.put("/offers-api/offers/draft/2", formData);
-        return await authorizedRequestHandler(action);
+        const uri = `/offers-api/draft/${offerId}/stage/2`;
+        const action = async () => await axios.put(uri, data);
+        await authorizedRequestHandler(action);
+
+        return true;
     };
 
     const onSaveOnGoBackCb = async event => {
         event.preventDefault();
        
-        await updateOffer(event);
-
-        history.push(`/offers/create/draft/${offerId}/stage/1`);
+        if(await updateOffer(event))
+            history.push(`/offers/create/draft/${offerId}/stage/1`);
     };
 
     const onPublishCb = async event => {
@@ -173,11 +185,11 @@ const EditOfferDraftStageTwoPage = (props) => {
         
         await updateOffer(event);
 
-        const action = async () => await axios.post(`/offers-api/offers/${offerId}/publish`)
+        const action = async () => await axios.post(`/offers-api/draft/${offerId}/publish`)
         await authorizedRequestHandler(action, {
             status: 200,
             callback: () => {
-                history.push(`/offers-api/offers/${offerId}`);
+                history.push(`/offers/${offerId}`);
             }
         });
     };

@@ -83,7 +83,7 @@ const CreateOfferDraftPage = () => {
 
         images.forEach(img => formData.append("images", img.file));
 
-        const action = async () => await axios.post("/offers-api/offers/draft/1", formData);
+        const action = async () => await axios.post("/offers-api/draft", formData);
         await authorizedRequestHandler(action,
             {
                 status: 200,
