@@ -2,16 +2,16 @@ import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
+import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferTrash';
+import EditableImagesPreviews from 'pages/User/Offers/components/EditableImagesPreviews';
+import ImageUploader from 'pages/User/Offers/components/ImageUploader';
+import KeyValueTable from 'pages/User/Offers/components/KeyValueTable/KeyValueTable';
+import OfferForm from 'pages/User/Offers/components/OfferForm';
+import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeleteOfferTrash from '../DeleteOfferTrash';
-import EditableImagesPreviews from './components/EditableImagesPreviews';
-import ImageUploader from './components/ImageUploader';
-import KeyValueTable from './components/KeyValueTable/KeyValueTable';
-import OfferForm from './components/OfferForm';
-import RequiredSelect from './components/RequiredSelect';
 
 const columnSettings = {
     key: {

@@ -1,10 +1,10 @@
-import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import ValidableInput from 'common/components/ValidableInput';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import ValidableInput from 'common/components/ValidableInput';
+import { authorizedRequestHandler, EmailRegex, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SignUpPage = (props) => {
 
@@ -91,9 +91,9 @@ const SignUpPage = (props) => {
                 <div className="form-group">
                     <ValidableInput
                         name="email"
-                        type="email"
                         placeholder="Email..."
-                        errorMsg="Invalid email format"
+                        regex={EmailRegex}
+                        errorMsg="Invalid email"
                     />
                 </div>
 

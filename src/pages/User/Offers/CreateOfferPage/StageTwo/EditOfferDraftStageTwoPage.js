@@ -2,13 +2,13 @@ import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
+import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferTrash';
+import KeyValueTable from 'pages/User/Offers/components/KeyValueTable/KeyValueTable';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Select, { createFilter } from 'react-select';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeleteOfferTrash from '../DeleteOfferTrash';
-import KeyValueTable from '../StageOne/components/KeyValueTable/KeyValueTable';
 
 const columnSettings = {
     key: {
