@@ -36,7 +36,6 @@ const ValidableInput = (
             className={`form-control ${classes}`}
             value={value}
             onChange={onChange}
-            pattern={regex}
             onInvalid={() => setIsValid(false)}
             required
             {...inputAttributes}
@@ -63,7 +62,6 @@ const ValidableInput = (
                 className={`form-control ${classes}`}
                 value={value}
                 onChange={onChange}
-                pattern={regex}
                 onInvalid={() => setIsValid(false)}
                 required
                 {...inputAttributes}

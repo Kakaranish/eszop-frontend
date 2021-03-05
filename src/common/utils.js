@@ -3,6 +3,9 @@ import cookies from 'js-cookie';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 
+export const EmailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+export const BankAccountRegex = /^(\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|\d{26})$/;
+
 export const isAccessTokenExpCookiePresent = () => {
     return !!cookies.get('accessTokenExp');
 };
