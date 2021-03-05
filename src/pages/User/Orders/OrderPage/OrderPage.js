@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authorizedRequestHandler } from 'common/utils';
+import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import CostsSection from '../components/CostsSection';
@@ -24,7 +24,9 @@ const OrderPage = (props) => {
         loading: true,
         order: null,
         bankTransferDetails: null,
+        sellerInfo: null
     });
+
     useEffect(() => {
         const fetch = async () => {
             const orderUri = `/orders-api/orders/${orderId}`;
@@ -62,6 +64,27 @@ const OrderPage = (props) => {
                     }
                 }
             );
+
+            const sellerInfoUri = `/identity-api/seller/${orderResult.data.sellerId}`;
+            const sellerInfoAction = async () => await axios.get(sellerInfoUri);
+            await requestHandler(sellerInfoAction, 
+                {
+                    status: 200,
+                    callback: result => {
+                        setState(currState => {
+                            let stateClone = Object.assign({}, currState);
+                            stateClone.sellerInfo = result.data;
+                            return stateClone;
+                        });
+                    }
+                },
+                {
+                    status: 204,
+                    callback: () => {}
+                }
+            );
+
+
         };
         fetch();
     }, []);
@@ -118,12 +141,27 @@ const OrderPage = (props) => {
                         </div>
 
                         <div>
-                            Account number: <i>{state.bankTransferDetails.accountNumber}</i>
+                            Account number:&nbsp;
+                            
+                            {
+                                state.bankTransferDetails.accountNumber
+
+                                ?
+                                <i>state.bankTransferDetails.accountNumber</i>
+
+                                :<span className="font-weight-bold text-bold" style={{color: 'orange'}}>
+                                    NOT PROVIDED
+                                </span>
+                            }
                         </div>
 
                         <div>
                             Transfer amount: <i>{state.bankTransferDetails.transferAmount.toFixed(2)} PLN</i>
                         </div>
+
+                        <span className="font-weight-bold text-bold" style={{color: 'orange'}}>
+                            Please contact the seller for an account number 
+                        </span>
                     </div>
                 </Styles>
             }

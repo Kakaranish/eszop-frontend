@@ -27,7 +27,6 @@ const UserIndicator = (props) => {
         document.removeEventListener("click", handleClickOutside, false), []);
 
     const handleClickOutside = async event => {
-        console.log(iconRef);
         if (!wrapperRef.current.contains(event.target) && !iconRef.current.contains(event.target)) {
             setIsExpanded(exp => !exp);
             document.removeEventListener("click", handleClickOutside, false);

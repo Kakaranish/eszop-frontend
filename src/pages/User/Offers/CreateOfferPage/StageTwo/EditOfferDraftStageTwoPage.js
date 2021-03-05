@@ -1,5 +1,3 @@
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
 import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferTrash';
@@ -34,36 +32,13 @@ const EditOfferDraftStageTwoPage = (props) => {
     const offerId = props.match.params.id;
     
     const history = useHistory();
-    const [deliveryMethods, setDeliveryMethods] = useState([
-        {
-            key: "",
-            value: ""
-        }
-    ]);
+    const [deliveryMethods, setDeliveryMethods] = useState([ { key: "", value: ""} ]);
 
     let formAction = null;
-
-    const [accountNumber, setAccountNumber] = useState();
-    const [defaultAccountNumber, setDefaultAccountNumber] = useState("");
+    
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
 
     useEffect(() => {
-        const fetchBankAccount = async () => {
-            const uri = `/identity-api/seller/bank-account/my`;
-            const action = async () => await axios.get(uri);
-            await authorizedRequestHandler(action,
-                {
-                    status: 200,
-                    callback: result => {
-                        setDefaultAccountNumber(result.data.accountNumber);
-                    }
-                },
-                {
-                    status: 204,
-                    callback: () => setDefaultAccountNumber(null)
-                })
-        };
-
         const fetchDeliveryMethods = async () => {
             const uri = `/offers-api/delivery-methods`;
             const action = async () => await axios.get(uri);
@@ -100,17 +75,15 @@ const EditOfferDraftStageTwoPage = (props) => {
                         setDeliveryMethods([...result.data.deliveryMethods.map(kvp => ({
                             key: kvp.name,
                             value: kvp.price.toFixed(2)
-                        })), {
+                        })), { 
                             key: "",
                             value: ""
                         }]);
-                        setAccountNumber(result.data.bankAccountNumber);
                     }
                 }
             );
         };
 
-        fetchBankAccount();
         fetchDeliveryMethods();
         fetchOffer();
     }, []);
@@ -119,10 +92,6 @@ const EditOfferDraftStageTwoPage = (props) => {
     const formOnKeyPress = e => {
         if (e.key === 'Enter') e.preventDefault();
     }
-
-    const fillAccountNumberCb = () => {
-        setAccountNumber(defaultAccountNumber)
-    };
 
     const onSelectedPredefinedDeliveryMethodCb = e => {
         const [name, price] = e.value.split(';')
@@ -254,38 +223,6 @@ const EditOfferDraftStageTwoPage = (props) => {
                             onChange={onSelectedPredefinedDeliveryMethodCb}
                         />
                     }
-                </div>
-            </div>
-
-            <div className="form-group mb-5 mt-5">
-                <label>
-                    Bank Account Number
-                    
-                    <FontAwesomeIcon icon={faQuestionCircle}
-                        className="ml-1 mr-2 align-baseline"
-                        style={{ color: 'lightgray'}}
-                        size={'1x'}
-                        data-tip="Must have such format: 27 1140 2004 0000 3002 0135 5387"
-                    />
-
-                    {
-                        defaultAccountNumber &&
-                        <span className="btn-link" style={{ cursor: 'pointer' }} onClick={fillAccountNumberCb}>
-                            (fill with value from your Seller Info)
-                        </span>
-                    }
-                </label>
-
-                <input name="bankAccount" type="text" className="form-control"
-                    pattern="\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|\d{26}"
-                    placeholder="E.g.: 27 1140 2004 0000 3002 0135 5387"
-                    value={accountNumber}
-                    onChange={e => setAccountNumber(e.target.value)}
-                    required
-                />
-
-                <div className="px-0 mt-2 col-12 col-md-6 col-lg-7 text-secondary">
-                    Your account number is not visible until placed order
                 </div>
             </div>
 

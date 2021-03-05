@@ -30,11 +30,8 @@ const DeleteOfferTrash = ({ offerId }) => {
     };
 
     const yesCallback = async () => {
-        const uri = `/offers-api/offers/draft`;
-        const data = {
-            offerId: offerId
-        };
-        const action = async () => await axios.delete(uri, { data: data });
+        const uri = `/offers-api/draft/${offerId}`;
+        const action = async () => await axios.delete(uri);
         await authorizedRequestHandler(action,
             {
                 status: 200,
