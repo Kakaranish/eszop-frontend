@@ -24,3 +24,8 @@ body {
 .z-999 {
     z-index: 999;
 }
+
+.form-group.required label:after {
+    content:"*";
+    color:red;
+  }

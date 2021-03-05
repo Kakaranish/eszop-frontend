@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import moment from 'moment';
-import ImageUploader from './components/ImageUploader';
-import EditableImagesPreviews from './components/EditableImagesPreviews';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
-import { useHistory } from 'react-router-dom';
-import RequiredSelect from './components/RequiredSelect';
-import OfferForm from './components/OfferForm';
-import KeyValueTable from './components/KeyValueTable/KeyValueTable';
-import ReactTooltip from 'react-tooltip';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import moment from 'moment';
+import EditableImagesPreviews from 'pages/User/Offers/components/EditableImagesPreviews';
+import ImageUploader from 'pages/User/Offers/components/ImageUploader';
+import KeyValueTable from 'pages/User/Offers/components/KeyValueTable/KeyValueTable';
+import OfferForm from 'pages/User/Offers/components/OfferForm';
+import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import ReactTooltip from 'react-tooltip';
 
 const columnSettings = {
     key: {
@@ -42,18 +41,36 @@ const CreateOfferDraftPage = () => {
         }
     ]);
     const [images, setImages] = useState([]);
-    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [state, setState] = useState({ loading: true, canSell: true, categoryOptions: [] });
 
     useEffect(() => {
         const fetch = async () => {
-            const action = async () => await axios.get("/offers-api/categories");
-            const categoriesResult = await requestHandler(action);
+            const canSellUri = '/identity-api/seller/can-sell';
+            const canSellAction = async () => await axios.get(canSellUri);
+            const result = await authorizedRequestHandler(canSellAction,
+                { status: -1, callback: result => result },
+                { status: 200, callback: result => result }
+            );
+            if (result.status !== 200) {
+                toast.warn("Unknown error");
+                return;
+            }
+            if (!result.data) {
+                setState({ loading: false, canSell: false });
+                return;
+            }
 
-            const categoryOptions = categoriesResult.map(cat => ({
-                value: cat.id,
-                label: cat.name
-            }));
-            setCategoryOptions(categoryOptions);
+            const categoriesUri = async () => await axios.get("/offers-api/categories");
+            const categoriesResult = await requestHandler(categoriesUri);
+
+            const categoryOptions = categoriesResult.map(cat =>
+                ({ value: cat.id, label: cat.name })
+            );
+            setState({
+                loading: false,
+                canSell: true,
+                categoryOptions: categoryOptions
+            });
         };
 
         fetch();
@@ -108,6 +125,16 @@ const CreateOfferDraftPage = () => {
         totalStock: Math.floor(Math.random() * (40 - 1 + 1)) + 1
     };
 
+    if (state.loading) return <></>
+
+    if (!state.canSell) return <>
+        <h3>You cannot create offers yet...</h3>
+
+        <p>
+            Fill <Link to='/user/seller-info'>seller info</Link> and come back :)
+        </p>
+    </>
+
     return <div className="bg-white container pt-2 pb-4">
         <div className="mt-2 mb-3">
             <h2 style={{ display: 'inline' }}>
@@ -125,7 +152,7 @@ const CreateOfferDraftPage = () => {
                 <RequiredSelect
                     name="categoryId"
                     styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc" }}
-                    options={categoryOptions}
+                    options={state.categoryOptions}
                 />
             </div>
 

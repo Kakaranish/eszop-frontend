@@ -60,24 +60,7 @@ const UserIndicator = (props) => {
                     </p>
 
                     <Divider width="3px" />
-
-                    <Link to="/user/profile" className="text-reset">
-                        <div className="px-3 py-2 hoverDiv d-flex">
-                            <div className="d-inline-flex imgHolder">
-                                <img src={profileIcon}
-                                    style={{ width: '19px' }}
-                                    alt="my-profile-img"
-                                />
-                            </div>
-
-                            <div className="d-inline-block">
-                                My Profile
-                            </div>
-                        </div>
-                    </Link>
-
-                    <Divider width="1.5px" />
-
+                    
                     <Link to="/offers/create" className="text-reset">
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
@@ -120,6 +103,23 @@ const UserIndicator = (props) => {
 
                             <div className="d-inline-block">
                                 My Orders
+                            </div>
+                        </div>
+                    </Link>
+
+                    <Divider width="1.5px" />
+
+                    <Link to="/user/profile" className="text-reset">
+                        <div className="px-3 py-2 hoverDiv d-flex">
+                            <div className="d-inline-flex imgHolder">
+                                <img src={profileIcon}
+                                    style={{ width: '19px' }}
+                                    alt="my-profile-img"
+                                />
+                            </div>
+
+                            <div className="d-inline-block">
+                                My Profile
                             </div>
                         </div>
                     </Link>

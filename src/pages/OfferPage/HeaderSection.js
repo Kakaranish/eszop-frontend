@@ -1,19 +1,18 @@
-import React from 'react';
-import moment from 'moment';
-import ImagePreview from 'common/components/ImagePreview';
-import AddToCartSection from './AddToCartSection';
-import AwareComponentBuilder from 'common/AwareComponentBuilder';
-import styled from 'styled-components';
+import penIcon from 'assets/img/pen.svg';
 import starIcon from 'assets/img/star.svg';
-import { Link } from 'react-router-dom';
-
-const Styles = styled.div`
-.starIcon {width: 20px;}
-}`
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import ImagePreview from 'common/components/ImagePreview';
+import moment from 'moment';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
+import AddToCartSection from './AddToCartSection';
 
 const HeaderSection = (props) => {
 
     const { offer } = props;
+
+    const history = useHistory();
 
     if (!offer) return <></>
 
@@ -21,6 +20,10 @@ const HeaderSection = (props) => {
     const price = {
         beforeDot: priceStr.split('.')[0],
         afterDot: priceStr.split('.')[1]
+    };
+
+    const onEdit = () => {
+        history.push(`/offers/${offer.id}/edit`);
     };
 
     return <>
@@ -49,15 +52,28 @@ const HeaderSection = (props) => {
                     {
                         (props.identity && props.identity.id == offer.ownerId) &&
                         <>
-                            <Styles>
-                                <div className="d-flex mb-3">
+                            <div className="mb-3">
+                                <div className="pull-right">
+                                    <img src={penIcon}
+                                        className="cursor-pointer"
+                                        style={{ width: '20px' }}
+                                        alt="edit-icon"
+                                        data-tip="Edit offer"
+                                        onClick={onEdit}
+                                    />
+
+                                    <ReactTooltip />
+                                </div>
+
+                                <div className="d-flex">
                                     <img src={starIcon}
-                                        className="starIcon mr-2"
+                                        className="mr-2"
+                                        style={{ width: '20px' }}
                                         alt="star-icon"
                                     />
-                                    This is your offer
-                                </div>
-                            </Styles>
+                                        This is your offer
+                                    </div>
+                            </div>
                         </>
                     }
 
