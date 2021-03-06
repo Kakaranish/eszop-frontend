@@ -19,7 +19,7 @@ const MyOffersPage = (props) => {
 
     const [state, setState] = useState({
         loading: true,
-        offers: []
+        pagination: null
     });
 
     useEffect(() => {
