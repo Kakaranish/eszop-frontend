@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CategoriesPage from 'pages/CategoriesPage/CategoriesPage';
 import RefreshPage from 'pages/RefreshPage';
 import SellerPage from 'pages/SellerPage/SellerPage';
 import CartPage from 'pages/User/Other/CartPage/CartPage';
@@ -28,11 +29,12 @@ const App = () => <>
           <Route path='/user/settings' component={SettingsRoutes} />
           <Route path='/auth' component={AuthRoutes} />
           
-          <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
           <AuthorizedOnlyRoute path='/user/orders' component={OrderRoutes} />
-          
-          <Route path='/seller/:id' component={SellerPage} />
+          <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
           <AuthorizedOnlyRoute path="/cart" component={CartPage} />
+          
+          <Route path='/categories' component={CategoriesPage} />
+          <Route path='/seller/:id' component={SellerPage} />
 
           <Route path='/error/:code' component={ErrorPage} />
           <Route path='/refresh' component={RefreshPage} />
