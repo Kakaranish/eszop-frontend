@@ -85,12 +85,20 @@ const HeaderSection = (props) => {
                         Offer Id: {offer.id}
                     </div>
 
-                    <p className="mb-0 py-0">
+                    <span className="d-block mb-3">
+                        Category:&nbsp;
+                        <Link to={`/offers?category=${offer.category.id}`}>
+                            {offer.category.name}
+                        </Link>
+                    </span>
+
+                    <span className="d-block">
                         Published at: {moment(offer.publishedAt).format("YYYY-MM-DD HH:mm:ss")}
-                    </p>
-                    <p className="my-0 py-0">
+                    </span>
+
+                    <span className="d-block">
                         Ends on: {moment(offer.endsAt).format("YYYY-MM-DD HH:mm:ss")}
-                    </p>
+                    </span>
 
                     <div className="mt-3 mb-4">
                         <h2 className="d-inline">

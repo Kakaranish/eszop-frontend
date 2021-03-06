@@ -10,8 +10,9 @@ const Navbar = (props) => <>
         <Link to='/offers' className="navbar-brand ml-2 text-decoration-none">
             eSzop
         </Link>
-                </div>
-            </div>
+
+        <SearchBar />
+
         <div className="nav navbar-nav flex-row flex-nowrap">
             {
                 !props.identity &&

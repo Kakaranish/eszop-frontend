@@ -89,7 +89,7 @@ const Pagination = (props) => {
 
     const requiresNextButton = currentPage !== totalPages;
     if (requiresNextButton) buttons.push(
-        <li className="page-item page-link pointer" onClick={() => goToPage(currentPage + 1)}>
+        <li key="next" className="page-item page-link pointer" onClick={() => goToPage(currentPage + 1)}>
             Next
         </li>
     );

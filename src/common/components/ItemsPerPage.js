@@ -1,4 +1,5 @@
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import { defaultItemsPerPage } from 'common/settings';
 import React, { useEffect } from 'react';
 
 const ItemsPerPage = (props) => {
@@ -41,16 +42,14 @@ const ItemsPerPage = (props) => {
 };
 
 function rehydrateValue(props, options) {
-    const defaultValue = options[0];
-
     let storedValue = props.settings?.itemsPerPage;
     if (!storedValue) {
-        props.setItemsPerPage(defaultValue);
+        props.setItemsPerPage(defaultItemsPerPage);
         return;
     }
 
     if (!options.some(x => x === storedValue)) {
-        props.setItemsPerPage(defaultValue);
+        props.setItemsPerPage(defaultItemsPerPage);
         return;
     }
 }
