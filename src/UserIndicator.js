@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import userIcon from 'assets/img/user.svg';
-import profileIcon from 'assets/img/profile.svg';
 import bagIcon from 'assets/img/bag.svg';
-import plusIcon from 'assets/img/plus.svg';
 import invoiceIcon from 'assets/img/invoice.svg';
+import plusIcon from 'assets/img/plus.svg';
+import accountSettingsIcon from 'assets/img/settings.svg';
+import userIcon from 'assets/img/user.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
-import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SignOutButton from 'skeleton/SignOutButton';
+import styled from 'styled-components';
 
 const Styles = styled.div`
 .hoverDiv {background: #fff; cursor: pointer;}
@@ -108,17 +108,17 @@ const UserIndicator = (props) => {
 
                     <Divider width="1.5px" />
 
-                    <Link to="/user/profile" className="text-reset">
+                    <Link to="/user/settings" className="text-reset">
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
-                                <img src={profileIcon}
+                                <img src={accountSettingsIcon}
                                     style={{ width: '19px' }}
                                     alt="my-profile-img"
                                 />
                             </div>
 
                             <div className="d-inline-block">
-                                My Profile
+                                Account Settings
                             </div>
                         </div>
                     </Link>

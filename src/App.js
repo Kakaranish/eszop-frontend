@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RefreshPage from 'pages/RefreshPage';
 import SellerPage from 'pages/SellerPage/SellerPage';
+import AccountSettingsPage from 'pages/User/Other/AccountSettingsPage/AccountSettingsPage';
 import CartPage from 'pages/User/Other/CartPage/CartPage';
 import DeliveryAddressesPage from 'pages/User/Other/DeliveryAddressesPage/DeliveryAddressesPage';
 import SellerInfoPage from 'pages/User/Other/SellerInfoPage/SellerInfoPage';
@@ -37,6 +38,7 @@ const App = () => <>
           <AuthorizedOnlyRoute path='/user/orders' component={OrderRoutes} />
           <AuthorizedOnlyRoute path='/user/addresses' component={DeliveryAddressesPage} />
           <AuthorizedOnlyRoute path='/user/seller-info' component={SellerInfoPage} />
+          <AuthorizedOnlyRoute path='/user/settings' component={AccountSettingsPage} />
 
           <AuthorizedOnlyRoute path="/cart" component={CartPage} />
 

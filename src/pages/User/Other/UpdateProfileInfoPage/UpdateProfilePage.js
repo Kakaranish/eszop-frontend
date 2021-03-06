@@ -39,10 +39,16 @@ const UpdateProfilePage = () => {
         fetchProfile();
     }, []);
 
-    if(state.loading) return <></>
-    
+    if (state.loading) return <></>
+
     return <>
-        <UpdateProfileForm profile={state.profile ?? {}} />
+        <div className="offset-md-2 col-md-8">
+            <h3 className="mb-3">
+                Update profile
+            </h3>
+
+            <UpdateProfileForm profile={state.profile ?? {}} />
+        </div>
     </>
 };
 

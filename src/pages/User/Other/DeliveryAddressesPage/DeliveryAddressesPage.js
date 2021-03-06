@@ -46,16 +46,18 @@ const DeliveryAddressesPage = () => {
 
     if (state.loading) return <></>
     if (!state.deliveryAddresses.length) return <>
-        <h3>You have no delivery addresses</h3>
+        <h3 className="mb-3">
+            You have no delivery addresses
+        </h3>
 
         <AddDeliveryAddressModal />
     </>
 
     return <>
-        <h3 className="mb-2">
+        <h3 className="mb-3">
             Delivery addresses
         </h3>
-        
+
         <AddDeliveryAddressModal />
 
         <div className="row">
