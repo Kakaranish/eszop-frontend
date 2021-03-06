@@ -131,7 +131,7 @@ const CreateOfferDraftPage = () => {
         <h3>You cannot create offers yet...</h3>
 
         <p>
-            Fill <Link to='/user/seller-info'>seller info</Link> and come back :)
+            Fill <Link to='/user/settings/seller-info'>seller info</Link> and come back :)
         </p>
     </>
 

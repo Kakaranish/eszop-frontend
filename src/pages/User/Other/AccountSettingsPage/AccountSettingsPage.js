@@ -20,7 +20,7 @@ const AccountSettingsPage = () => {
 
         <Styles>
             <div className="row">
-                <Link className="col-lg-4 cursor-pointer linkStyle" to="/user/seller-info">
+                <Link className="col-lg-4 cursor-pointer linkStyle" to="/user/settings/seller-info">
                     <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle">
                         <img src={moneyIcon}
                             style={{ width: '40px' }}
@@ -33,7 +33,7 @@ const AccountSettingsPage = () => {
                     </div>
                 </Link>
 
-                <Link className="col-lg-4 cursor-pointer linkStyle" to="/user/addresses">
+                <Link className="col-lg-4 cursor-pointer linkStyle" to="/user/settings/addresses">
                     <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle">
                         <img src={addressIcon}
                             style={{ width: '40px' }}
@@ -46,7 +46,7 @@ const AccountSettingsPage = () => {
                     </div>
                 </Link>
 
-                <Link className="col-lg-4 cursor-pointer linkStyle" to='/user/profile'>
+                <Link className="col-lg-4 cursor-pointer linkStyle" to='/user/settings/profile'>
                     <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle">
                         <img src={profileIcon}
                             style={{ width: '40px' }}
