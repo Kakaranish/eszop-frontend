@@ -1,6 +1,6 @@
-import React from 'react';
 import cartIcon from 'assets/img/cart.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 const CartIndicator = (props) => {
@@ -13,6 +13,7 @@ const CartIndicator = (props) => {
     return <>
         <div className={`d-inline ${classes}`}>
             <img src={cartIcon}
+                className="invertedSvg"
                 style={{ width: '30px', cursor: 'pointer' }}
                 onClick={() => history.push('/cart')}
                 alt="cart-img"

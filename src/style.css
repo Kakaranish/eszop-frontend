@@ -29,3 +29,8 @@ body {
     content:"*";
     color:red;
   }
+
+.invertedSvg {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+}

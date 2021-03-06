@@ -18,7 +18,8 @@ const RequiredSelect = (props) => {
             value={selectedValue}
             isClearable={isClearable}
             options={options}
-            onChange={onChange} />
+            onChange={onChange} 
+        />
 
         <input
             name={name}

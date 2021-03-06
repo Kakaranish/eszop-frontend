@@ -40,6 +40,11 @@ const UserIndicator = (props) => {
         }
     };
 
+    const onClickReset = () => {
+        document.addEventListener("click", handleClickOutside, false)
+        setIsExpanded(exp => !exp);
+    }
+
     const Divider = ({ width }) => <div className="dropdown-divider my-0" style={{ borderWidth: width }}></div>
 
     return <>
@@ -47,20 +52,20 @@ const UserIndicator = (props) => {
             <Styles>
                 <div ref={iconRef} onClick={userIconClick} aria-haspopup="true" aria-expanded={isExpanded}>
                     <img src={userIcon}
-                        className="userIcon"
+                        className="userIcon invertedSvg"
                         alt="user-img"
                     />
                 </div>
 
                 <div ref={wrapperRef} className={`dropdown-menu dropdown-menu-right py-0 ${isExpanded ? 'show' : ''}`}
-                    style={{ minWidth: "20vw" }}>
+                    style={{ minWidth: "20vw", position: 'absolute' }}>
                     <p className="pt-3 px-3">
                         Hello <b>{props.identity.email}</b>
                     </p>
 
                     <Divider width="3px" />
-                    
-                    <Link to="/offers/create" className="text-reset">
+
+                    <Link to="/offers/create" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
                                 <img src={plusIcon}
@@ -74,7 +79,7 @@ const UserIndicator = (props) => {
                         </div>
                     </Link>
 
-                    <Link to="/user/offers" className="text-reset">
+                    <Link to="/user/offers" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
                                 <img src={bagIcon}
@@ -91,7 +96,7 @@ const UserIndicator = (props) => {
 
                     <Divider width="1.5px" />
 
-                    <Link to="/user/orders" className="text-reset">
+                    <Link to="/user/orders" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
                                 <img src={invoiceIcon}
@@ -108,7 +113,7 @@ const UserIndicator = (props) => {
 
                     <Divider width="1.5px" />
 
-                    <Link to="/user/settings" className="text-reset">
+                    <Link to="/user/settings" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
                                 <img src={accountSettingsIcon}
@@ -123,7 +128,9 @@ const UserIndicator = (props) => {
                         </div>
                     </Link>
 
-                    <SignOutButton />
+                    <div onClick={onClickReset}>
+                        <SignOutButton />
+                    </div>
 
                 </div>
             </Styles>
