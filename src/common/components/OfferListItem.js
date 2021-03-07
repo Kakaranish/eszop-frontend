@@ -8,7 +8,7 @@ const OfferListItem = (props) => {
     const { offer } = props;
 
     const offerUri = !offer.publishedAt
-        ? `/offers/create/draft/${offer.id}/stage/1`
+        ? `/offers/create/draft/${offer.id}`
         : `/offers/${offer.id}`;
 
     return <>

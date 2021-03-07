@@ -5,9 +5,9 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeliveryMethodsSection from '../CreateOfferPage/DeliveryMethodsSection';
-import GeneralSection from '../CreateOfferPage/GeneralSection';
-import ParametersSection from '../CreateOfferPage/ParametersSection';
+import DeliveryMethodsSection from '../components/DeliveryMethodsSection';
+import GeneralSection from '../components/GeneralSection';
+import ParametersSection from '../components/ParametersSection';
 
 const EditOfferDraftPage = (props) => {
 
