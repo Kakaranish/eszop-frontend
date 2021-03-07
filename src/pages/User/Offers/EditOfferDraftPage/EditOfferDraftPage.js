@@ -5,9 +5,10 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeliveryMethodsSection from '../components/DeliveryMethodsSection';
-import GeneralSection from '../components/GeneralSection';
-import ParametersSection from '../components/ParametersSection';
+import DeliveryMethodsSection from '../components/OfferEditing/DeliveryMethodsSection';
+import GeneralSection from '../components/OfferEditing/GeneralSection';
+import ParametersSection from '../components/OfferEditing/ParametersSection';
+import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferTrash';
 
 const EditOfferDraftPage = (props) => {
 
@@ -111,7 +112,7 @@ const EditOfferDraftPage = (props) => {
             setDeliveryMethods([...offerResult.data.deliveryMethods.map(kvp => ({
                 key: kvp.name,
                 value: kvp.price.toFixed(2)
-            })), { 
+            })), {
                 key: "",
                 value: ""
             }]);
@@ -127,11 +128,10 @@ const EditOfferDraftPage = (props) => {
         let mainImg = images.find(x => x.isMain);
         if (!mainImg) {
             console.log("Something went wrong. No main image...");
-            return;
+            throw "WARN";
         }
 
         images.forEach(img => formData.append("images", img.file));
-
         const imagesMetadata = images.map((img, index) => ({
             imageId: img.id,
             isRemote: img.isRemote,
@@ -140,8 +140,8 @@ const EditOfferDraftPage = (props) => {
         }));
 
         if (imagesMetadata.length === 0) {
-            toast.warn("Your offer must have at least 1 image");
-            return;
+            toast.warn("Offer must have at least 1 image");
+            throw "WARN";
         }
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
 
@@ -153,11 +153,11 @@ const EditOfferDraftPage = (props) => {
         let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
         if (preparedDeliveryMethods.length === 0) {
             toast.warn("At least 1 delivery method required");
-            return;
+            throw "WARN";
         }
         if (new Set(preparedDeliveryMethods.map(x => x.key)).size !== preparedDeliveryMethods.length) {
             toast.warn("Delivery methods must be unique");
-            return;
+            throw "WARN";
         }
 
         preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
@@ -231,16 +231,18 @@ const EditOfferDraftPage = (props) => {
     const onSubmitCb = async event => {
         event.preventDefault();
 
-        switch (formAction) {
-            case "Draft":
-                updateOfferDraft(event)
-                break;
-            case "Publish":
-                createOfferAndPublish(event)
-                break;
-            default:
-                break;
-        }
+        try {
+            switch (formAction) {
+                case "Draft":
+                    await updateOfferDraft(event)
+                    break;
+                case "Publish":
+                    await createOfferAndPublish(event)
+                    break;
+                default:
+                    break;
+            }
+        } catch (error) { }
     };
 
 
@@ -262,6 +264,17 @@ const EditOfferDraftPage = (props) => {
 
     return <div className="pt-2 pb-4">
         <form onSubmit={onSubmitCb} onKeyPress={e => { if (e.key === 'Enter') e.preventDefault(); }}>
+
+            <div className="bg-white px-4 pt-3 pb-4">
+                <h2 style={{ display: 'inline' }}>
+                    Edit offer
+                </h2>
+
+                <div className="pull-right">
+                    <DeleteOfferTrash offerId={offerId} />
+                </div>
+            </div>
+
             <GeneralSection
                 state={state}
                 offer={state.offer}

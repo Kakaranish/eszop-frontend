@@ -36,7 +36,7 @@ const ParametersSection = ({ parameters, setParameters }) => {
                 />
 
                 <div className="text-muted mb-3" style={{ fontSize: '0.85rem' }}>
-                    Put here key-value pairs that describe your offer
+                    Put here key-value pairs that describe offer
                     </div>
             </div>
 

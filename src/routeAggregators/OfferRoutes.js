@@ -1,8 +1,8 @@
 import OfferPage from 'pages/OfferPage/OfferPage';
 import OffersPage from 'pages/OffersPage/OffersPage';
+import CreateOfferDraftPage from 'pages/User/Offers/CreateOfferDraftPage/CreateOfferDraftPage';
 import EditActiveOfferPage from 'pages/User/Offers/EditActiveOfferPage/EditActiveOfferPage';
-import CreateOfferDraftPage from 'pages/User/Offers/OfferDraft/CreateOfferDraftPage/CreateOfferDraftPage';
-import EditOfferDraftPage from 'pages/User/Offers/OfferDraft/EditOfferDraftPage/EditOfferDraftPage';
+import EditOfferDraftPage from 'pages/User/Offers/EditOfferDraftPage/EditOfferDraftPage';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AuthorizedOnlyRoute from 'routeTypes/AuthorizedOnlyRoute';

@@ -6,12 +6,6 @@ import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 const GeneralSection = ({state, offer, images, setImages, initCategory}) => {
     return <>
         <div className="bg-white px-4 pt-2 pb-4">
-            <div className="mt-2 mb-3">
-                <h2 style={{ display: 'inline' }}>
-                    Create Offer
-                    </h2>
-            </div>
-
             <div className="form-group">
                 <label>Name</label>
                 <input name="name" type="text" className="form-control"

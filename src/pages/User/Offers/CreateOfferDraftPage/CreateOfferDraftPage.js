@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeliveryMethodsSection from '../components/DeliveryMethodsSection';
-import GeneralSection from '../components/GeneralSection';
-import ParametersSection from '../components/ParametersSection';
+import DeleteOfferTrash from '../components/DeleteOfferTrash';
+import DeliveryMethodsSection from '../components/OfferEditing/DeliveryMethodsSection';
+import GeneralSection from '../components/OfferEditing/GeneralSection';
+import ParametersSection from '../components/OfferEditing/ParametersSection';
 
 const CreateOfferDraftPage = () => {
 
@@ -93,7 +94,7 @@ const CreateOfferDraftPage = () => {
         }));
         if (imagesMetadata.length === 0) {
             toast.warn("Your offer must have at least 1 image");
-            return;
+            throw "WARN";
         }
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
         images.forEach(img => formData.append("images", img.file));
@@ -106,11 +107,11 @@ const CreateOfferDraftPage = () => {
         let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
         if (preparedDeliveryMethods.length === 0) {
             toast.warn("At least 1 delivery method required");
-            return;
+            throw "WARN";
         }
         if (new Set(preparedDeliveryMethods.map(x => x.key)).size !== preparedDeliveryMethods.length) {
             toast.warn("Delivery methods must be unique");
-            return;
+            throw "WARN";
         }
 
         preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
@@ -183,16 +184,18 @@ const CreateOfferDraftPage = () => {
     const onSubmitCb = async event => {
         event.preventDefault();
 
-        switch (formAction) {
-            case "Draft":
-                createOfferDraft(event)
-                break;
-            case "Publish":
-                createOfferAndPublish(event)
-                break;
-            default:
-                break;
-        }
+        try {
+            switch (formAction) {
+                case "Draft":
+                    await createOfferDraft(event)
+                    break;
+                case "Publish":
+                    await createOfferAndPublish(event)
+                    break;
+                default:
+                    break;
+            }
+        } catch (error) { }
     };
 
     if (state.loading) return <></>
@@ -211,6 +214,13 @@ const CreateOfferDraftPage = () => {
     let formAction = null;
     return <div className="pt-2 pb-4">
         <form onSubmit={onSubmitCb} onKeyPress={e => { if (e.key === 'Enter') e.preventDefault(); }}>
+
+            <div className="bg-white px-4 pt-3 pb-4">
+                <h2 style={{ display: 'inline' }}>
+                    Create Offer
+                </h2>
+            </div>
+
             <GeneralSection
                 state={state}
                 offer={state.offer}
