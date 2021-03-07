@@ -1,47 +1,32 @@
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import moment from 'moment';
-import EditableImagesPreviews from 'pages/User/Offers/components/EditableImagesPreviews';
-import ImageUploader from 'pages/User/Offers/components/ImageUploader';
-import KeyValueTable from 'pages/User/Offers/components/KeyValueTable/KeyValueTable';
-import OfferForm from 'pages/User/Offers/components/OfferForm';
-import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-
-const columnSettings = {
-    key: {
-        name: "Key",
-        inputSettings: {
-            type: "text",
-            placeholder: "Key..."
-        }
-    },
-    value: {
-        name: "Value",
-        inputSettings: {
-            type: "text",
-            placeholder: "Value..."
-        }
-    }
-};
+import DeliveryMethodsSection from '../DeliveryMethodsSection';
+import GeneralSection from '../GeneralSection';
+import ParametersSection from '../ParametersSection';
 
 const CreateOfferDraftPage = () => {
 
     const history = useHistory();
 
-    const [keyValueData, setKeyValueData] = useState([
-        {
-            key: '',
-            value: ''
-        }
-    ]);
-    const [images, setImages] = useState([]);
     const [state, setState] = useState({ loading: true, canSell: true, categoryOptions: [] });
+    const [images, setImages] = useState([]);
+
+    const [parameters, setParameters] = useState([{ key: '', value: '' }]);
+    const [deliveryMethods, setDeliveryMethods] = useState([{ key: "", value: "" }]);
+    const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
+
+    // For test purposes
+    const offerDefaultValues = {
+        name: `Offer ${moment.utc().toISOString()}`,
+        description: `Offer Description ${moment.utc().toISOString()}`,
+        price: Math.floor(Math.random() * (1000 - 20 + 1)) + 20,
+        totalStock: Math.floor(Math.random() * (40 - 1 + 1)) + 1
+    };
 
     useEffect(() => {
         const fetch = async () => {
@@ -69,8 +54,28 @@ const CreateOfferDraftPage = () => {
             setState({
                 loading: false,
                 canSell: true,
-                categoryOptions: categoryOptions
+                categoryOptions: categoryOptions,
+                offer: offerDefaultValues
             });
+
+            const methodsUri = `/offers-api/delivery-methods`;
+            const methodsAction = async () => await axios.get(methodsUri);
+            await authorizedRequestHandler(methodsAction,
+                {
+                    status: 200,
+                    callback: result => {
+                        setPredefinedDeliveryMethods(result.data.map(x => {
+                            const labelPricePart = (x.price || x.price === 0)
+                                ? ` - ${x.price.toFixed(2)} PLN`
+                                : '';
+
+                            return ({
+                                label: `${x.name}${labelPricePart}`,
+                                value: `${x.name};${(x.price || x.price === 0) ? x.price : ""}`
+                            });
+                        }));
+                    }
+                });
         };
 
         fetch();
@@ -81,48 +86,70 @@ const CreateOfferDraftPage = () => {
 
         let formData = new FormData(event.target);
 
+        // Prepare images
         const imagesMetadata = images.map((img, index) => ({
             imageId: img.id,
             isRemote: false,
             isMain: img.isMain,
             sortId: index
         }));
-
         if (imagesMetadata.length === 0) {
             toast.warn("Your offer must have at least 1 image");
             return;
         }
-
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
-
-        let preparedKeyValueData = keyValueData.filter(x => x.key && x.value);
-        formData.append("keyValueInfos", JSON.stringify(preparedKeyValueData));
-
         images.forEach(img => formData.append("images", img.file));
 
-        const action = async () => await axios.post("/offers-api/draft", formData);
-        await authorizedRequestHandler(action,
+        // Prepare parameters
+        let preparedParameters = parameters.filter(x => x.key && x.value);
+        formData.append("keyValueInfos", JSON.stringify(preparedParameters));
+
+        // Prepare delivery methods
+        let preparedDeliveryMethods = deliveryMethods.filter(x => x.key && x.value);
+        if (preparedDeliveryMethods.length === 0) {
+            toast.warn("At least 1 delivery method required");
+            return;
+        }
+        if (new Set(preparedDeliveryMethods.map(x => x.key)).size !== preparedDeliveryMethods.length) {
+            toast.warn("Delivery methods must be unique");
+            return;
+        }
+
+        preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
+            name: x.key,
+            price: x.value
+        }));
+        formData.append("deliveryMethods", JSON.stringify(preparedDeliveryMethods));
+
+        const action = async () => await axios.post("/offers-api/draft/create", formData);
+        const creationResult = await authorizedRequestHandler(action,
             {
                 status: 200,
                 callback: result => {
-                    history.push(`/offers/create/draft/${result.data.offerId}/stage/2`);
+                    history.push(`/user/offers`);
+                    return result;
                 }
             },
             {
                 status: 400,
-                callback: () => {
+                callback: result => {
                     toast.error("Your creation request has been rejected");
+                    return result;
                 }
             }
         );
-    };
+        if(creationResult.status !== 200) return;
+        
+        const offerId = creationResult.data;
+        const publishUri = `/offers-api/draft/${offerId}/publish`;
+        const publishAction = async () => await axios.post(publishUri);
 
-    // For test purposes
-    const offerDefaultValues = {
-        name: `Offer ${moment.utc().toISOString()}`,
-        description: `Offer Description ${moment.utc().toISOString()}`,
-        price: Math.floor(Math.random() * (1000 - 20 + 1)) + 20,
-        totalStock: Math.floor(Math.random() * (40 - 1 + 1)) + 1
+        await authorizedRequestHandler(publishAction, {
+            status: 200,
+            callback: () => {
+                history.push(`/offers/${offerId}`);
+            }
+        });
     };
 
     if (state.loading) return <></>
@@ -131,72 +158,53 @@ const CreateOfferDraftPage = () => {
         <h3>You cannot create offers yet...</h3>
 
         <p>
-            Fill <Link to='/user/settings/seller-info'>seller info</Link> and come back :)
+            Fill
+            <Link to='/user/settings/seller-info'>
+                seller info
+            </Link> and come back :)
         </p>
     </>
 
-    return <div className="bg-white container pt-2 pb-4">
-        <div className="mt-2 mb-3">
-            <h2 style={{ display: 'inline' }}>
-                Create Offer
-            </h2>
-            <span className="ml-2 align-self-center text-secondary">
-                (Stage 1 of 2)
-            </span>
-        </div>
+    const formOnKeyPress = e => {
+        if (e.key === 'Enter') e.preventDefault();
+    }
 
-        <OfferForm onSubmitCb={createOfferCb} offer={offerDefaultValues}>
-            <div className="form-group">
-                <label>Category</label>
-
-                <RequiredSelect
-                    name="categoryId"
-                    styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc" }}
-                    options={state.categoryOptions}
-                />
-            </div>
-
-            <EditableImagesPreviews
+    return <div className="pt-2 pb-4">
+        <form onSubmit={createOfferCb} onKeyPress={formOnKeyPress}>
+            <GeneralSection
+                state={state}
+                offer={state.offer}
                 images={images}
                 setImages={setImages}
             />
 
-            <ImageUploader
-                images={images}
-                setImages={setImages}
+            <ParametersSection
+                parameters={parameters}
+                setParameters={setParameters}
             />
 
-            <div className="mt-5">
-                <div>
-                    <div className="mb-3">
-                        <h4 className="d-inline">
-                            Parameters
-                        </h4>
+            <DeliveryMethodsSection
+                deliveryMethods={deliveryMethods}
+                setDeliveryMethods={setDeliveryMethods}
+                predefinedDeliveryMethods={predefinedDeliveryMethods}
+            />
 
-                        <FontAwesomeIcon icon={faQuestionCircle}
-                            className="ml-2 align-baseline"
-                            style={{ color: 'lightgray', marginLeft: '2px' }}
-                            size={'1x'}
-                            data-tip="Click enter in last row to add new"
-                        />
+            <div className="bg-white pb-3">
+                <div className="row px-3">
+                    <div className="col-6">
+                        <button type="submit" className="btn btn-outline-success btn-block">
+                            Save draft and continue later
+                        </button>
                     </div>
 
-                    <KeyValueTable
-                        data={keyValueData}
-                        setData={setKeyValueData}
-                        columnSettings={columnSettings}
-                    />
-
-                    <div className="col-12 text-secondary">
-                        Entries with at least 1 empty value are ignored
+                    <div className="col-6">
+                        <button type="submit" className="btn btn-success btn-block">
+                            Publish Offer
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <button type="submit" className="btn btn-success btn-block mt-5">
-                Go to stage 2
-            </button>
-        </OfferForm>
+        </form>
 
         <ReactTooltip />
     </div>
