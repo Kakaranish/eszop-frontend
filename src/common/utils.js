@@ -68,13 +68,13 @@ export const requestHandler = async (action, ...handlers) => {
     handlers = handlers ?? [];
     let handlersDict = Object.assign({}, ...handlers.map
         (h => ({ [h.status]: h.callback })));
-    
+
     const result = await action();
     if (result.status === 200) {
         if (handlersDict[200]) return await handlersDict[200](result);
         else return result.data;
     }
-    
+
     const callback = handlersDict[result.status];
     if (callback) return await callback(result);
 
@@ -103,3 +103,10 @@ export const authorizedRequestHandler = async (action, ...handlers) => {
     await ensureAccessTokenIsValid();
     return await requestHandler(action, ...handlers);
 };
+
+export const mapRoleName = role => {
+    if (role === 'USER') return 'User';
+    if (role === 'ADMIN') return 'Admin';
+    if (role === 'SUPER_ADMIN') return 'Super Admin';
+    return null;
+}

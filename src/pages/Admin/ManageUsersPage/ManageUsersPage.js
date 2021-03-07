@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import queryString from 'query-string';
 import axios from 'axios';
-import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
-import Select from "react-select";
+import { authorizedRequestHandler, getFormDataJsonFromEvent, mapRoleName } from 'common/utils';
+import queryString from 'query-string';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import Select from "react-select";
+import { toast } from 'react-toastify';
 
 const ManageUsersPage = (props) => {
 
@@ -154,12 +154,5 @@ const ManageUsersPage = (props) => {
         }
     </>
 };
-
-function mapRoleName(role) {
-    if(role === 'USER') return 'User';
-    if(role === 'ADMIN') return 'Admin';
-    if(role === 'SUPER_ADMIN') return 'Super Admin';
-    return null;
-}
 
 export default ManageUsersPage;
