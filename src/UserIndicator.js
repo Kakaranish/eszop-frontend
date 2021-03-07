@@ -3,6 +3,7 @@ import invoiceIcon from 'assets/img/invoice.svg';
 import plusIcon from 'assets/img/plus.svg';
 import accountSettingsIcon from 'assets/img/settings.svg';
 import userIcon from 'assets/img/user.svg';
+import toolsIcon from 'assets/img/tools.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -127,6 +128,28 @@ const UserIndicator = (props) => {
                             </div>
                         </div>
                     </Link>
+
+                    {
+                        props.identity.role === 'ADMIN' || props.identity.role === 'SUPER_ADMIN' &&
+                        <>
+                            <Divider width="1.5px" />
+
+                            <Link to="/admin/panel" className="text-reset" onClick={onClickReset}>
+                                <div className="px-3 py-2 hoverDiv d-flex">
+                                    <div className="d-inline-flex imgHolder">
+                                        <img src={toolsIcon}
+                                            style={{ width: '19px' }}
+                                            alt="my-profile-img"
+                                        />
+                                    </div>
+
+                                    <div className="d-inline-block">
+                                        Admin Panel
+                                    </div>
+                                </div>
+                            </Link>
+                        </>
+                    }
 
                     <div onClick={onClickReset}>
                         <SignOutButton />

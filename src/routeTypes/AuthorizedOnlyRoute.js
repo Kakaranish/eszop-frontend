@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
-import { useHistory, Route } from 'react-router-dom';
 import { ensureAccessTokenIsValid, isAccessTokenExpCookiePresent } from 'common/utils';
+import React, { useEffect, useState } from 'react';
+import { Route, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AuthorizedOnlyRoute = ({ component: Component, ...rest }) => {
 
     const history = useHistory();
-    const allowedRoles = (rest.roles ?? []).map(role => role.toLowerCase());
+    const allowedRoles = (rest.roles ?? []).map(role => role.toUpperCase());
 
     const [state, setState] = useState({ loading: true });
     useEffect(() => {
         const performAction = async () => {
             if (!rest.identity || !isAccessTokenExpCookiePresent() || !(await ensureAccessTokenIsValid())) {
-                alert('This page requires to be logged in. Redirecting to login page...');
+                toast.warn("This page requires being logged in. Redirecting...")
                 history.push('/auth/sign-in');
                 return;
             }
 
             const hasAllowedRole = allowedRoles.length === 0 || allowedRoles.includes(rest.identity.role);
             if (!hasAllowedRole) {
-                alert(`Set of allowed roles is [${allowedRoles.join(',')}]. Your is ${rest.identity.role ?? "undefined"}`);
+                toast.error("You are not allowed in here")
                 history.push('/offers');
                 return;
             }
