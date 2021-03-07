@@ -3,7 +3,7 @@ import EditableImagesPreviews from 'pages/User/Offers/components/EditableImagesP
 import ImageUploader from 'pages/User/Offers/components/ImageUploader';
 import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 
-const GeneralSection = ({state, offer, images, setImages}) => {
+const GeneralSection = ({state, offer, images, setImages, initCategory}) => {
     return <>
         <div className="bg-white px-4 pt-2 pb-4">
             <div className="mt-2 mb-3">
@@ -25,6 +25,7 @@ const GeneralSection = ({state, offer, images, setImages}) => {
                     name="categoryId"
                     styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc" }}
                     options={state.categoryOptions}
+                    initValue={initCategory}
                 />
             </div>
 

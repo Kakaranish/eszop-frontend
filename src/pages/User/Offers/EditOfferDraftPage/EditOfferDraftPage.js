@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeliveryMethodsSection from '../DeliveryMethodsSection';
-import GeneralSection from '../GeneralSection';
-import ParametersSection from '../ParametersSection';
+import DeliveryMethodsSection from '../CreateOfferPage/DeliveryMethodsSection';
+import GeneralSection from '../CreateOfferPage/GeneralSection';
+import ParametersSection from '../CreateOfferPage/ParametersSection';
 
-const CreateOfferDraftPage = () => {
+const EditOfferDraftPage = (props) => {
+
+    const offerId = props.match.params.id;
 
     const history = useHistory();
 
@@ -19,14 +21,6 @@ const CreateOfferDraftPage = () => {
     const [parameters, setParameters] = useState([{ key: '', value: '' }]);
     const [deliveryMethods, setDeliveryMethods] = useState([{ key: "", value: "" }]);
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
-
-    // For test purposes
-    const offerDefaultValues = {
-        name: `Offer ${moment.utc().toISOString()}`,
-        description: `Offer Description ${moment.utc().toISOString()}`,
-        price: Math.floor(Math.random() * (1000 - 20 + 1)) + 20,
-        totalStock: Math.floor(Math.random() * (40 - 1 + 1)) + 1
-    };
 
     useEffect(() => {
         const fetch = async () => {
@@ -45,19 +39,40 @@ const CreateOfferDraftPage = () => {
                 return;
             }
 
-            const categoriesUri = async () => await axios.get("/offers-api/categories");
-            const categoriesResult = await requestHandler(categoriesUri);
+            // Fetch Offer
+            const offerUri = `/offers-api/offers/${offerId}/my`;
+            const offerAction = async () => await axios.get(offerUri);
+            const offerResult = await authorizedRequestHandler(offerAction,
+                {
+                    status: 200,
+                    callback: result => {
+                        if (result.data.publishedAt) {
+                            toast.warn("Offer is already published");
+                            history.push(`/offers/${offerId}`);
+                        }
 
+                        return result;
+                    }
+                },
+                {
+                    status: 400,
+                    callback: result => {
+                        // TODO:
+                        return result;
+                    }
+                }
+            );
+            if (offerResult.status !== 200) return;
+
+            // Fetch categories
+            const categoriesUri = "/offers-api/categories";
+            const categoriesAction = async () => await axios.get(categoriesUri);
+            const categoriesResult = await requestHandler(categoriesAction);
             const categoryOptions = categoriesResult.map(cat =>
                 ({ value: cat.id, label: cat.name })
             );
-            setState({
-                loading: false,
-                canSell: true,
-                categoryOptions: categoryOptions,
-                offer: offerDefaultValues
-            });
 
+            // Fetch delivery methods
             const methodsUri = `/offers-api/delivery-methods`;
             const methodsAction = async () => await axios.get(methodsUri);
             await authorizedRequestHandler(methodsAction,
@@ -75,7 +90,31 @@ const CreateOfferDraftPage = () => {
                             });
                         }));
                     }
-                });
+                }
+            );
+
+            setState({
+                loading: false,
+                canSell: true,
+                categoryOptions: categoryOptions,
+                offer: offerResult.data
+            });
+
+            setImages(offerResult.data.images.map(x => ({ ...x, isRemote: true })));
+            setParameters([...offerResult.data.keyValueInfos.map(kvp => ({
+                key: kvp.key,
+                value: kvp.value
+            })), {
+                key: "",
+                value: ""
+            }]);
+            setDeliveryMethods([...offerResult.data.deliveryMethods.map(kvp => ({
+                key: kvp.name,
+                value: kvp.price.toFixed(2)
+            })), { 
+                key: "",
+                value: ""
+            }]);
         };
 
         fetch();
@@ -85,18 +124,26 @@ const CreateOfferDraftPage = () => {
         let formData = new FormData(event.target);
 
         // Prepare images
+        let mainImg = images.find(x => x.isMain);
+        if (!mainImg) {
+            console.log("Something went wrong. No main image...");
+            return;
+        }
+
+        images.forEach(img => formData.append("images", img.file));
+
         const imagesMetadata = images.map((img, index) => ({
             imageId: img.id,
-            isRemote: false,
+            isRemote: img.isRemote,
             isMain: img.isMain,
             sortId: index
         }));
+
         if (imagesMetadata.length === 0) {
             toast.warn("Your offer must have at least 1 image");
             return;
         }
         formData.append("imagesMetadata", JSON.stringify(imagesMetadata));
-        images.forEach(img => formData.append("images", img.file));
 
         // Prepare parameters
         let preparedParameters = parameters.filter(x => x.key && x.value);
@@ -122,12 +169,13 @@ const CreateOfferDraftPage = () => {
         return formData;
     }
 
-    const createOfferDraft = async event => {
+    const updateOfferDraft = async event => {
         event.preventDefault();
 
         const formData = prepareFormData(event);
 
-        const action = async () => await axios.post("/offers-api/draft", formData);
+        const uri = `/offers-api/draft/${offerId}`;
+        const action = async () => await axios.put(uri, formData);
         await authorizedRequestHandler(action,
             {
                 status: 200,
@@ -150,8 +198,9 @@ const CreateOfferDraftPage = () => {
 
         const formData = prepareFormData(event);
 
-        const action = async () => await axios.post("/offers-api/draft", formData);
-        const creationResult = await authorizedRequestHandler(action,
+        const uri = `/offers-api/draft/${offerId}`;
+        const action = async () => await axios.put(uri, formData);
+        const updateResult = await authorizedRequestHandler(action,
             {
                 status: 200,
                 callback: result => {
@@ -161,14 +210,13 @@ const CreateOfferDraftPage = () => {
             {
                 status: 400,
                 callback: result => {
-                    toast.error("Your creation request has been rejected");
+                    toast.error("Your update request has been rejected");
                     return result;
                 }
             }
         );
-        if (creationResult.status !== 200) return;
+        if (updateResult.status !== 200) return;
 
-        const offerId = creationResult.data;
         const publishUri = `/offers-api/draft/${offerId}/publish`;
         const publishAction = async () => await axios.post(publishUri);
 
@@ -185,7 +233,7 @@ const CreateOfferDraftPage = () => {
 
         switch (formAction) {
             case "Draft":
-                createOfferDraft(event)
+                updateOfferDraft(event)
                 break;
             case "Publish":
                 createOfferAndPublish(event)
@@ -194,6 +242,7 @@ const CreateOfferDraftPage = () => {
                 break;
         }
     };
+
 
     if (state.loading) return <></>
 
@@ -209,6 +258,8 @@ const CreateOfferDraftPage = () => {
     </>
 
     let formAction = null;
+    const initSelectedCategory = state.categoryOptions.find(x => x.value === state.offer.category.id);
+
     return <div className="pt-2 pb-4">
         <form onSubmit={onSubmitCb} onKeyPress={e => { if (e.key === 'Enter') e.preventDefault(); }}>
             <GeneralSection
@@ -216,6 +267,7 @@ const CreateOfferDraftPage = () => {
                 offer={state.offer}
                 images={images}
                 setImages={setImages}
+                initCategory={initSelectedCategory}
             />
 
             <ParametersSection
@@ -248,6 +300,6 @@ const CreateOfferDraftPage = () => {
 
         <ReactTooltip />
     </div>
-}
+};
 
-export default CreateOfferDraftPage;
+export default EditOfferDraftPage;
