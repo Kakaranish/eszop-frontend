@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
 
-const DeleteOfferTrash = ({ offerId }) => {
+const DeleteOfferDraftTrash = ({ offerId }) => {
 
     const history = useHistory();
 
@@ -58,4 +58,4 @@ const DeleteOfferTrash = ({ offerId }) => {
     </>
 };
 
-export default DeleteOfferTrash;
+export default DeleteOfferDraftTrash;

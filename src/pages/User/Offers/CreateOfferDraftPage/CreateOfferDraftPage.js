@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
-import DeleteOfferTrash from '../components/DeleteOfferTrash';
 import DeliveryMethodsSection from '../components/OfferEditing/DeliveryMethodsSection';
 import GeneralSection from '../components/OfferEditing/GeneralSection';
 import ParametersSection from '../components/OfferEditing/ParametersSection';

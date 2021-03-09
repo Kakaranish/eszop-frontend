@@ -8,7 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import DeliveryMethodsSection from '../components/OfferEditing/DeliveryMethodsSection';
 import GeneralSection from '../components/OfferEditing/GeneralSection';
 import ParametersSection from '../components/OfferEditing/ParametersSection';
-import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferTrash';
+import DeleteOfferTrash from 'pages/User/Offers/components/DeleteOfferDraftTrash';
 
 const EditOfferDraftPage = (props) => {
 
@@ -245,7 +245,6 @@ const EditOfferDraftPage = (props) => {
         } catch (error) { }
     };
 
-
     if (state.loading) return <></>
 
     if (!state.canSell) return <>
@@ -267,7 +266,7 @@ const EditOfferDraftPage = (props) => {
 
             <div className="bg-white px-4 pt-3 pb-4">
                 <h2 style={{ display: 'inline' }}>
-                    Edit offer
+                    Edit offer draft
                 </h2>
 
                 <div className="pull-right">
