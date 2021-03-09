@@ -24,23 +24,30 @@ const EditOfferDraftPage = (props) => {
     const [predefinedDeliveryMethods, setPredefinedDeliveryMethods] = useState([]);
 
     useEffect(() => {
-        const fetch = async () => {
+        const fetchCanSell = async () => {
             const canSellUri = '/identity-api/seller/can-sell';
             const canSellAction = async () => await axios.get(canSellUri);
             const result = await authorizedRequestHandler(canSellAction,
-                { status: -1, callback: result => result },
-                { status: 200, callback: result => result }
+                {
+                    status: -1,
+                    callback: () => {
+                        toast.warn("Unknown error");
+                        throw ({
+                            type: "UNKNOWN",
+                            message: result.data.Message
+                        });
+                    }
+                }
             );
-            if (result.status !== 200) {
-                toast.warn("Unknown error");
-                return;
-            }
-            if (!result.data) {
+            if (!result) {
                 setState({ loading: false, canSell: false });
                 return;
             }
 
-            // Fetch Offer
+            return result;
+        };
+
+        const fetchOffer = async () => {
             const offerUri = `/offers-api/offers/${offerId}/my`;
             const offerAction = async () => await axios.get(offerUri);
             const offerResult = await authorizedRequestHandler(offerAction,
@@ -58,64 +65,73 @@ const EditOfferDraftPage = (props) => {
                 {
                     status: 400,
                     callback: result => {
-                        // TODO:
-                        return result;
+                        throw ({
+                            type: "UNKNOWN",
+                            message: result.data.Message
+                        });
                     }
                 }
             );
-            if (offerResult.status !== 200) return;
 
-            // Fetch categories
+            setImages(offerResult.data.images.map(x => ({ ...x, isRemote: true })));
+            setParameters([...offerResult.data.keyValueInfos.map(kvp =>
+                ({ key: kvp.key, value: kvp.value })), { key: "", value: "" }]
+            );
+            setDeliveryMethods([...offerResult.data.deliveryMethods.map(kvp =>
+                ({ key: kvp.name, value: kvp.price.toFixed(2) })), { key: "", value: "" }]
+            );
+            return offerResult;
+        };
+
+        const fetchCategoryOptions = async () => {
             const categoriesUri = "/offers-api/categories";
             const categoriesAction = async () => await axios.get(categoriesUri);
             const categoriesResult = await requestHandler(categoriesAction);
             const categoryOptions = categoriesResult.map(cat =>
                 ({ value: cat.id, label: cat.name })
             );
+            return categoryOptions;
+        };
 
-            // Fetch delivery methods
+        const fetchDeliveryMethods = async () => {
             const methodsUri = `/offers-api/delivery-methods`;
             const methodsAction = async () => await axios.get(methodsUri);
-            await authorizedRequestHandler(methodsAction,
-                {
-                    status: 200,
-                    callback: result => {
-                        setPredefinedDeliveryMethods(result.data.map(x => {
-                            const labelPricePart = (x.price || x.price === 0)
-                                ? ` - ${x.price.toFixed(2)} PLN`
-                                : '';
+            const deliveryMethods = await authorizedRequestHandler(methodsAction);
 
-                            return ({
-                                label: `${x.name}${labelPricePart}`,
-                                value: `${x.name};${(x.price || x.price === 0) ? x.price : ""}`
-                            });
-                        }));
-                    }
-                }
-            );
+            setPredefinedDeliveryMethods(deliveryMethods.map(x => {
+                const labelPricePart = (x.price || x.price === 0)
+                    ? ` - ${x.price.toFixed(2)} PLN`
+                    : '';
 
-            setState({
-                loading: false,
-                canSell: true,
-                categoryOptions: categoryOptions,
-                offer: offerResult.data
-            });
+                return ({
+                    label: `${x.name}${labelPricePart}`,
+                    value: `${x.name};${(x.price || x.price === 0) ? x.price : ""}`
+                });
+            }));
+        };
 
-            setImages(offerResult.data.images.map(x => ({ ...x, isRemote: true })));
-            setParameters([...offerResult.data.keyValueInfos.map(kvp => ({
-                key: kvp.key,
-                value: kvp.value
-            })), {
-                key: "",
-                value: ""
-            }]);
-            setDeliveryMethods([...offerResult.data.deliveryMethods.map(kvp => ({
-                key: kvp.name,
-                value: kvp.price.toFixed(2)
-            })), {
-                key: "",
-                value: ""
-            }]);
+        const fetch = async () => {
+            try {
+                const canSell = await fetchCanSell();
+                if (!canSell) return;
+
+                const offerResult = await fetchOffer();
+                const categoryOptions = await fetchCategoryOptions();
+                await fetchDeliveryMethods();
+
+
+                setState({
+                    loading: false,
+                    canSell: true,
+                    categoryOptions: categoryOptions,
+                    offer: offerResult.data
+                });
+            } catch (error) {
+                setState({
+                    loading: true,
+                    canSell: false
+                });
+            }
         };
 
         fetch();
