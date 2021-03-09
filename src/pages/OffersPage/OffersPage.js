@@ -33,6 +33,7 @@ const OffersPage = (props) => {
         history.push('/refresh');
     }, [location]);
 
+
     const [state, setState] = useState({ loading: true, pagination: null });
 
     useEffect(() => {
@@ -96,7 +97,7 @@ const OffersPage = (props) => {
             }
 
             {
-                queryParams.category && category && 
+                !queryParams.searchPhrase && queryParams.category && category && 
                 <h3 className="mb-3">
                     Offers in category "{category.name}"
                 </h3>
