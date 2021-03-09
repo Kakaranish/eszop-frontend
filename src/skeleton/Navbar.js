@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import UserIndicator from 'UserIndicator';
 import CartIndicator from './CartIndicator';
+import NotificationIndicator from './NotificationIndicator';
 import SearchBar from './SearchBar';
 
 const Navbar = (props) => <>
@@ -23,6 +24,8 @@ const Navbar = (props) => <>
 
             {
                 props.identity && <>
+                    <NotificationIndicator classes="mr-2" />
+
                     <CartIndicator classes="mr-2" />
 
                     <UserIndicator />
