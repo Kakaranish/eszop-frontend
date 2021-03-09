@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import * as CartActions from 'redux/reducers/cartReducer/actions';
 import * as IdentityActions from 'redux/reducers/identityReducer/actions';
+import * as NotificationActions from 'redux/reducers/notificationReducer/actions';
 import * as SettingsActions from 'redux/reducers/settingsReducer/actions';
 
 class AwareComponentBuilder {
@@ -48,6 +49,21 @@ class AwareComponentBuilder {
 
         const partialMapState = state => ({
             settings: state.settings
+        });
+        this.partialMapStateToPropsList.push(partialMapState);
+
+        return this;
+    }
+
+    withNotificationsAwareness() {
+        const partialMapDispatch = dispatch => ({
+            addNotification: notification => dispatch(NotificationActions.addNotification(notification)),
+            clearNotifications: () => dispatch(NotificationActions.clearNotifications())
+        });
+        this.partialDispatchToPropsList.push(partialMapDispatch);
+
+        const partialMapState = state => ({
+            notifications: state.notifications
         });
         this.partialMapStateToPropsList.push(partialMapState);
 
