@@ -29,53 +29,71 @@ const CreateOfferDraftPage = () => {
     };
 
     useEffect(() => {
-        const fetch = async () => {
+
+        const fetchCanSell = async () => {
             const canSellUri = '/identity-api/seller/can-sell';
             const canSellAction = async () => await axios.get(canSellUri);
-            const result = await authorizedRequestHandler(canSellAction,
-                { status: -1, callback: result => result },
-                { status: 200, callback: result => result }
+            const canSell = await authorizedRequestHandler(canSellAction,
+                {
+                    status: -1,
+                    callback: result => {
+                        toast.warn("Unknown error");
+                        throw ({
+                            type: "UNKNOWN",
+                            message: result.data.Message
+                        });
+                    }
+                }
             );
-            if (result.status !== 200) {
-                toast.warn("Unknown error");
-                return;
-            }
-            if (!result.data) {
+            if (!canSell) {
                 setState({ loading: false, canSell: false });
-                return;
+                throw { type: "SKIP" }
             }
+        };
 
+        const fetchCategoryOptions = async () => {
             const categoriesUri = async () => await axios.get("/offers-api/categories");
             const categoriesResult = await requestHandler(categoriesUri);
-
             const categoryOptions = categoriesResult.map(cat =>
                 ({ value: cat.id, label: cat.name })
             );
-            setState({
-                loading: false,
-                canSell: true,
-                categoryOptions: categoryOptions,
-                offer: offerDefaultValues
-            });
+            return categoryOptions;
+        };
 
+        const fetchDeliveryMethods = async () => {
             const methodsUri = `/offers-api/delivery-methods`;
             const methodsAction = async () => await axios.get(methodsUri);
-            await authorizedRequestHandler(methodsAction,
-                {
-                    status: 200,
-                    callback: result => {
-                        setPredefinedDeliveryMethods(result.data.map(x => {
-                            const labelPricePart = (x.price || x.price === 0)
-                                ? ` - ${x.price.toFixed(2)} PLN`
-                                : '';
+            const deliveryMethods = await authorizedRequestHandler(methodsAction);
 
-                            return ({
-                                label: `${x.name}${labelPricePart}`,
-                                value: `${x.name};${(x.price || x.price === 0) ? x.price : ""}`
-                            });
-                        }));
-                    }
+            setPredefinedDeliveryMethods(deliveryMethods.map(x => {
+                const labelPricePart = (x.price || x.price === 0)
+                    ? ` - ${x.price.toFixed(2)} PLN`
+                    : '';
+
+                return ({
+                    label: `${x.name}${labelPricePart}`,
+                    value: `${x.name};${(x.price || x.price === 0) ? x.price : ""}`
                 });
+            }));
+        };
+
+        const fetch = async () => {
+
+            try {
+                await fetchCanSell();
+                const categoryOptions = await fetchCategoryOptions();
+                await fetchDeliveryMethods();
+
+                setState({
+                    loading: false,
+                    canSell: true,
+                    categoryOptions: categoryOptions,
+                    offer: offerDefaultValues
+                });
+            } catch (error) {
+                if (error.type === 'SKIP') return;
+                else console.log(error);
+            }
         };
 
         fetch();
@@ -113,10 +131,8 @@ const CreateOfferDraftPage = () => {
             throw "WARN";
         }
 
-        preparedDeliveryMethods = preparedDeliveryMethods.map(x => ({
-            name: x.key,
-            price: x.value
-        }));
+        preparedDeliveryMethods = preparedDeliveryMethods.map(x =>
+            ({ name: x.key, price: x.value }));
         formData.append("deliveryMethods", JSON.stringify(preparedDeliveryMethods));
 
         return formData;
@@ -140,6 +156,7 @@ const CreateOfferDraftPage = () => {
                 status: 400,
                 callback: () => {
                     toast.error("Your creation request has been rejected");
+                    throw {};
                 }
             }
         );
@@ -160,13 +177,12 @@ const CreateOfferDraftPage = () => {
             },
             {
                 status: 400,
-                callback: result => {
+                callback: () => {
                     toast.error("Your creation request has been rejected");
-                    return result;
+                    throw {};
                 }
             }
         );
-        if (creationResult.status !== 200) return;
 
         const offerId = creationResult.data;
         const publishUri = `/offers-api/draft/${offerId}/publish`;
@@ -203,7 +219,7 @@ const CreateOfferDraftPage = () => {
         <h3>You cannot create offers yet...</h3>
 
         <p>
-            Fill
+            Fill&nbsp;
             <Link to='/user/settings/seller-info'>
                 seller info
             </Link> and come back :)
