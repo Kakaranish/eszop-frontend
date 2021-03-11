@@ -84,8 +84,6 @@ const OrderPage = (props) => {
                     callback: () => {}
                 }
             );
-
-
         };
         fetch();
     }, []);

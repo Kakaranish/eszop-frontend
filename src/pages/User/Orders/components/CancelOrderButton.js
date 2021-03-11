@@ -44,7 +44,7 @@ const CancelOrderButton = ({ orderId }) => {
     const noCallback = () => { };
 
     return <>
-        <button className="btn btn-block btn-outline-danger" onClick={onClick}>
+        <button type="button" className="btn btn-block btn-outline-danger" onClick={onClick}>
             Cancel Order
         </button>
     </>
