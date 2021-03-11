@@ -110,3 +110,8 @@ export const mapRoleName = role => {
     if (role === 'SUPER_ADMIN') return 'Super Admin';
     return null;
 }
+
+export const isFloat = n => {
+    const regex = /^[+-]?\d+(\.\d+)?$/;
+    return regex.test(n);
+}

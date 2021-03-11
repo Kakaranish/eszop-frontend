@@ -2,7 +2,7 @@ import cancelIcon from 'assets/img/close.svg';
 import penIcon from 'assets/img/pen.svg';
 import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
@@ -12,6 +12,19 @@ const EditableCategory = ({ category }) => {
     const [value, setValue] = useState(category.name);
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [valueBeforeEdit, setValueBeforeEdit] = useState();
+    const [errors, setErrors] = useState([]);
+    const [initialized, setInitialized] = useState(false);
+
+    useEffect(() => {
+        if (!initialized) {
+            setInitialized(true);
+            return;
+        }
+
+        let currentErrors = [];
+        if ([...value].length < 3) currentErrors.push("Name must have at least 2 characters");
+        setErrors(currentErrors);
+    }, [value]);
 
     const onEdit = () => {
         setIsBeingEdited(true);
@@ -19,6 +32,11 @@ const EditableCategory = ({ category }) => {
     }
 
     const onSubmit = async () => {
+        if (errors.length) {
+            toast.warn("Form contains errors");
+            return;
+        }
+
         if (valueBeforeEdit === value) {
             setIsBeingEdited(false);
             return;
@@ -62,7 +80,7 @@ const EditableCategory = ({ category }) => {
             />
 
             <div className="mb-1">
-                Edit
+                <b>Edit category name</b>
             </div>
 
             <div className="form-inline">
@@ -72,6 +90,7 @@ const EditableCategory = ({ category }) => {
                     value={value}
                     style={{ width: '200px' }}
                     onChange={e => setValue(e.target.value)}
+                    placeholder="Category name..."
                     required
                 />
 
@@ -80,6 +99,18 @@ const EditableCategory = ({ category }) => {
                 </button>
             </div>
 
+            {
+                errors.length > 0 &&
+                <div>
+                    {
+                        errors.map((error, index) =>
+                            <div key={index} className="text-danger">
+                                {error}
+                            </div>
+                        )
+                    }
+                </div>
+            }
             <ReactTooltip />
         </div>
     </>

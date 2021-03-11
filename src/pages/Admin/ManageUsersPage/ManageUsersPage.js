@@ -78,7 +78,7 @@ const ManageUsersPage = (props) => {
         if (data.searchPhrase) queryParameters.searchPhrase = data.searchPhrase;
         else delete queryParameters.searchPhrase;
 
-        if(selectedValue) queryParameters.role = selectedValue.value;
+        if (selectedValue) queryParameters.role = selectedValue.value;
         else delete queryParameters.role;
 
         history.push({
@@ -88,7 +88,15 @@ const ManageUsersPage = (props) => {
     };
 
     const renderSearchBar = () => <>
-        <h3 className="mb-3">Search users</h3>
+        <div className="mb-3">
+            <h3 className="mb-0">
+                Search users
+            </h3>
+
+            <div className="mt-n1 text-muted">
+                Search by part of user email/identifier or role
+            </div>
+        </div>
 
         <form className="form-inline mb-3" onSubmit={onSearch}>
             <input
@@ -132,8 +140,8 @@ const ManageUsersPage = (props) => {
             Results
         </h3>
         {
-            state.pagination.items.map(user => <>
-                <div className="bg-white mb-3 px-3 py-3">
+            state.pagination.items.map(user =>
+                <div key={user.id} className="bg-white mb-3 px-3 py-3">
                     <div>
                         Id: <i>{user.id} </i>
                     </div>
@@ -150,7 +158,7 @@ const ManageUsersPage = (props) => {
                         </Link>
                     </div>
                 </div>
-            </>)
+            )
         }
     </>
 };

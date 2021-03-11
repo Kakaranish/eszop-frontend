@@ -33,9 +33,9 @@ const ManageCategoriesPage = () => {
         </h3>
 
         {
-            state.categories.map((category, index) => <>
+            state.categories.map((category, index) =>
                 <EditableCategory key={`cat-${index}`} category={category} />
-            </>)
+            )
         }
 
         <AddCategoryButton />
