@@ -9,6 +9,7 @@ import { mapOrderState, mapOrderStateToDescription } from 'common/orderUtils';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
+import { Link } from 'react-router-dom';
 
 const Styles = styled.div`
 .transferDetails {
@@ -147,7 +148,7 @@ const OrderPage = (props) => {
                                 state.bankTransferDetails.accountNumber
 
                                 ?
-                                <i>state.bankTransferDetails.accountNumber</i>
+                                <i>{state.bankTransferDetails.accountNumber}</i>
 
                                 :<span className="font-weight-bold text-bold" style={{color: 'orange'}}>
                                     NOT PROVIDED
@@ -159,9 +160,17 @@ const OrderPage = (props) => {
                             Transfer amount: <i>{state.bankTransferDetails.transferAmount.toFixed(2)} PLN</i>
                         </div>
 
-                        <span className="font-weight-bold text-bold" style={{color: 'orange'}}>
-                            Please contact the seller for an account number 
-                        </span>
+                        {
+                                !state.bankTransferDetails.accountNumber &&
+                                <span className="font-weight-bold text-bold" style={{color: 'orange'}}>
+                                    Please contact the&nbsp;
+                                    <Link to={`/seller/${state.order.sellerId}`}>
+                                        seller&nbsp;
+                                    </Link>
+                                    for an account number 
+                                </span>
+                        }
+            
                     </div>
                 </Styles>
             }

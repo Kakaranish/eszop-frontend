@@ -72,7 +72,7 @@ const FillDeliveryInfoPage = (props) => {
     </>
 
     return <>
-        <h3>Delivery address</h3>
+        <h3 className="mb-3">Delivery address</h3>
 
         <OrderDeliveryAddressForm
             deliveryAddress={deliveryAddress}

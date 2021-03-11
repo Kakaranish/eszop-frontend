@@ -41,7 +41,7 @@ const OrderSummaryPage = (props) => {
 
             <OrderSummary order={order} />
 
-            <div className="row mt-5">
+            <div className="row mt-5 mb-2">
                 <div className="col-md-4">
                     <CancelOrderButton orderId={orderId} />
                 </div>

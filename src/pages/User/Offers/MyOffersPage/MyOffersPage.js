@@ -52,7 +52,10 @@ const MyOffersPage = (props) => {
     if (state.loading) return <></>
 
     if (!state.pagination?.items?.length) return <div>
-        <h3>You have no offer already</h3>
+        <h3 className="mb-3">
+            You have no offer already
+        </h3>
+        
         <Link to='/offers/create' className="btn btn-outline-success">
             Create Offer
         </Link>
