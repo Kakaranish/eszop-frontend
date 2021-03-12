@@ -3,7 +3,7 @@ import EditableImagesPreviews from 'pages/User/Offers/components/EditableImagesP
 import ImageUploader from 'pages/User/Offers/components/ImageUploader';
 import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 
-const GeneralSection = ({state, offer, images, setImages, initCategory}) => {
+const GeneralSection = ({ state, offer, images, setImages, initCategory }) => {
     return <>
         <div className="bg-white px-4 pt-2 pb-4">
             <div className="form-group">
@@ -30,12 +30,25 @@ const GeneralSection = ({state, offer, images, setImages, initCategory}) => {
                     defaultValue={offer?.price} required />
             </div>
 
-            <div className="form-group">
-                <label>Total stock</label>
-                <input name="totalStock" type="number" className="form-control"
-                    min={1} step={1} placeholder="Total stock..."
-                    defaultValue={offer?.totalStock} required />
-            </div>
+            {
+                offer.publishedAt
+                    ?
+                    <div className="form-group">
+                        <label>Available stock</label>
+                        <input name="availableStock" type="number" className="form-control"
+                            min={1} step={1} placeholder="Available stock..."
+                            defaultValue={offer?.availableStock} required />
+                    </div>
+
+                    :
+                    <div className="form-group">
+                        <label>Total stock</label>
+                        <input name="totalStock" type="number" className="form-control"
+                            min={1} step={1} placeholder="Total stock..."
+                            defaultValue={offer?.totalStock} required />
+                    </div>
+            }
+
 
             <EditableImagesPreviews
                 images={images}

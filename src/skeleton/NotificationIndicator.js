@@ -76,7 +76,7 @@ const NotificationIndicator = (props) => {
                 <div ref={iconRef} onClick={notifIconClick} aria-haspopup="true" aria-expanded={isExpanded}>
                     <img src={notifIcon}
                         className="notifIcon invertedSvg"
-                        alt="user-img"
+                        alt="notif-img"
                     />
 
                     {
