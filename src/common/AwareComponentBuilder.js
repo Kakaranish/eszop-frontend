@@ -58,6 +58,8 @@ class AwareComponentBuilder {
     withNotificationsAwareness() {
         const partialMapDispatch = dispatch => ({
             addNotification: notification => dispatch(NotificationActions.addNotification(notification)),
+            removeNotification: notificationId => dispatch(NotificationActions.removeNotification(notificationId)),
+            setNotifications: notifications => dispatch(NotificationActions.setNotifications(notifications)),
             clearNotifications: () => dispatch(NotificationActions.clearNotifications())
         });
         this.partialDispatchToPropsList.push(partialMapDispatch);

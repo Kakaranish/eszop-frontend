@@ -16,7 +16,6 @@ const OffersPage = (props) => {
         ? 1
         : parseInt(pageIndexStr);
     const categoryId = queryParams.category;
-    console.log(categoryId);
 
     const history = useHistory();
     const location = useLocation();
