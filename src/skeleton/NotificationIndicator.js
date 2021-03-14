@@ -1,13 +1,12 @@
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import notifIcon from 'assets/img/notification.svg';
-import confettiIcon from 'assets/img/confetti.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-
 import NotificationItem from './components/NotificationItem';
+import { handleNotification } from './components/utils';
+
 
 const Styles = styled.div`
 .clearAllHoverDiv {background: lightgray; cursor: pointer;}
@@ -51,8 +50,10 @@ const NotificationIndicator = (props) => {
         if (!props.notifications) props.clearNotifications();
 
         connection.on('ReceiveNotification', notification => {
-            toast.info("New notification. Click bell to see it.");
-            props.addNotification(notification);
+            if (handleNotification(props, notification)) {
+                toast.info("New notification. Click bell to see it.");
+                props.addNotification(notification);
+            }
         });
 
         connection.on('SeedNotifications', notifications => {
@@ -151,4 +152,5 @@ const NotificationIndicator = (props) => {
 
 export default new AwareComponentBuilder()
     .withNotificationsAwareness()
+    .withCartAwareness()
     .build(NotificationIndicator);

@@ -3,6 +3,8 @@ import confettiIcon from 'assets/img/confetti.svg';
 import closeIcon from 'assets/img/close.svg';
 import styled from 'styled-components';
 import moment from 'moment';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import {prepareNotificationMessage} from './utils';
 
 const Styles = styled.div`
 .hoverDiv {background: #fff; cursor: pointer;}
@@ -11,7 +13,9 @@ const Styles = styled.div`
 .notifIcon {width: 30px; cursor: pointer;}
 }`
 
-const NotificationItem = ({ notification, isNew, onDeleteNotif }) => {
+const NotificationItem = (props) => {
+
+    const { notification, isNew, onDeleteNotif } = props;
 
     const [isHovering, setIsHovering] = useState(false);
 
@@ -56,13 +60,15 @@ const NotificationItem = ({ notification, isNew, onDeleteNotif }) => {
                         </div>
                     }
 
-                    <div>
-                        {notification.message}
-                    </div>
+                    {
+                        prepareNotificationMessage(props, notification)
+                    }
                 </div>
             </div>
         </Styles>
     </>
 };
 
-export default NotificationItem;
+export default new AwareComponentBuilder()
+    .withCartAwareness()
+    .build(NotificationItem);
