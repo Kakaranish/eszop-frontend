@@ -1,5 +1,5 @@
-import OrderItem from 'common/components/OrderItem';
 import React from 'react';
+import OrderItem from './OrderItem';
 
 const CostsSection = ({ order }) => {
     return <>

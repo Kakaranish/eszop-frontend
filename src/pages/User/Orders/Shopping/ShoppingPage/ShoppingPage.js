@@ -1,7 +1,6 @@
 import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import ItemsPerPage from 'common/components/ItemsPerPage';
-import OrderItem from 'common/components/OrderItem';
 import Pagination from 'common/components/Pagination';
 import { mapOrderState } from 'common/orderUtils';
 import { authorizedRequestHandler } from 'common/utils';
@@ -9,6 +8,7 @@ import moment from 'moment';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import OrderItem from '../../components/OrderItem';
 
 const ShoppingPage = (props) => {
 

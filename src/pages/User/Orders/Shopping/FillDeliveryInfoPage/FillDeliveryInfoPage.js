@@ -3,7 +3,7 @@ import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils
 import React, { useEffect, useState } from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useHistory } from 'react-router-dom';
-import CancelOrderButton from '../components/CancelOrderButton';
+import CancelOrderButton from '../../components/CancelOrderButton';
 import DeliveryAddressesModal from './DeliveryAddressesModal';
 import DeliveryMethodsSection from './DeliveryMethodsSection';
 import OrderDeliveryAddressForm from './OrderDeliveryAddressForm';

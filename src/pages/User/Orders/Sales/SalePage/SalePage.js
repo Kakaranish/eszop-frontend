@@ -1,7 +1,6 @@
 import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import ItemsPerPage from 'common/components/ItemsPerPage';
-import OrderItem from 'common/components/OrderItem';
 import Pagination from 'common/components/Pagination';
 import { mapOrderState } from 'common/orderUtils';
 import { authorizedRequestHandler } from 'common/utils';
@@ -10,6 +9,7 @@ import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
+import OrderItem from '../../components/OrderItem';
 
 const SalePage = (props) => {
 

@@ -2,14 +2,14 @@ import axios from 'axios';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import CostsSection from '../components/CostsSection';
-import DeliveryAddressesSection from '../components/DeliveryAddressesSection';
 import styled from 'styled-components';
 import { mapOrderState, mapOrderStateToDescription } from 'common/orderUtils';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
+import CostsSection from '../../components/CostsSection';
+import DeliveryAddressesSection from '../../components/DeliveryAddressesSection';
 
 const Styles = styled.div`
 .transferDetails {

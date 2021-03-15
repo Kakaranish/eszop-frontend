@@ -2,8 +2,8 @@ import axios from 'axios';
 import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import CancelOrderButton from '../components/CancelOrderButton';
-import OrderSummary from '../components/OrderSummary';
+import CancelOrderButton from '../../components/CancelOrderButton';
+import OrderSummary from '../../components/OrderSummary';
 import ConfirmOrderButton from './ConfirmOrderButton';
 
 const ShoppingOrderSummaryPage = (props) => {
