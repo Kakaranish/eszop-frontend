@@ -1,5 +1,5 @@
 import React from 'react';
-import OrderItem from '../OrdersPage/OrderItem';
+import OrderItem from '../ShoppingPage/OrderItem';
 
 const CostsSection = ({ order }) => {
     return <>

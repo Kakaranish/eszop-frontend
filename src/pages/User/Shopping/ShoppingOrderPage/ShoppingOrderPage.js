@@ -17,7 +17,7 @@ const Styles = styled.div`
     color: white;
 }`
 
-const OrderPage = (props) => {
+const ShoppingOrderPage = (props) => {
 
     const orderId = props.match.params.id;
 
@@ -182,4 +182,4 @@ const OrderPage = (props) => {
     </>
 };
 
-export default OrderPage;
+export default ShoppingOrderPage;

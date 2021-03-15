@@ -6,7 +6,7 @@ import CancelOrderButton from '../components/CancelOrderButton';
 import OrderSummary from '../components/OrderSummary';
 import ConfirmOrderButton from './ConfirmOrderButton';
 
-const OrderSummaryPage = (props) => {
+const ShoppingOrderSummaryPage = (props) => {
 
     const orderId = props.match.params.id;
 
@@ -63,4 +63,4 @@ const OrderSummaryPage = (props) => {
     </>
 };
 
-export default OrderSummaryPage;
+export default ShoppingOrderSummaryPage;

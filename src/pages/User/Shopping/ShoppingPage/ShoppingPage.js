@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import OrderItem from './OrderItem';
 
-const OrdersPage = (props) => {
+const ShoppingPage = (props) => {
 
     const pageIndexStr = queryString.parse(props.location.search).pageIndex;
     const pageIndex = !pageIndexStr || parseInt(pageIndexStr) == NaN
@@ -76,9 +76,13 @@ const OrdersPage = (props) => {
 
     const orders = state.pagination.items;
     return <>
-        <h3 className="mb-3">
-            My Orders
+        <h3 className="mb-0">
+            Shopping
         </h3>
+
+        <div className="text-muted mb-3">
+            Here are the orders you have placed
+        </div>
 
         {
             orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
@@ -148,4 +152,4 @@ function calculateOrderTotalPrice(order) {
 
 export default new AwareComponentBuilder()
     .withSettingsAwareness()
-    .build(OrdersPage);
+    .build(ShoppingPage);
