@@ -6,8 +6,9 @@ import CartPage from 'pages/User/Other/CartPage/CartPage';
 import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import AdminRoutes from 'routeAggregators/AdminRoutes';
-import OrderRoutes from 'routeAggregators/OrderRoutes';
+import SaleRoutes from 'routeAggregators/SaleRoutes';
 import SettingsRoutes from 'routeAggregators/SettingsRoutes';
+import ShoppingRoutes from 'routeAggregators/ShoppingRoutes';
 import ErrorPage from './pages/ErrorPage';
 import MyOffersPage from './pages/User/Offers/MyOffersPage/MyOffersPage';
 import AuthRoutes from './routeAggregators/AuthRoutes';
@@ -29,7 +30,8 @@ const App = () => <>
           <Route path='/offers' component={OfferRoutes} />
           <Route path='/user/settings' component={SettingsRoutes} />
           <Route path='/auth' component={AuthRoutes} />
-          <AuthorizedOnlyRoute path='/user/shopping' component={OrderRoutes} />
+          <AuthorizedOnlyRoute path='/user/shopping' component={ShoppingRoutes} />
+          <AuthorizedOnlyRoute path='/user/sale' component={SaleRoutes} />
           <AuthorizedOnlyRoute path='/admin' component={AdminRoutes} roles={["ADMIN", "SUPER_ADMIN"]} />
           
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />

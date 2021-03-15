@@ -1,4 +1,5 @@
 import bagIcon from 'assets/img/bag.svg';
+import offerIcon from 'assets/img/offer.svg';
 import invoiceIcon from 'assets/img/invoice.svg';
 import plusIcon from 'assets/img/plus.svg';
 import accountSettingsIcon from 'assets/img/settings.svg';
@@ -84,7 +85,7 @@ const UserIndicator = (props) => {
                     <Link to="/user/offers" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
-                                <img src={bagIcon}
+                                <img src={offerIcon}
                                     style={{ width: '19px' }}
                                     alt="my-offers-img"
                                 />
@@ -98,7 +99,22 @@ const UserIndicator = (props) => {
 
                     <Divider width="1.5px" />
 
-                    <Link to="/user/orders" className="text-reset" onClick={onClickReset}>
+                    <Link to="/user/shopping" className="text-reset" onClick={onClickReset}>
+                        <div className="px-3 py-2 hoverDiv d-flex">
+                            <div className="d-inline-flex imgHolder">
+                                <img src={bagIcon}
+                                    style={{ width: '19px' }}
+                                    alt="my-offers-img"
+                                />
+                            </div>
+
+                            <div className="d-inline-block">
+                                Shopping
+                            </div>
+                        </div>
+                    </Link>
+
+                    <Link to="/user/sale" className="text-reset" onClick={onClickReset}>
                         <div className="px-3 py-2 hoverDiv d-flex">
                             <div className="d-inline-flex imgHolder">
                                 <img src={invoiceIcon}
@@ -108,7 +124,7 @@ const UserIndicator = (props) => {
                             </div>
 
                             <div className="d-inline-block">
-                                My Orders
+                                Sale
                             </div>
                         </div>
                     </Link>

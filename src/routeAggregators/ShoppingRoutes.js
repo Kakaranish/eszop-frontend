@@ -6,7 +6,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import AuthorizedOnlyRoute from 'routeTypes/AuthorizedOnlyRoute';
 
-const OrderRoutes = () => <>
+const ShoppingRoutes = () => <>
     <Switch>
         <AuthorizedOnlyRoute exact path='/user/shopping' component={ShoppingPage} />
         <AuthorizedOnlyRoute exact path='/user/shopping/order/:id' component={ShoppingOrderPage} />
@@ -15,4 +15,4 @@ const OrderRoutes = () => <>
     </Switch>
 </>
 
-export default OrderRoutes;
+export default ShoppingRoutes;

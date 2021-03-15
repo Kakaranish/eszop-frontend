@@ -8,9 +8,10 @@ import { authorizedRequestHandler } from 'common/utils';
 import moment from 'moment';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const ShoppingPage = (props) => {
+const SalePage = (props) => {
 
     const pageIndexStr = queryString.parse(props.location.search).pageIndex;
     const pageIndex = !pageIndexStr || parseInt(pageIndexStr) == NaN
@@ -19,6 +20,7 @@ const ShoppingPage = (props) => {
 
     const history = useHistory();
     const location = useLocation();
+
     const [state, setState] = useState({ loading: true, pagination: null });
     const [locationLoaded, setLocationLoaded] = useState(false);
 
@@ -39,7 +41,7 @@ const ShoppingPage = (props) => {
                 pageIndex: pageIndex
             });
 
-            const uri = `/orders-api/orders/buyer?${queryParams}`;
+            const uri = `/orders-api/orders/seller?${queryParams}`;
             const action = async () => await axios.get(uri);
 
             await authorizedRequestHandler(action,
@@ -69,18 +71,17 @@ const ShoppingPage = (props) => {
         history.push('/refresh');
     };
 
-
     if (state.loading) return <></>
     else if (state.pagination?.items?.length === 0) return <h3>You have no orders yet</h3>
 
     const orders = state.pagination.items;
     return <>
         <h3 className="mb-0">
-            Shopping
+            Sale
         </h3>
 
         <div className="text-muted mb-3">
-            Here are the orders you have placed
+            Here are the orders placed as part of your offers
         </div>
 
         {
@@ -102,24 +103,12 @@ const ShoppingPage = (props) => {
                     }
                 </div>
 
-                {
-                    order.orderState !== 'STARTED'
-                        ?
-                        <div className="col-12 mb-3 text-right">
-                            <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                            <Link to={`/user/shopping/order/${order.id}`}>
-                                Go to details
-                            </Link>
-                        </div>
-
-                        :
-                        <div className="col-12 mb-3 text-right">
-                            <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                            <Link to={`/user/shopping/order/${order.id}/fill/delivery-info`}>
-                                Continue order
-                            </Link>
-                        </div>
-                }
+                <div className="col-12 mb-3 text-right">
+                    <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
+                    <Link to={`/user/sale/order/${order.id}`}>
+                        Go to details
+                    </Link>
+                </div>
             </div>
             )
         }
@@ -151,4 +140,4 @@ function calculateOrderTotalPrice(order) {
 
 export default new AwareComponentBuilder()
     .withSettingsAwareness()
-    .build(ShoppingPage);
+    .build(SalePage);
