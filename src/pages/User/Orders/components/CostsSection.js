@@ -18,23 +18,26 @@ const CostsSection = ({ order }) => {
             </div>
         </div>
 
-        <div className="row">
-            <div className="col-12 mb-4 d-inline-block">
-                <h4>Delivery method</h4>
-                {order.deliveryMethod.name} -&nbsp;
+        {
+            order.deliveryMethod &&
+            <div className="row">
+                <div className="col-12 mb-4 d-inline-block">
+                    <h4>Delivery method</h4>
+                    {order.deliveryMethod.name} -&nbsp;
                 {order.deliveryMethod.price.toFixed(2)} PLN
             </div>
 
-            <div className="col-12 mb-4">
-                <div className="pull-right">
-                    <h4 className="text-right">Total price:</h4>
+                <div className="col-12 mb-4">
+                    <div className="pull-right">
+                        <h4 className="text-right">Total price:</h4>
 
-                    {order.totalPrice.toFixed(2)} PLN +&nbsp;
-                    {order.deliveryMethod.price.toFixed(2)} PLN =&nbsp;
-                    {(order.totalPrice + order.deliveryMethod.price).toFixed(2)} PLN
+                        {order.totalPrice.toFixed(2)} PLN +&nbsp;
+                        {order.deliveryMethod.price.toFixed(2)} PLN =&nbsp;
+                        {(order.totalPrice + order.deliveryMethod.price).toFixed(2)} PLN
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </>
 };
 

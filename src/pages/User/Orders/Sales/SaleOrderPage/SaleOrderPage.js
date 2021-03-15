@@ -1,11 +1,14 @@
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import { mapOrderState, mapOrderStateToDescription } from 'common/orderUtils';
-import { authorizedRequestHandler, requestHandler } from 'common/utils';
+import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
 import moment from 'moment';
+import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
 import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import CostsSection from '../../components/CostsSection';
+import DeliveryAddressesSection from '../../components/DeliveryAddressesSection';
+import ActionsDropdown from './ActionsDropdown';
 
 const Styles = styled.div`
 .transferDetails {
@@ -23,6 +26,14 @@ const SaleOrderPage = (props) => {
         bankTransferDetails: null,
         sellerInfo: null
     });
+
+    const history = useHistory();
+    
+    const orderStates = [
+        { label: 'In Progress', value: 'IN_PROGRESS' },
+        { label: 'In preparation', value: 'IN_PREPARATION' },
+        { label: 'Shipped', value: 'SHIPPED' }
+    ];
 
     useEffect(() => {
         const fetch = async () => {
@@ -57,14 +68,14 @@ const SaleOrderPage = (props) => {
                             loading: false,
                             order: orderResult.data,
                             bankTransferDetails: bankTransferResult.data
-                        })
+                        });
                     }
                 }
             );
 
             const sellerInfoUri = `/identity-api/seller/${orderResult.data.sellerId}`;
             const sellerInfoAction = async () => await axios.get(sellerInfoUri);
-            await requestHandler(sellerInfoAction, 
+            await requestHandler(sellerInfoAction,
                 {
                     status: 200,
                     callback: result => {
@@ -77,12 +88,29 @@ const SaleOrderPage = (props) => {
                 },
                 {
                     status: 204,
-                    callback: () => {}
+                    callback: () => { }
                 }
             );
         };
         fetch();
     }, []);
+
+    const onChangeSubmit = async event => {
+        event.preventDefault();
+        
+        let data = getFormDataJsonFromEvent(event);
+        const uri = `/orders-api/orders/${orderId}/state`;
+        const action = async () => await axios.put(uri, data);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: async () => {
+                    toast.success("Order changed status");
+                    history.push('/refresh');
+                }
+            }
+        );
+    };
 
     if (state.loading) return <></>
 
@@ -92,40 +120,53 @@ const SaleOrderPage = (props) => {
 
     return <>
         <div className="bg-white col-12 mb-4 py-2">
+            <div>
+                {
+                    isCancellable(order) &&
+                    <div className="pull-right">
+                        <ActionsDropdown orderId={orderId} />
+                    </div>
+                }
 
-            <h2>Order Summary</h2>
-
-            <div className="mt-2 mb-3">
-                <span>
-                    Order Id: <i>{order.id}</i> <br />
-                </span>
-
-                <span>
-                    Started at: {moment(order.createdAt).format("YYYY-MM-DD HH:mm:ss")}
-                </span>
-
-                <div className="my-2">
-                    Order state: {mapOrderState(state.order.orderState)}
-                    <FontAwesomeIcon icon={faQuestionCircle}
-                        className="ml-2 align-baseline"
-                        style={{ color: 'lightgray', marginLeft: '2px' }}
-                        size={'1x'}
-                        data-tip={mapOrderStateToDescription(state.order.orderState)}
-                    />
-                </div>
-
+                <h2>Order Summary</h2>
             </div>
 
-            {/* {
+            <div className="mt-2 mb-3">
+                <div>
+                    Order Id: <i>{order.id}</i> <br />
+                </div>
+
+                <div>
+                    Started at: {moment(order.createdAt).format("YYYY-MM-DD HH:mm:ss")}
+                </div>
+
+                <div className="mb-3">
+                    Buyer Id: <i>{order.buyerId}</i>
+                </div>
+
+                <div className="d-flex align-items-center mb-3">
+                    <div className="mr-3">Order state: </div>
+                    
+                    <form className="form-inline" onSubmit={onChangeSubmit}>
+                        <div className="d-inline-block" style={{ width: '200px' }}>
+                            <RequiredSelect
+                                name="orderState"
+                                styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc", }}
+                                options={orderStates}
+                                initValue={orderStates.find(x => x.value === order.orderState)}
+                            />
+                        </div>
+
+                        <button className="btn btn-success">
+                            Change
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {
                 !["CANCELLED", "CANCELLED_BY_BUYER", "CANCELLED_BY_SELLER"].some(x => x === state.order.orderState) &&
                 <Styles>
-
-                    {
-                        state.order.orderState === 'IN_PROGRESS' &&
-                        <div>
-                            <h4 style={{color: 'goldenrod'}}>Did you pay?</h4>
-                        </div>
-                    }
                     <div className="transferDetails pt-1 pb-3 px-4 mb-4">
                         <h4>
                             Bank transfer details
@@ -137,17 +178,7 @@ const SaleOrderPage = (props) => {
 
                         <div>
                             Account number:&nbsp;
-                            
-                            {
-                                state.bankTransferDetails.accountNumber
-
-                                ?
-                                <i>{state.bankTransferDetails.accountNumber}</i>
-
-                                :<span className="font-weight-bold text-bold" style={{color: 'orange'}}>
-                                    NOT PROVIDED
-                                </span>
-                            }
+                            {state.bankTransferDetails.accountNumber}
                         </div>
 
                         <div>
@@ -155,27 +186,34 @@ const SaleOrderPage = (props) => {
                         </div>
 
                         {
-                                !state.bankTransferDetails.accountNumber &&
-                                <span className="font-weight-bold text-bold" style={{color: 'orange'}}>
-                                    Please contact the&nbsp;
+                            !state.bankTransferDetails.accountNumber &&
+                            <span className="font-weight-bold text-bold" style={{ color: 'orange' }}>
+                                Please contact the&nbsp;
                                     <Link to={`/seller/${state.order.sellerId}`}>
-                                        seller&nbsp;
+                                    seller&nbsp;
                                     </Link>
-                                    for an account number 
+                                    for an account number
                                 </span>
                         }
-            
+
                     </div>
                 </Styles>
             }
 
             <CostsSection order={order} />
 
-            <DeliveryAddressesSection order={order} />
-
-            <ReactTooltip /> */}
+            {
+                order.deliveryMethod
+                    ? <DeliveryAddressesSection order={order} />
+                    : <h3>Delivery address not provided</h3>
+            }
         </div>
     </>
 };
+
+function isCancellable(order) {
+    const cancelledStates = ["CANCELLED", "CANCELLED_BY_BUYER", "CANCELLED_BY_SELLER"];
+    return !cancelledStates.some(x => order.orderState === x);
+}
 
 export default SaleOrderPage;

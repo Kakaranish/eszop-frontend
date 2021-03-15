@@ -6,8 +6,7 @@ import styled from 'styled-components';
 const Styles = styled.div`
 .pointer {
     cursor: pointer;
-}
-`
+}`
 
 const Pagination = (props) => {
 

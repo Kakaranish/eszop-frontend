@@ -41,6 +41,15 @@ export function prepareNotificationMessage(props, notification) {
             has been ended in the meantime
         </div>
     }
+    if (notification.code === 'OrderStateChanged') {
+        return <div>
+            Order&nbsp;
+            <Link to={`/user/shopping/order/${notification.metadata.orderId}`}>
+                {notification.metadata.orderId}&nbsp;
+            </Link>
+            has changed status
+        </div>
+    }
     else return <div>
         {notification.message}
     </div>

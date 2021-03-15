@@ -18,7 +18,7 @@ const OrderItem = ({ orderItem }) => <>
                 <img
                     src={getPreviewImageUri(orderItem)}
                     className="img-fluid img-thumbnail"
-                    alt={`${orderItem.id}-img-placeholder`}
+                    alt={'order-item-img'}
                 />
             </Styles>
 
