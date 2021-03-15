@@ -28,8 +28,15 @@ const HeaderSection = (props) => {
 
     return <>
         <div className="bg-white row py-3">
-            <div className="col-5">
 
+            {
+                !offer.isActive &&
+                <div className="col-12 py-3 text-center" style={{ backgroundColor: 'orange' }}>
+                    <h5>Offer ended</h5>
+                </div>
+            }
+
+            <div className="col-5 pt-3">
                 <div className="col-12">
                     <ImagePreview uri={offer.images.find(x => x.isMain).uri} />
                 </div>
@@ -47,23 +54,26 @@ const HeaderSection = (props) => {
                 }
             </div>
 
-            <div className="col-7">
+            <div className="col-7 pt-3">
                 <div className="col-12 mb-3">
                     {
                         (props.identity && props.identity.id == offer.ownerId) &&
                         <>
                             <div className="mb-3">
-                                <div className="pull-right">
-                                    <img src={penIcon}
-                                        className="cursor-pointer"
-                                        style={{ width: '20px' }}
-                                        alt="edit-icon"
-                                        data-tip="Edit offer"
-                                        onClick={onEdit}
-                                    />
+                                {
+                                    offer.isActive &&
+                                    <div className="pull-right">
+                                        <img src={penIcon}
+                                            className="cursor-pointer"
+                                            style={{ width: '20px' }}
+                                            alt="edit-icon"
+                                            data-tip="Edit offer"
+                                            onClick={onEdit}
+                                        />
 
-                                    <ReactTooltip />
-                                </div>
+                                        <ReactTooltip />
+                                    </div>
+                                }
 
                                 <div className="d-flex">
                                     <img src={starIcon}
@@ -72,7 +82,7 @@ const HeaderSection = (props) => {
                                         alt="star-icon"
                                     />
                                         This is your offer
-                                    </div>
+                                </div>
                             </div>
                         </>
                     }
@@ -110,14 +120,22 @@ const HeaderSection = (props) => {
                     </div>
 
                     {
-                        !(props.identity && props.identity.id == offer.ownerId) &&
-                        <>
-                            <AddToCartSection offer={offer} />
+                        (() => {
+                            if (!offer.isActive) return <>
+                                <div>
+                                    <b>{offer.totalStock - offer.availableStock}</b>
+                                    &nbsp;out <b>{offer.totalStock}</b> have been sold
+                                </div>
+                            </>
 
-                            <Link to={`/seller/${offer.ownerId}`} className="mt-4 pull-right">
-                                Go to seller
-                            </Link>
-                        </>
+                            if (!(props.identity && props.identity.id == offer.ownerId) && offer.isActive) return <>
+                                <AddToCartSection offer={offer} />
+
+                                <Link to={`/seller/${offer.ownerId}`} className="mt-4 pull-right">
+                                    Go to seller
+                                </Link>
+                            </>
+                        })()
                     }
                 </div>
             </div>

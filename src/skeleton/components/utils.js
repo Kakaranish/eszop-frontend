@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 export function prepareNotificationMessage(props, notification) {
 
     const displaySize = 35;
-    const offerName = notification.metadata.offerName;
-    const offerNameDisplay = `${offerName.substr(0, displaySize)}${offerName.length > displaySize ? "..." : ''} `;
 
     if (notification.code === "CartItemChanged") {
+        const offerName = notification.metadata.offerName;
+        const offerNameDisplay = `${offerName.substr(0, displaySize)}${offerName.length > displaySize ? "..." : ''} `;
+
         return <div>
 
             Offer&nbsp;
@@ -25,6 +26,19 @@ export function prepareNotificationMessage(props, notification) {
                     return "UNKNOWN NOTIFICATION";
                 })()
             }
+        </div>
+    }
+    if (notification.code === 'OfferBecameUnavailable') {
+        return <div>
+            Order&nbsp;
+            <Link to={`/user/shopping/order/${notification.metadata.orderId}`}>
+                {notification.metadata.orderId}&nbsp;
+            </Link>
+            has been cancelled because&nbsp;
+            <Link to={`/offers/${notification.metadata.sourceOfferId}`}>
+                offer&nbsp;
+            </Link>
+            has been ended in the meantime
         </div>
     }
     else return <div>

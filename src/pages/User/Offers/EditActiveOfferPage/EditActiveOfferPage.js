@@ -207,7 +207,7 @@ const EditActiveOfferPage = (props) => {
                 </h2>
 
                 <div className="pull-right">
-                    <ActionsDropdown />
+                    <ActionsDropdown offerId={offerId} />
                 </div>
             </div>
 

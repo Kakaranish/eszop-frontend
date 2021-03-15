@@ -1,9 +1,12 @@
 import trashIcon from 'assets/img/delete.svg';
 import downArrowIcon from 'assets/img/down-arrow.svg';
 import finishIcon from 'assets/img/finish.svg';
+import axios from 'axios';
+import { authorizedRequestHandler } from 'common/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -14,6 +17,10 @@ const Styles = styled.div`
 }`
 
 const ActionsDropdown = (props) => {
+
+    const { offerId } = props;
+
+    const history = useHistory();
 
     const wrapperRef = useRef(null);
     const iconRef = useRef(null);
@@ -50,7 +57,16 @@ const ActionsDropdown = (props) => {
     };
 
     const onEndYes = async () => {
-        // TODO:
+        const uri = `/offers-api/offers/${offerId}/end`;
+        const action = async () => await axios.post(uri);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    history.push(`/offers/${offerId}`);
+                }
+            }
+        );
     };
 
     const onDeleteClick = async () => {
