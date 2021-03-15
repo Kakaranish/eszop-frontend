@@ -35,7 +35,7 @@ const ConfirmOrderButton = ({orderId}) => {
                 status: 200,
                 callback: async () => {
                     toast.success("Order confirmed");
-                    history.push(`/user/orders/${orderId}`);
+                    history.push(`/user/shopping/order/${orderId}`);
                 }
             }
         );

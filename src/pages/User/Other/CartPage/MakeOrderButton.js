@@ -38,7 +38,7 @@ const MakeOrderButton = (props) => {
                     const orderId = result.data.orderId;
                     toast.success('Order started');
                     props.clearCart();
-                    history.push(`/user/orders/${orderId}/fill/delivery-info`);
+                    history.push(`/user/shopping/order/${orderId}/fill/delivery-info`);
                 }
             }
         );

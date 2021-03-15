@@ -48,7 +48,7 @@ const ShoppingOrderSummaryPage = (props) => {
 
                 <div className="col-md-4">
                     <Link
-                        to={`/user/orders/${orderId}/fill/delivery-info`}
+                        to={`/user/shopping/order/${orderId}/fill/delivery-info`}
                         className="btn btn-block btn-outline-success"
                     >
                         Change Delivery Info

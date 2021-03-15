@@ -108,7 +108,7 @@ const ShoppingPage = (props) => {
                         ?
                         <div className="col-12 mb-3 text-right">
                             <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                            <Link to={`/user/orders/${order.id}`}>
+                            <Link to={`/user/shopping/order/${order.id}`}>
                                 Go to details
                             </Link>
                         </div>
@@ -116,7 +116,7 @@ const ShoppingPage = (props) => {
                         :
                         <div className="col-12 mb-3 text-right">
                             <h3>Total price: {calculateOrderTotalPrice(order).toFixed(2)} PLN </h3>
-                            <Link to={`/user/orders/${order.id}/fill/delivery-info`}>
+                            <Link to={`/user/shopping/order/${order.id}/fill/delivery-info`}>
                                 Continue order
                             </Link>
                         </div>

@@ -29,7 +29,7 @@ const App = () => <>
           <Route path='/offers' component={OfferRoutes} />
           <Route path='/user/settings' component={SettingsRoutes} />
           <Route path='/auth' component={AuthRoutes} />
-          <AuthorizedOnlyRoute path='/user/orders' component={OrderRoutes} />
+          <AuthorizedOnlyRoute path='/user/shopping' component={OrderRoutes} />
           <AuthorizedOnlyRoute path='/admin' component={AdminRoutes} roles={["ADMIN", "SUPER_ADMIN"]} />
           
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />

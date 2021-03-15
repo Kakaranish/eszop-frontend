@@ -31,7 +31,14 @@ const OfferListItem = (props) => {
                         <Link to={offerUri}>
                             {offer.name}
                         </Link>
-                        {!offer.publishedAt && <span className="text-muted"> | Draft</span>}
+                        {
+                            !offer.publishedAt && <span className="text-muted"> | Draft</span>
+                        }
+
+                        {
+                            offer.publishedAt && !offer.isActive &&
+                            <span style={{color: 'green', fontWeight: 'bold'}}> | Ended</span>
+                        }
                     </p>
 
                     {

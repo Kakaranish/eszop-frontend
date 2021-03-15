@@ -35,7 +35,7 @@ const CancelOrderButton = ({ orderId }) => {
                 status: 200,
                 callback: async () => {
                     toast.success("Order cancelled");
-                    history.push('/user/orders/');
+                    history.push('/user/shopping/');
                 }
             }
         );
