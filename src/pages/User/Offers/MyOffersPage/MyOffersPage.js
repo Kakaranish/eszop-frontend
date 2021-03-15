@@ -6,7 +6,7 @@ import Pagination from 'common/components/Pagination';
 import { requestHandler } from 'common/utils';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 const MyOffersPage = (props) => {
 
@@ -16,11 +16,22 @@ const MyOffersPage = (props) => {
         : parseInt(pageIndexStr);
 
     const history = useHistory();
+    const location = useLocation();
 
+    const [locationLoaded, setLocationLoaded] = useState(false);
     const [state, setState] = useState({
         loading: true,
         pagination: null
     });
+
+    useEffect(() => {
+        if (!locationLoaded) {
+            setLocationLoaded(true);
+            return;
+        }
+
+        history.push('/refresh');
+    }, [location]);
 
     useEffect(() => {
         const fetch = async () => {

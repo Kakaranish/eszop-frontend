@@ -1,25 +1,52 @@
 import axios from 'axios';
+import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import ItemsPerPage from 'common/components/ItemsPerPage';
+import Pagination from 'common/components/Pagination';
 import { mapOrderState } from 'common/orderUtils';
 import { authorizedRequestHandler } from 'common/utils';
 import moment from 'moment';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import OrderItem from './OrderItem';
 
-const OrdersPage = () => {
+const OrdersPage = (props) => {
 
-    const [state, setState] = useState({ loading: true, orders: [] });
+    const pageIndexStr = queryString.parse(props.location.search).pageIndex;
+    const pageIndex = !pageIndexStr || parseInt(pageIndexStr) == NaN
+        ? 1
+        : parseInt(pageIndexStr);
+
+    const history = useHistory();
+    const location = useLocation();
+    const [state, setState] = useState({ loading: true, pagination: null });
+    const [locationLoaded, setLocationLoaded] = useState(false);
+
+    useEffect(() => {
+        if (!locationLoaded) {
+            setLocationLoaded(true);
+            return;
+        }
+
+        history.push('/refresh');
+    }, [location]);
 
     useEffect(() => {
         const fetch = async () => {
-            const uri = '/orders-api/orders/user';
+            const itemsPerPage = props.settings.itemsPerPage;
+            const queryParams = queryString.stringify({
+                pageSize: itemsPerPage,
+                pageIndex: pageIndex
+            });
+
+            const uri = `/orders-api/orders/buyer?${queryParams}`;
             const action = async () => await axios.get(uri);
 
             await authorizedRequestHandler(action,
                 {
                     status: 200,
                     callback: result => {
-                        setState({ loading: false, orders: result.data.items });
+                        setState({ loading: false, pagination: result.data });
                     }
                 }
             );
@@ -27,17 +54,35 @@ const OrdersPage = () => {
         fetch();
     }, []);
 
-    if (state.loading) return <></>
-    else if (state.orders.length === 0) return <h3>You have no orders yet</h3>
 
+    const onItemsPerPageChange = async newValue => {
+        const currentPath = props.location.pathname;
+        const queryParams = queryString.stringify({
+            pageSize: newValue,
+            pageIndex: 1
+        });
+
+        history.push({
+            pathname: currentPath,
+            search: queryParams
+        });
+
+        history.push('/refresh');
+    };
+
+
+    if (state.loading) return <></>
+    else if (state.pagination?.items?.length === 0) return <h3>You have no orders yet</h3>
+
+    const orders = state.pagination.items;
     return <>
         <h3 className="mb-3">
             My Orders
         </h3>
 
         {
-            state.orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
-                <div className="text-muted" style={{fontSize: '0.9rem'}}>
+            orders.map((order, i) => <div className="bg-white col-12 mb-4 py-2" key={`order-${i}`}>
+                <div className="text-muted" style={{ fontSize: '0.9rem' }}>
                     {moment(order.createdAt).format("YYYY-MM-DD HH:mm:ss")}
                 </div>
 
@@ -75,6 +120,22 @@ const OrdersPage = () => {
             </div>
             )
         }
+
+        <div className="pull-left">
+            <Pagination
+                currentPage={pageIndex}
+                totalPages={state.pagination.totalPages}
+                queryParamName="pageIndex"
+                location={Object.assign({}, props.location)}
+            />
+        </div>
+
+        <div className="pull-right">
+            <ItemsPerPage
+                onChange={async newValue => onItemsPerPageChange(newValue)}
+                classes="d-block"
+            />
+        </div>
     </>
 };
 
@@ -85,4 +146,6 @@ function calculateOrderTotalPrice(order) {
     return sum;
 }
 
-export default OrdersPage;
+export default new AwareComponentBuilder()
+    .withSettingsAwareness()
+    .build(OrdersPage);
