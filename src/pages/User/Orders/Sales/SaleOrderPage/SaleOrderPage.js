@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mapOrderState } from 'common/orderUtils';
 import { authorizedRequestHandler, getFormDataJsonFromEvent, requestHandler } from 'common/utils';
 import moment from 'moment';
 import RequiredSelect from 'pages/User/Offers/components/RequiredSelect';
@@ -28,7 +29,7 @@ const SaleOrderPage = (props) => {
     });
 
     const history = useHistory();
-    
+
     const orderStates = [
         { label: 'In Progress', value: 'IN_PROGRESS' },
         { label: 'In preparation', value: 'IN_PREPARATION' },
@@ -97,7 +98,7 @@ const SaleOrderPage = (props) => {
 
     const onChangeSubmit = async event => {
         event.preventDefault();
-        
+
         let data = getFormDataJsonFromEvent(event);
         const uri = `/orders-api/orders/${orderId}/state`;
         const action = async () => await axios.put(uri, data);
@@ -144,24 +145,34 @@ const SaleOrderPage = (props) => {
                     Buyer Id: <i>{order.buyerId}</i>
                 </div>
 
-                <div className="d-flex align-items-center mb-3">
-                    <div className="mr-3">Order state: </div>
-                    
-                    <form className="form-inline" onSubmit={onChangeSubmit}>
-                        <div className="d-inline-block" style={{ width: '200px' }}>
-                            <RequiredSelect
-                                name="orderState"
-                                styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc", }}
-                                options={orderStates}
-                                initValue={orderStates.find(x => x.value === order.orderState)}
-                            />
+                {
+                    !["STARTED", "CANCELLED", "CANCELLED_BY_BUYER", "CANCELLED_BY_SELLER"].some(x => x === state.order.orderState)
+                        ?
+                        <div className="d-flex align-items-center mb-3">
+                            <div className="mr-3">Order state: </div>
+
+                            <form className="form-inline" onSubmit={onChangeSubmit}>
+                                <div className="d-inline-block" style={{ width: '200px' }}>
+                                    <RequiredSelect
+                                        name="orderState"
+                                        styles={{ menu: provided => ({ ...provided, zIndex: 9999 }), borderColor: "#ccc", }}
+                                        options={orderStates}
+                                        initValue={orderStates.find(x => x.value === order.orderState)}
+                                    />
+                                </div>
+
+                                <button className="btn btn-success">
+                                    Change
+                            </button>
+                            </form>
                         </div>
 
-                        <button className="btn btn-success">
-                            Change
-                        </button>
-                    </form>
-                </div>
+                        :
+                        <div className="my-2">
+                            Order state: {mapOrderState(state.order.orderState)}
+                        </div>
+                }
+
             </div>
 
             {
@@ -181,19 +192,17 @@ const SaleOrderPage = (props) => {
                             {state.bankTransferDetails.accountNumber}
                         </div>
 
-                        <div>
-                            Transfer amount: <i>{state.bankTransferDetails.transferAmount.toFixed(2)} PLN</i>
-                        </div>
-
                         {
-                            !state.bankTransferDetails.accountNumber &&
-                            <span className="font-weight-bold text-bold" style={{ color: 'orange' }}>
-                                Please contact the&nbsp;
-                                    <Link to={`/seller/${state.order.sellerId}`}>
-                                    seller&nbsp;
-                                    </Link>
-                                    for an account number
-                                </span>
+                            order.orderState !== 'STARTED'
+                                ?
+                                <div>
+                                    Transfer amount: <i>{state.bankTransferDetails.transferAmount.toFixed(2)} PLN</i>
+                                </div>
+
+                                :
+                                <div>
+                                    Transfer amount: <i>{state.order.totalPrice.toFixed(2)} PLN</i>
+                                </div>
                         }
 
                     </div>

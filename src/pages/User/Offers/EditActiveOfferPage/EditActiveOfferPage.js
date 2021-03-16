@@ -105,6 +105,7 @@ const EditActiveOfferPage = (props) => {
                     loading: true,
                     canSell: false
                 });
+                toast.error(error.message);
             }
         };
 
@@ -171,7 +172,7 @@ const EditActiveOfferPage = (props) => {
                 status: 200,
                 callback: () => {
                     toast.success("Offer updated");
-                    history.push(`/user/offers/${offerId}`);
+                    history.push(`/offers/${offerId}`);
                 }
             },
             {

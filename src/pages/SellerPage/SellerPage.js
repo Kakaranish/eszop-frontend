@@ -7,6 +7,7 @@ import { requestHandler } from 'common/utils';
 import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import SellerInfoSection from './SellerInfoSection';
 
 const SellerPage = (props) => {
 
@@ -31,8 +32,16 @@ const SellerPage = (props) => {
             const sellerInfoAction = async () => await axios.get(sellerInfoUri);
 
             const sellerInfoResult = await requestHandler(sellerInfoAction,
-                { status: 200, callback: result => result });
-            if (sellerInfoResult.status !== 200) return;
+                {
+                    status: 200,
+                    callback: result => result
+                },
+                {
+                    status: 204,
+                    callback: result => result
+                }
+            );
+            if (sellerInfoResult.status !== 200 && sellerInfoResult.status !== 204) return;
 
             const itemsPerPage = props.settings.itemsPerPage;
             const queryParams = queryString.stringify({
@@ -81,32 +90,15 @@ const SellerPage = (props) => {
         <div className="mb-4 px-3 py-2 border rounded" style={{ backgroundColor: 'white' }}>
             <h3>About seller</h3>
 
-            <div>
-                <b>Id: </b> {sellerId}
-            </div>
-
             {
-                state.sellerInfo.contactEmail &&
-                <div>
-                    <b>Contact email:</b>&nbsp;
-                    {state.sellerInfo.contactEmail}
-                </div>
-            }
+                state.sellerInfo
 
-            {
-                state.sellerInfo.phoneNumber &&
-                <div>
-                    <b>Phone number:  </b>
-                    {state.sellerInfo.phoneNumber}
-                </div>
-            }
+                    ?
+                    <SellerInfoSection sellerInfo={state.sellerInfo} />
 
-            {
-                state.sellerInfo.additionalInfo &&
-                <div>
-                    <b>Additional info: </b><br />
-                    {state.sellerInfo.additionalInfo}
-                </div>
+                    : <div>
+                        This seller has not provided information about himself/herself :(
+                    </div>
             }
         </div>
 
@@ -122,26 +114,26 @@ const SellerPage = (props) => {
                                 <OfferListItem key={`li-${i}`} offer={offer} />
                             )
                         }
+
+                        <div className="pull-left">
+                            <Pagination
+                                currentPage={pageIndex}
+                                totalPages={state.pagination.totalPages}
+                                queryParamName="pageIndex"
+                                location={Object.assign({}, props.location)}
+                            />
+                        </div>
+
+                        <div className="pull-right">
+                            <ItemsPerPage
+                                onChange={async newValue => onItemsPerPageChange(newValue)}
+                                classes="d-block"
+                            />
+                        </div>
                     </>
 
                     : <h3>This seller has no offers available</h3>
             }
-        </div>
-
-        <div className="pull-left">
-            <Pagination
-                currentPage={pageIndex}
-                totalPages={state.pagination.totalPages}
-                queryParamName="pageIndex"
-                location={Object.assign({}, props.location)}
-            />
-        </div>
-
-        <div className="pull-right">
-            <ItemsPerPage
-                onChange={async newValue => onItemsPerPageChange(newValue)}
-                classes="d-block"
-            />
         </div>
     </>
 };

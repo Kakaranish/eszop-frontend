@@ -22,7 +22,7 @@ const MakeOrderButton = (props) => {
                 },
                 {
                     label: 'No',
-                    onClick: () => {}
+                    onClick: () => { }
                 }
             ]
         });
@@ -39,6 +39,12 @@ const MakeOrderButton = (props) => {
                     toast.success('Order started');
                     props.clearCart();
                     history.push(`/user/shopping/order/${orderId}/fill/delivery-info`);
+                }
+            },
+            {
+                status: 400,
+                callback: () => {
+                    history.push('/refresh');
                 }
             }
         );

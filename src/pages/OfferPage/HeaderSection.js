@@ -135,6 +135,12 @@ const HeaderSection = (props) => {
                                     Go to seller
                                 </Link>
                             </>
+                            else return <>
+                                <div>
+                                    Available <b>{offer.availableStock} </b>
+                                    out of <b>{offer.totalStock}</b>
+                                </div>
+                            </>
                         })()
                     }
                 </div>
