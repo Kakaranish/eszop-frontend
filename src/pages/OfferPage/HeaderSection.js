@@ -1,6 +1,7 @@
 import penIcon from 'assets/img/pen.svg';
 import starIcon from 'assets/img/star.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import EndSection from 'common/components/EndSections';
 import ImagePreview from 'common/components/ImagePreview';
 import moment from 'moment';
 import React from 'react';
@@ -107,7 +108,7 @@ const HeaderSection = (props) => {
                     </span>
 
                     <span className="d-block">
-                        Ends on: {moment(offer.endsAt).format("YYYY-MM-DD HH:mm:ss")}
+                        <EndSection offer={offer} />
                     </span>
 
                     <div className="mt-3 mb-4">

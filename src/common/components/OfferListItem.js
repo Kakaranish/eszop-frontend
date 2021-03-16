@@ -1,7 +1,7 @@
+import noImgPlaceholder from 'assets/img/no-image.svg';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
-import noImgPlaceholder from 'assets/img/no-image.svg';
+import EndSection from './EndSections';
 
 const OfferListItem = (props) => {
 
@@ -37,17 +37,19 @@ const OfferListItem = (props) => {
 
                         {
                             offer.publishedAt && !offer.isActive &&
-                            <span style={{color: 'green', fontWeight: 'bold'}}> | Ended</span>
+                            <span style={{ color: 'green', fontWeight: 'bold' }}> | Ended</span>
                         }
                     </p>
 
                     {
-                        !!offer.publishedAt &&
-                        <div>
-                            Published At: {moment(offer.publishedAt).format("YYYY-MM-DD HH:mm:ss")}
-                        </div>
+                        offer.publishedAt &&
+                        <EndSection offer={offer} />
                     }
-                    <div>Price: {offer.price.toFixed(2)} PLN</div>
+
+                    <div className="mt-2">
+                        Price: {offer.price.toFixed(2)} PLN
+                    </div>
+
                 </div>
             </div>
         </div>

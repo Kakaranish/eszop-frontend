@@ -115,3 +115,14 @@ export const isFloat = n => {
     const regex = /^[+-]?\d+(\.\d+)?$/;
     return regex.test(n);
 }
+
+export function getRemainingTimeStr(offer) {
+    const endsAt = moment(offer.endsAt);
+    const subtractResult = endsAt.subtract(moment.utc());
+
+    const days = subtractResult.days();
+    const hours = subtractResult.hours();
+    const minutes = subtractResult.minutes();
+
+    return `${days} days, ${hours} hours, ${minutes} minutes`;
+}

@@ -31,6 +31,7 @@ const ListItem = (props) => {
 
                     <div>Published At: {moment(offer.publishedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
                     <div>Price: {offer.price.toFixed(2)} PLN</div>
+                    <EndSection offer={offer} />
                 </div>
             </div>
         </div>
