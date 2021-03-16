@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import NotificationItem from './components/NotificationItem';
 import { handleNotification } from './components/utils';
 
-
 const Styles = styled.div`
 .clearAllHoverDiv {background: lightgray; cursor: pointer;}
 .clearAllHoverDiv:hover {background: smokewhite;}
@@ -50,10 +49,10 @@ const NotificationIndicator = (props) => {
         if (!props.notifications) props.clearNotifications();
 
         connection.on('ReceiveNotification', notification => {
-            if (handleNotification(props, notification)) {
-                toast.info("New notification. Click bell to see it.");
-                props.addNotification(notification);
-            }
+            handleNotification(props, notification);
+            
+            toast.info("New notification. Click bell to see it.");
+            props.addNotification(notification);
         });
 
         connection.on('SeedNotifications', notifications => {
