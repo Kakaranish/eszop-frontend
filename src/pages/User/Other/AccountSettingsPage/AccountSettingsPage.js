@@ -1,9 +1,10 @@
-import React from 'react';
-import profileIcon from 'assets/img/profile.svg';
-import moneyIcon from 'assets/img/money.svg';
 import addressIcon from 'assets/img/address.svg';
-import styled from 'styled-components';
+import lockIcon from 'assets/img/lock.svg';
+import moneyIcon from 'assets/img/money.svg';
+import profileIcon from 'assets/img/profile.svg';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Styles = styled.div`
 .hoverDiv:hover {background: #d9d9d9; cursor: pointer;}
@@ -12,7 +13,6 @@ const Styles = styled.div`
 }`
 
 const AccountSettingsPage = () => {
-    
     return <>
         <h3 className="mb-3" >
             Account settings
@@ -55,6 +55,19 @@ const AccountSettingsPage = () => {
 
                         <h5 className="d-inline-block ml-4">
                             My profile
+                        </h5>
+                    </div>
+                </Link>
+
+                <Link className="col-lg-4 cursor-pointer linkStyle" to='/user/settings/change-password'>
+                    <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle mt-3">
+                        <img src={lockIcon}
+                            style={{ width: '40px' }}
+                            alt="create-offer-img"
+                        />
+
+                        <h5 className="d-inline-block ml-4">
+                            Change password
                         </h5>
                     </div>
                 </Link>
