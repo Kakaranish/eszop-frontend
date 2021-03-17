@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const Styles = styled.div`
@@ -81,7 +82,23 @@ const ActionsDropdown = (props) => {
     };
 
     const onDeleteYes = async () => {
-        // TODO:
+        const uri = `/offers-api/offers/${offerId}`;
+        const action = async () => await axios.delete(uri);
+        await authorizedRequestHandler(action,
+            {
+                status: 200,
+                callback: () => {
+                    toast.success("Offer has been deleted");
+                    history.push(`/offers`);
+                }
+            },
+            {
+                status: 400,
+                callback: result => {
+                    toast.error(result.data.Message);
+                }
+            }
+        );
     };
 
     const Divider = ({ width }) => <div className="dropdown-divider my-0" style={{ borderWidth: width }}></div>

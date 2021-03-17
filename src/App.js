@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CategoriesPage from 'pages/CategoriesPage/CategoriesPage';
+import ForgotPasswordPage from 'pages/ForgotPasswordPage/ForgotPasswordPage';
 import RefreshPage from 'pages/RefreshPage';
+import ResetPasswordPage from 'pages/ResetPasswordPage/ResetPasswordPage';
 import SellerPage from 'pages/SellerPage/SellerPage';
 import CartPage from 'pages/User/Other/CartPage/CartPage';
 import React from 'react';
@@ -9,6 +11,7 @@ import AdminRoutes from 'routeAggregators/AdminRoutes';
 import SaleRoutes from 'routeAggregators/SaleRoutes';
 import SettingsRoutes from 'routeAggregators/SettingsRoutes';
 import ShoppingRoutes from 'routeAggregators/ShoppingRoutes';
+import NotAuthorizedRouteOnly from 'routeTypes/NotAuthorizedRouteOnly';
 import ErrorPage from './pages/ErrorPage';
 import MyOffersPage from './pages/User/Offers/MyOffersPage/MyOffersPage';
 import AuthRoutes from './routeAggregators/AuthRoutes';
@@ -33,10 +36,12 @@ const App = () => <>
           <AuthorizedOnlyRoute path='/user/shopping' component={ShoppingRoutes} />
           <AuthorizedOnlyRoute path='/user/sale' component={SaleRoutes} />
           <AuthorizedOnlyRoute path='/admin' component={AdminRoutes} roles={["ADMIN", "SUPER_ADMIN"]} />
-          
+
           <AuthorizedOnlyRoute path='/user/offers' component={MyOffersPage} />
           <AuthorizedOnlyRoute path="/cart" component={CartPage} />
-          
+
+          <NotAuthorizedRouteOnly path='/forgot-password' component={ForgotPasswordPage} />
+          <NotAuthorizedRouteOnly path='/reset-password' component={ResetPasswordPage} />
           <Route path='/categories' component={CategoriesPage} />
           <Route path='/seller/:id' component={SellerPage} />
 

@@ -116,10 +116,17 @@ const SignInPage = (props) => {
                     </div>
                 }
 
-                <button type="submit" className="btn btn-block btn-outline-success">
+                <button type="submit" className="btn btn-block btn-success">
                     Sign In
                 </button>
             </form>
+
+            <div className={`pull-right text-secondary ${!errorMsg && 'mb-3'}`}>
+                Forgot password?&nbsp;
+                <Link to='/forgot-password'>
+                    Click here
+                </Link>
+            </div>
         </div>
     </>
 }

@@ -24,7 +24,7 @@ const Navbar = (props) => <>
 
             {
                 props.identity && <>
-                    <NotificationIndicator classes="mr-2" />
+                    <NotificationIndicator classes="mr-1" />
 
                     <CartIndicator classes="mr-2" />
 

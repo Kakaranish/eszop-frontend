@@ -1,4 +1,5 @@
 import noImgPlaceholder from 'assets/img/no-image.svg';
+import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import EndSection from './EndSections';
@@ -42,7 +43,7 @@ const OfferListItem = (props) => {
                     </p>
 
                     {
-                        offer.publishedAt &&
+                        offer.isActive &&
                         <EndSection offer={offer} />
                     }
 

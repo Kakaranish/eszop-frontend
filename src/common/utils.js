@@ -118,11 +118,11 @@ export const isFloat = n => {
 
 export function getRemainingTimeStr(offer) {
     const endsAt = moment(offer.endsAt);
-    const subtractResult = endsAt.subtract(moment.utc());
+    const duration = moment.duration(endsAt.diff(moment.utc()));
 
-    const days = subtractResult.days();
-    const hours = subtractResult.hours();
-    const minutes = subtractResult.minutes();
-
+    const days = duration.days();
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    
     return `${days} days, ${hours} hours, ${minutes} minutes`;
 }

@@ -97,7 +97,6 @@ const NotificationIndicator = (props) => {
     const Divider = ({ width }) => <div className="dropdown-divider my-0" style={{ borderWidth: width }}></div>
 
     return <>
-
         <div className={`btn-group${isExpanded ? ' show' : ''} ${classes}`}>
             <Styles>
                 <div ref={iconRef} onClick={notifIconClick} aria-haspopup="true" aria-expanded={isExpanded}>
