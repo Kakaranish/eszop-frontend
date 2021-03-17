@@ -46,21 +46,8 @@ const AccountSettingsPage = () => {
                     </div>
                 </Link>
 
-                <Link className="col-lg-4 cursor-pointer linkStyle" to='/user/settings/profile'>
-                    <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle">
-                        <img src={profileIcon}
-                            style={{ width: '40px' }}
-                            alt="create-offer-img"
-                        />
-
-                        <h5 className="d-inline-block ml-4">
-                            My profile
-                        </h5>
-                    </div>
-                </Link>
-
                 <Link className="col-lg-4 cursor-pointer linkStyle" to='/user/settings/change-password'>
-                    <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle mt-3">
+                    <div className="d-flex align-items-center border rounded px-4 hoverDiv boxStyle">
                         <img src={lockIcon}
                             style={{ width: '40px' }}
                             alt="create-offer-img"
