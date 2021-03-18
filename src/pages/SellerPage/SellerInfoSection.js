@@ -2,10 +2,6 @@ import React from 'react';
 
 const SellerInfoSection = ({ sellerInfo }) => {
     return <>
-        <div>
-            <b>Id: </b> {sellerInfo.id}
-        </div>
-
         {
             sellerInfo.contactEmail &&
             <div>

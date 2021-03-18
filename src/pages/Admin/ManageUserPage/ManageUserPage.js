@@ -2,12 +2,13 @@ import axios from 'axios';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { authorizedRequestHandler, mapRoleName } from 'common/utils';
 import moment from 'moment';
-import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import LockUserButton from './LockUserButton';
+import UnlockUserButton from './UnlockUserButton';
 
 const ManageUserPage = (props) => {
 
-    const queryParams = queryString.parse(window.location.search);
     const userId = props.match.params.id;
 
     const [state, setState] = useState({
@@ -61,26 +62,18 @@ const ManageUserPage = (props) => {
                 </div>
 
                 <div>
-                    Is locked?: {!state.user.lockedUntil ? "no" : "yes"}
+                    Is locked? {!state.user.isLocked ? "no" : "yes"}
                 </div>
-
-                {
-                    state.user.lockedUntil && <>
-                        Locked until: {moment(state.user.lockedUntil).format("YYYY-MM-DD HH:mm:ss")}
-                    </>
-                }
             </div>
 
-            <button className="btn btn-outline-danger">
-                Block User
-            </button>
-
             {
-                props.identity.role === "SUPER_ADMIN" && <>
-                    <button className="btn btn-outline-success ml-2">
-                        Change Role
-                    </button>
-                </>
+                !state.user.isLocked
+
+                    ?
+                    <LockUserButton userId={userId} />
+
+                    :
+                    <UnlockUserButton userId={userId} />
             }
         </div>
     </>

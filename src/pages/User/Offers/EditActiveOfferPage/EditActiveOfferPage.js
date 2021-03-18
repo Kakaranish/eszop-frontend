@@ -114,6 +114,7 @@ const EditActiveOfferPage = (props) => {
 
     const prepareFormData = event => {
         let formData = new FormData(event.target);
+        formData.set('price', parseFloat(formData.get('price')));
 
         // Prepare images
         let mainImg = images.find(x => x.isMain);
