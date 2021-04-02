@@ -5,14 +5,14 @@ import { authorizedRequestHandler, isFloat } from 'common/utils';
 import React, { useEffect, useState } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactTooltip from 'react-tooltip';
 
 const EditableDeliveryMethod = ({ deliveryMethod }) => {
 
     const history = useHistory();
-    
+
     const [state, setState] = useState(deliveryMethod);
     const [initialized, setInitialized] = useState(false);
 
@@ -76,7 +76,7 @@ const EditableDeliveryMethod = ({ deliveryMethod }) => {
                 },
                 {
                     label: 'No',
-                    onClick: () => {}
+                    onClick: () => { }
                 }
             ]
         });
@@ -178,9 +178,7 @@ const EditableDeliveryMethod = ({ deliveryMethod }) => {
 
     return <>
         <div className="mb-4 d-flex">
-            <Link to={`/offers?category=${deliveryMethod.id}`}>
-                {state.name} - {state.price.toFixed(2)} PLN
-            </Link>
+            {state.name} - {state.price.toFixed(2)} PLN
 
             <img src={penIcon}
                 className="cursor-pointer ml-2"

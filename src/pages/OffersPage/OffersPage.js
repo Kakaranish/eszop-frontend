@@ -80,7 +80,7 @@ const OffersPage = (props) => {
 
     return <>
         <div className="container">
-
+            {process.env.test}
             {
                 queryParams.searchPhrase &&
                 <h3 className="mb-3">

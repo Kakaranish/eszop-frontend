@@ -12,7 +12,7 @@ import { DndProvider } from 'react-dnd';
 const { store, persistor } = configureStore();
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'https://localhost:10000';
+axios.defaults.baseURL = window._env_.API_URL;
 axios.defaults.validateStatus = false;
 
 ReactDOM.render(

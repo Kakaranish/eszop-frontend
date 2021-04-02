@@ -32,7 +32,7 @@ const NotificationIndicator = (props) => {
         document.removeEventListener("click", handleClickOutside, false)
 
         const newConnection = new HubConnectionBuilder()
-            .withUrl('https://localhost:10000/hubs/notification')
+            .withUrl(`${window._env_.API_URL}/hubs/notification`)
             .withAutomaticReconnect()
             .build();
 
