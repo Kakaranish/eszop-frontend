@@ -12,7 +12,7 @@ import { DndProvider } from 'react-dnd';
 const { store, persistor } = configureStore();
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = window._env_.API_URL;
+axios.defaults.baseURL = window._env_.ESZOP_API_URL;
 axios.defaults.validateStatus = false;
 
 ReactDOM.render(

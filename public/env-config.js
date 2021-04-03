@@ -1,3 +1,3 @@
 window._env_ = {
-API_URL: "http://localhost:10000",
+    ESZOP_API_URL: "http://localhost:10000",
 }
