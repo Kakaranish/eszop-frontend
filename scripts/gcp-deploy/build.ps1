@@ -15,10 +15,12 @@ Set-Location $PSScriptRoot/../..
 
 npm run-script build
 
-$zip_filename = "frontend`_$build_suffix.zip"
 $build_path = Resolve-Path (Join-Path $PSScriptRoot ".." ".." "build")
-Compress-Archive -CompressionLevel Optimal -Path $build_path/* -DestinationPath $out_dir/$zip_filename
+Copy-Item -Path "$build_path/../.env" -Destination "$build_path/.env"
 
+$zip_filename = "frontend`_$build_suffix.zip"
+Get-ChildItem -Path $build_path -Force `
+    | Compress-Archive -DestinationPath $out_dir/$zip_filename -ErrorAction SilentlyContinue  -WarningAction SilentlyContinue
 Remove-Item -Path $build_path -Recurse -Force | Out-Null
 
 Set-Location -Path $PSScriptRoot
