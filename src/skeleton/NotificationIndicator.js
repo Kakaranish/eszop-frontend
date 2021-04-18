@@ -1,6 +1,7 @@
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HttpTransportType, HubConnectionBuilder } from '@microsoft/signalr';
 import notifIcon from 'assets/img/notification.svg';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
+import { ensureAccessTokenIsValid } from 'common/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -29,14 +30,19 @@ const NotificationIndicator = (props) => {
     const [notReadNotifications, setNotReadNotifications] = useState({});
 
     useEffect(() => {
-        document.removeEventListener("click", handleClickOutside, false)
+        document.removeEventListener("click", handleClickOutside, false);
 
-        const newConnection = new HubConnectionBuilder()
-            .withUrl(`${window._env_.ESZOP_API_URL}/hubs/notification`)
-            .withAutomaticReconnect()
-            .build();
+        ensureAccessTokenIsValid().then(() => {
+            const newConnection = new HubConnectionBuilder()
+                .withUrl(`${window._env_.ESZOP_API_URL}/hubs/notification`, {
+                    skipNegotiation: true,
+                    transport: HttpTransportType.WebSockets
+                })
+                .withAutomaticReconnect()
+                .build();
 
-        setConnection(newConnection);
+            setConnection(newConnection);
+        });
     }, []);
 
     useEffect(() => {
@@ -50,7 +56,7 @@ const NotificationIndicator = (props) => {
 
         connection.on('ReceiveNotification', notification => {
             handleNotification(props, notification);
-            
+
             toast.info("New notification. Click bell to see it.");
             props.addNotification(notification);
         });
@@ -93,8 +99,6 @@ const NotificationIndicator = (props) => {
         props.clearNotifications();
         connection.send("DeleteAllNotifications");
     };
-
-    const Divider = ({ width }) => <div className="dropdown-divider my-0" style={{ borderWidth: width }}></div>
 
     return <>
         <div className={`btn-group${isExpanded ? ' show' : ''} ${classes}`}>

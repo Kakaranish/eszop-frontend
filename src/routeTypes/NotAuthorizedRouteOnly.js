@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AwareComponentBuilder from 'common/AwareComponentBuilder';
 import { useHistory, Route } from 'react-router-dom';
 import { isAccessTokenExpired } from 'common/utils';
+import { toast } from 'react-toastify';
 
 const NotAuthorizedRouteOnly = ({ component: Component, ...rest }) => {
 
@@ -11,7 +12,7 @@ const NotAuthorizedRouteOnly = ({ component: Component, ...rest }) => {
     useEffect(() => {
         const verify = async () => {
             if (rest.identity || !isAccessTokenExpired()) {
-                alert('This page requires not to be logged in. Redirecting to main page...');
+                toast.warn("This page requires not to be logged in. Redirecting to main page...")
                 history.push('/offers');
                 return;
             }
