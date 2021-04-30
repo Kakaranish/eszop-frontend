@@ -11,8 +11,8 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-deps /app/build /usr/share/nginx/html
 
 WORKDIR /usr/share/nginx/html
-COPY ./env.sh .
-COPY .env .
+COPY ./scripts/env.sh .
+COPY ./scripts/.env .
 RUN chmod +x env.sh
 
 EXPOSE 80

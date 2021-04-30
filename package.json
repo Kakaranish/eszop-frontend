@@ -44,7 +44,8 @@
     "xregexp": "^5.0.1"
   },
   "scripts": {
-    "start": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/ && HTTPS=true SSL_CRT_FILE=./certificates/cert.pem SSL_KEY_FILE=./certificates/key.pem react-scripts start",
+    "start": "chmod +x ./scripts/env.sh && ./scripts/env.sh && cp env-config.js ./public/ && react-scripts start",
+    "start-win": "pwsh -ExecutionPolicy Bypass -Command \".\\scripts\\env.ps1 && react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
