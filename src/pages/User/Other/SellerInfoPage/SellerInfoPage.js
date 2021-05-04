@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 import SellerInfoForm from './SellerInfoForm';
 
@@ -10,6 +11,8 @@ const SellerInfoPage = () => {
         loading: true,
         sellerInfo: null
     });
+
+    const history = useHistory();
 
     useEffect(() => {
         const fetchSellerInfo = async () => {
@@ -52,6 +55,7 @@ const SellerInfoPage = () => {
                 status: 200,
                 callback: () => {
                     toast.success("Updated successfully");
+                    history.push("/user/settings")
                 }
             }
         );

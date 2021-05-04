@@ -6,7 +6,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CancelOrderButton = ({ orderId }) => {
+const CancelOrderButton = ({ orderId, redirectPath = '/refresh' }) => {
 
     const history = useHistory();
 
@@ -35,7 +35,7 @@ const CancelOrderButton = ({ orderId }) => {
                 status: 200,
                 callback: async () => {
                     toast.success("Order cancelled");
-                    history.push('/user/shopping/');
+                    history.push(redirectPath);
                 }
             }
         );

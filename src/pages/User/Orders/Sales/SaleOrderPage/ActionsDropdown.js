@@ -63,7 +63,7 @@ const ActionsDropdown = (props) => {
                 status: 200,
                 callback: async () => {
                     toast.success("Order cancelled");
-                    history.push('/user/shopping/');
+                    history.push('/refresh');
                 }
             }
         );

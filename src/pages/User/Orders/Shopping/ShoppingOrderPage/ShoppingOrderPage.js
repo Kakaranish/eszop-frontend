@@ -1,15 +1,16 @@
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { mapOrderState, mapOrderStateToDescription } from 'common/orderUtils';
 import { authorizedRequestHandler, requestHandler } from 'common/utils';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { mapOrderState, mapOrderStateToDescription } from 'common/orderUtils';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
+import styled from 'styled-components';
 import CostsSection from '../../components/CostsSection';
 import DeliveryAddressesSection from '../../components/DeliveryAddressesSection';
+import ActionsDropdown from '../../Sales/SaleOrderPage/ActionsDropdown';
 
 const Styles = styled.div`
 .transferDetails {
@@ -95,7 +96,14 @@ const ShoppingOrderPage = (props) => {
     const order = state.order;
 
     return <>
-        <div className="bg-white col-12 mb-4 py-2">
+            <div className="bg-white col-12 mb-4 py-2">
+
+            {
+                isCancellable(order) &&
+                <div className="pull-right">
+                    <ActionsDropdown orderId={orderId} />
+                </div>
+            }
 
             <h2>Order Summary</h2>
 
@@ -175,11 +183,20 @@ const ShoppingOrderPage = (props) => {
 
             <CostsSection order={order} />
 
-            <DeliveryAddressesSection order={order} />
+            {
+                order.deliveryMethod
+                    ? <DeliveryAddressesSection order={order} />
+                    : <h3>Delivery address not provided</h3>
+            }
 
             <ReactTooltip />
         </div>
     </>
 };
+
+function isCancellable(order) {
+    const cancelledStates = ["CANCELLED", "CANCELLED_BY_BUYER", "CANCELLED_BY_SELLER"];
+    return !cancelledStates.some(x => order.orderState === x);
+}
 
 export default ShoppingOrderPage;

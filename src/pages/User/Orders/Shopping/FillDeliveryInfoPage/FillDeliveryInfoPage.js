@@ -3,6 +3,7 @@ import { authorizedRequestHandler, getFormDataJsonFromEvent } from 'common/utils
 import React, { useEffect, useState } from 'react';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import CancelOrderButton from '../../components/CancelOrderButton';
 import DeliveryAddressesModal from './DeliveryAddressesModal';
 import DeliveryMethodsSection from './DeliveryMethodsSection';
@@ -26,6 +27,15 @@ const FillDeliveryInfoPage = (props) => {
             const deliveryMethodsUri = `/orders-api/orders/${orderId}/available-delivery-methods`;
             const deliveryMethodsAction = async () => await axios.get(deliveryMethodsUri);
             const deliveryMethods = await authorizedRequestHandler(deliveryMethodsAction);
+
+            const orderInfoUri = `/orders-api/orders/${orderId}`
+            const orderInfoAction = async () => await axios.get(orderInfoUri);
+            const orderInfo = await authorizedRequestHandler(orderInfoAction);
+            
+            if(orderInfo.orderState !== "STARTED") {
+                toast.error("There is no such order");
+                history.push("/");
+            }
 
             const deliveryInfoUri = `/orders-api/orders/${orderId}/delivery-info`;
             const deliveryInfoAction = async () => await axios.get(deliveryInfoUri);
@@ -92,7 +102,7 @@ const FillDeliveryInfoPage = (props) => {
 
             <div className="row mt-5">
                 <div className="col-6">
-                    <CancelOrderButton orderId={orderId} />
+                    <CancelOrderButton orderId={orderId} redirectPath="/" />
                 </div>
 
                 <div className="col-6">
