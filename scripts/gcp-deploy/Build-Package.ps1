@@ -10,7 +10,7 @@ if(-not(Test-Path $out_dir)) {
 }
 
 $build_suffix = Get-Date -UFormat "+%Y%m%d_%H%M%S"
-
+ 
 Set-Location "$PSScriptRoot/../.."
 
 npm run-script build
@@ -20,7 +20,8 @@ if($LASTEXITCODE -ne 0) {
 }
 
 $build_path = Resolve-Path (Join-Path $PSScriptRoot ".." ".." "build")
-Copy-Item -Path "$build_path/../.env" -Destination "$build_path/.env"
+Copy-Item -Path "$PSScriptRoot\..\.env" -Destination "$build_path/.env"
+Remove-Item -Path "$build_path\wwwroot" -Recurse -Force | Out-Null
 
 $zip_filename = "frontend`_$build_suffix.zip"
 Get-ChildItem -Path $build_path -Force `
