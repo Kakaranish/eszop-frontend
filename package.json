@@ -44,8 +44,8 @@
     "xregexp": "^5.0.1"
   },
   "scripts": {
-    "start": "chmod +x ./scripts/env.sh && ./scripts/env.sh && cp env-config.js ./public/ && react-scripts start",
-    "start-win": "pwsh -ExecutionPolicy Bypass -Command \".\\scripts\\env.ps1 && react-scripts start\"",
+    "start": "cp env-config.js ./public/ && react-scripts start",
+    "start-win": "pwsh -ExecutionPolicy Bypass -Command \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
