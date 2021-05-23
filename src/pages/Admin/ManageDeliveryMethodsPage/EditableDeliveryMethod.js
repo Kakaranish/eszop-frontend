@@ -145,7 +145,7 @@ const EditableDeliveryMethod = ({ deliveryMethod }) => {
                         value={state.price}
                         style={{ width: '100px' }}
                         placeholder="Price"
-                        onChange={e => setState(currState => Object.assign({}, currState, { price: e.target.value }))}
+                        onChange={e => setState(currState => Object.assign({}, currState, { price: parseFloat(e.target.value) }))}
                         required
                     />
                 </div>
